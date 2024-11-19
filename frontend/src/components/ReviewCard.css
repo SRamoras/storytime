@@ -1,0 +1,106 @@
+/* Container principal */
+.review-cards-container {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    height: 100vh; /* Ocupa toda a altura da viewport */
+    background-color: #f5f5f5; /* Adicione um fundo para contraste */
+    position: relative;
+  }
+  
+  /* Container total */
+  .div-total {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+  }
+  
+  /* Cards alinhados no centro */
+  .review-cards {
+
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  /* Alinhamento do título */
+  .review-title {
+    font-size: 60px;
+    font-weight: 700;
+    color: #000;text-align: left;
+    margin: 0;
+    
+  }
+  
+  /* Ajustes dos cards */
+  .review-card-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .review-card {
+    width: 350px;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .review-card.light {
+    background-color: #fff;
+    color: #333;
+  }
+  
+  .review-card.dark {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Avatar dos perfis */
+  .profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff6f61;
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  /* Texto e estrelas */
+  .review-content h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .review-content .stars {
+    font-size: 1rem;
+    color: #fbc02d;
+    margin: 5px 0;
+  }
+  
+  .review-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  /* Deslocamento sutil dos cards */
+  .review-card-wrapper.left {
+    transform: translateY(20px);
+  }
+  
+  .review-card-wrapper.right {
+    transform: translateX(50px); /* Move levemente para a direita */
+  }
+  

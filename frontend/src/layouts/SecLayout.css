@@ -1,0 +1,70 @@
+/* Layout geral */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Cabeçalho */
+.header {
+  background-color: transparent; /* Transparent by default */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+  color: white; /* White text by default */
+  position: fixed;
+  width: 100%;
+z-index: 1000;
+  padding: 1rem;
+
+}
+.header.scrolled {
+  background-color: #fff; /* White when scrolled */
+  color: #333; /* Dark text color when scrolled */
+}
+.header-container {
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-between; /* Espaço entre o LogoText e os botões */
+  align-items: center; /* Centraliza os itens verticalmente */
+  width: 85vw; /* Garante que o container ocupe toda a largura */
+}
+
+
+/* Logo à esquerda */
+.logo {
+  flex: 1; /* Garante que o LogoText fique alinhado à esquerda */
+}
+
+/* Botões à direita */
+.buttons {
+  display: flex;
+  gap: 1rem; /* Espaçamento entre os botões */
+}
+
+.buttons button {
+  flex-shrink: 0; /* Garante que os botões não encolham */
+}
+
+/* Conteúdo principal */
+.content {
+  flex: 1; /* Faz com que o conteúdo ocupe o espaço restante */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #fff;
+}
+/* Botões à direita */
+.nav-buttons {
+  display: flex; /* Torna os botões flexíveis */
+  gap: 1rem; /* Espaçamento entre os botões */
+  margin-left: auto; /* Move o container de botões para a direita */
+  align-items: center; /* Centraliza verticalmente com o cabeçalho */
+}
+
+/* Rodapé */
+.footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}

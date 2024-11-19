@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}/* Estilizando a barra de rolagem globalmente */
+::-webkit-scrollbar {
+  width: 4px; /* Reduz a largura da barra de rolagem para torná-la mais fina */
+}
+
+/* Estilo do trilho da barra de rolagem */
+::-webkit-scrollbar-track {
+  background: transparent; /* Torna o trilho da barra de rolagem transparente */
+}
+
+/* Estilo da alça da barra de rolagem */
+::-webkit-scrollbar-thumb {
+  background-color: #000; /* Cor escura para a alça da barra de rolagem */
+  border-radius: 2px; /* Bordas arredondadas suavemente */
+}
+
+/* Estilo da alça da barra de rolagem ao passar o mouse ou durante a rolagem */
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background-color: #000; /* Cor mais escura quando o mouse está sobre ou durante a rolagem ativa */
+}
+

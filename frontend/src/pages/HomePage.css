@@ -1,0 +1,140 @@
+/* Container geral */
+body, html{
+    overflow-x: hidden;
+}
+.Intro-container {
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: space-around; /* Centraliza horizontalmente */
+    gap: 20rem; /* Espaço entre a seção de texto e a imagem */
+    height: 100vh;
+    background-color: #f8f9fa; /* Cor de fundo básica */
+    
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra opcional */
+    max-width: 100vw; /* Define um limite para a largura máxima */
+    margin: 0 auto; /* Centraliza a seção horizontalmente */
+    margin-top:0 ;
+    margin-bottom: 70px;
+    margin-left:0 ;
+    margin-right:0 ;
+    
+    /* Gradiente circular posicionado */
+    background-image: 
+        radial-gradient(circle at 0% 0%, rgba(172, 131, 222, 1) 0%, rgba(134, 168, 231, 1) 2%, transparent 24%),
+        radial-gradient(circle at 70% 80%, rgba(172, 131, 222, 1) 0%, rgba(134, 168, 231, 1) 22%, transparent 51%);
+    background-size: 150% 150%; /* Ajusta o tamanho do círculo gradiente */
+   
+    background-repeat: no-repeat; /* Impede a repetição do gradiente */
+}
+
+
+
+/* Seção de texto */
+.text-section {
+    max-width: 50%;
+    text-align: left;
+}
+
+.text-section h1 {
+    font-size: 60px;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.text-section p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #616161;
+}
+
+/* Botão */
+.get-started-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.get-started-btn:hover {
+    background-color: #333;
+}
+
+.get-started-btn:active {
+    transform: scale(0.95);
+}
+
+/* Seção de imagem */
+.image-section {
+    position: relative;
+    display: flex;
+    justify-content: center; /* Centraliza a imagem horizontalmente */
+    align-items: center; /* Centraliza a imagem verticalmente */
+}
+
+.image-wrapper {
+    position: absolute;
+    display: inline-block;
+    right: 20px;
+    width: 1200px; /* Tamanho desejado da imagem */
+    height: 800px; /* Tamanho desejado da imagem */
+    overflow: hidden; /* Garante que a imagem não ultrapasse os limites do contêiner */
+    border-radius: 10px; /* Bordas arredondadas */
+  
+}
+
+/* Fundo cinza */
+.image-background {
+    position: absolute;
+    top: 10px; /* Deslocamento vertical */
+    left: 10px; /* Deslocamento horizontal */
+    width: calc(100% - 20px); /* Ajusta o tamanho com base no deslocamento */
+    height: calc(100% - 20px); /* Ajusta o tamanho com base no deslocamento */
+    background-color: #adadad; /* Cor cinza clara */
+    border-radius: 10px; /* Igual ao da imagem */
+    z-index: 0; /* Fica atrás da imagem */
+}
+
+/* Imagem principal */
+.story-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px; /* Borda arredondada */
+    position: relative; /* Para garantir o empilhamento correto */
+    z-index: 1; /* Garante que a imagem fique na frente do fundo */
+    object-fit: cover; /* Garante que a imagem preencha o contêiner sem distorção */
+    transition: transform 0.3s ease; /* Suavidade no zoom */
+}
+.explorer-section{
+    background-color: #f8f9fa;
+    padding: 4rem 2rem;
+    width: 93%;
+    margin: 0 auto;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.explorer-section h2{
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 270px;
+    margin-bottom:0;
+    color: #000000;
+}
+
+.explorer-section p{
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+    width: 70%;
+    line-height: 1.2;
+}

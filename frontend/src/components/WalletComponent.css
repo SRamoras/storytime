@@ -1,0 +1,113 @@
+/* WalletComponent.css */
+
+/* Fundo geral */
+.wallet-container {
+
+
+  min-height: 100vh;
+  margin: 0 auto;
+  text-align: center;
+  background: rgb(238,174,202);
+  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Container interno com contraste */
+.container-sec-wallet {
+  background-color: #fff;
+
+  max-width: 1400px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Header */
+.wallet-header {
+  margin-bottom: 20px;
+}
+
+.wallet-header h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* Cartões */
+.wallet-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.wallet-feature {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1 1 calc(25% - 1.5rem); /* 4 cartões por linha */
+  max-width: 250px;
+}
+
+.wallet-feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.wallet-feature h3 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin:0;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.wallet-feature p {
+  font-size: 1rem;
+  color: #fff;
+}
+
+/* Estilos para os diferentes tipos de cartões */
+.wallet-feature.green {
+  background: rgb(238,174,202);
+  background: linear-gradient(135deg, rgba(238,174,202,1) 0%, rgba(180,182,222,1) 28%, rgba(148,187,233,1) 100%);
+  color: #fff;
+}
+
+.wallet-feature.gradient {
+  background: rgb(238,174,202);
+background: linear-gradient(135deg, rgba(238,174,202,1) 0%, rgba(180,182,222,1) 28%, rgba(148,187,233,1) 100%);
+  color: #fff;
+}
+
+.wallet-feature.white {
+  background: #fff;
+  color: #000;
+}
+.wallet-feature.white p{
+  background: #fff;
+  color: #000;
+}
+/* Responsividade */
+@media (max-width: 992px) {
+  .wallet-feature {
+    flex: 1 1 calc(50% - 1.5rem); /* 2 cartões por linha em telas menores */
+  }
+}
+
+@media (max-width: 600px) {
+  .wallet-feature {
+    flex: 1 1 100%; /* 1 cartão por linha em telas muito pequenas */
+  }
+}

@@ -1,0 +1,30 @@
+/* DynamicExpandSection.css */
+.dynamic-expand-section {
+    background-color: #000; /* Fundo preto */
+    color: #fff;
+    height: 60vh; /* Altura fixa */
+    margin: 2rem auto; /* Espaço ao redor */
+    border-radius: 10px;
+    transition: width 0.3s ease; /* Suavidade ao mudar largura */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .dynamic-expand-content {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .dynamic-expand-content h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .dynamic-expand-content p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    max-width: 600px;
+  }
+  

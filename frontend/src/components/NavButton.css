@@ -1,0 +1,28 @@
+.nav-button {
+    background: none;
+    color: rgb(0, 0, 0);
+    border: none;
+    font-size: 16px;
+    cursor: pointer;   
+    border-radius: 12px;
+    padding: 12px 37px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    font-weight: 900;   
+ 
+    font-family: 'Poppins', sans-serif; /* Adiciona a fonte Poppins */
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    color: #0c0c0c; /* Cor cinza claro ao passar o mouse */
+    background-color: #b4b4b4;
+  
+
+}
+
+.nav-button:focus {
+    outline: none;
+}
+.nav-button:active {
+transform: scale(0.95); /* Efeito de clique */
+}

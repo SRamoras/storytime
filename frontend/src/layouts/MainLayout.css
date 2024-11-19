@@ -1,0 +1,72 @@
+/* General Layout */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background-color: transparent; /* Transparent by default */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+  color: white; /* White text by default */
+  position: fixed;
+  width: 100%;
+  padding: 1rem;
+}
+
+.header.scrolled {
+  background-color: #fff; /* White when scrolled */
+  color: #333; /* Dark text color when scrolled */
+}
+
+.header a {
+  text-decoration: none;
+  color: inherit; /* Ensures links use the current text color */
+}
+
+.header a:hover {
+  text-decoration: underline;
+}
+
+/* Main Content */
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f4f4f4;
+  margin-top: 50px; /* Adjust based on header height */
+}
+
+/* Footer */
+.footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+/* Estilizando a barra de rolagem globalmente */
+::-webkit-scrollbar {
+  width: 8px; /* Define a largura da barra de rolagem */
+  height: 8px; /* Aplicável se você também quiser estilizar a barra horizontal */
+}
+
+/* Estilo do trilho da barra de rolagem */
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Cor de fundo do trilho */
+  border-radius: 4px; /* Bordas arredondadas para o trilho */
+}
+
+/* Estilo da alça da barra de rolagem */
+::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1; /* Cor inicial da alça */
+  border-radius: 4px; /* Bordas arredondadas para a alça */
+}
+
+/* Estilo da alça da barra de rolagem ao passar o mouse ou durante a rolagem */
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background-color: #a8a8a8; /* Cor da alça ao passar o mouse ou durante a rolagem ativa */
+}

@@ -1,0 +1,15 @@
+.text-black-link {
+    display: inline-block; /* Permite definir largura e altura */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+    color: black;
+    font-size: 25px;
+    font-weight: bold; /* Deixa o texto em negrito */
+    cursor: pointer;  
+    padding: 10px 37px 10px 0px ;
+
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+}
+
