@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './SecLayout.css';
 import NavButton from '../components/NavButton';
 import LogoText from '../components/LogoText';
 import BlackButton from '../components/BlackButton';
+
+
+
 function SecLayout({ children }) {
+
+  const [isScrolled, setIsScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+
+
+
   return (
     <div className="layout">
-      {/* Cabeçalho */}
-      <header className="header">
+       {/* Header */}
+       <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
         <nav className="header-container">
           {/* LogoText à esquerda */}
           <div className="logo">
@@ -20,7 +42,7 @@ function SecLayout({ children }) {
             <NavButton text="Topics" to="/" />
             <NavButton text="About Us" to="/explore" />
             <NavButton text="Profile" to="/about" />
-            <BlackButton text="Create Story" to="/StorysPage" />
+            <BlackButton text="Create Story" to="/create-story" />
           </div>
         </nav>
       </header>

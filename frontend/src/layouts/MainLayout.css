@@ -47,26 +47,3 @@
   text-align: center;
   padding: 1rem;
 }
-/* Estilizando a barra de rolagem globalmente */
-::-webkit-scrollbar {
-  width: 8px; /* Define a largura da barra de rolagem */
-  height: 8px; /* Aplicável se você também quiser estilizar a barra horizontal */
-}
-
-/* Estilo do trilho da barra de rolagem */
-::-webkit-scrollbar-track {
-  background: #f0f0f0; /* Cor de fundo do trilho */
-  border-radius: 4px; /* Bordas arredondadas para o trilho */
-}
-
-/* Estilo da alça da barra de rolagem */
-::-webkit-scrollbar-thumb {
-  background-color: #c1c1c1; /* Cor inicial da alça */
-  border-radius: 4px; /* Bordas arredondadas para a alça */
-}
-
-/* Estilo da alça da barra de rolagem ao passar o mouse ou durante a rolagem */
-::-webkit-scrollbar-thumb:hover,
-::-webkit-scrollbar-thumb:active {
-  background-color: #a8a8a8; /* Cor da alça ao passar o mouse ou durante a rolagem ativa */
-}
