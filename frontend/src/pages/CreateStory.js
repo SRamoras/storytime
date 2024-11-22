@@ -6,10 +6,11 @@ import api from '../services/api';
 import './CreateStory.css';
 import { AuthContext } from '../contexts/AuthContext';
 
-const CreateStory = ({ closeModal }) => { // Recebe a função closeModal como prop (se estiver usando um modal)
+const CreateStory = ({ closeModal }) => { 
     const { currentUser } = useContext(AuthContext);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [category, setCategory] = useState(''); // Estado para a categoria
     const [imageFile, setImageFile] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
     const [uploading, setUploading] = useState(false);
@@ -45,19 +46,17 @@ const CreateStory = ({ closeModal }) => { // Recebe a função closeModal como p
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!title || !content) {
-            alert('Por favor, preencha o título e o conteúdo.');
+        if (!title || !content || !category) {
+            alert('Por favor, preencha o título, conteúdo e selecione uma categoria.');
             return;
         }
 
-        if (!currentUser) {
-            alert('Você precisa estar logado para criar uma história.');
-            return;
-        }
+        console.log('Categoria selecionada:', category); // Log para verificar
 
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
+        formData.append('category', category); // Adiciona a categoria ao formData
         if (imageFile) {
             formData.append('img', imageFile);
         }
@@ -71,19 +70,28 @@ const CreateStory = ({ closeModal }) => { // Recebe a função closeModal como p
             });
 
             if (response.status === 201) {
+                const newStory = response.data; // Supondo que o backend retorna a nova história
                 alert('História criada com sucesso!');
-                // Redirecionar para o perfil do usuário
-                navigate(`/profile/${currentUser.username}`);
-                // Fechar o modal, se aplicável
+                navigate(`/story/${newStory.id}`); // Redirecionar para a página da nova história
                 if (closeModal) closeModal();
+            } else {
+                alert('Falha ao criar história.');
             }
         } catch (error) {
             console.error('Erro ao criar história:', error);
-            alert('Falha ao criar história.');
+            if (error.response && error.response.data && error.response.data.error) {
+                alert(`Falha ao criar história: ${error.response.data.error}`);
+            } else {
+                alert('Falha ao criar história.');
+            }
         } finally {
             setUploading(false);
         }
     };
+
+    if (!currentUser) {
+        return <p>Carregando...</p>; // Ou redirecionar para login
+    }
 
     return (
         <div className="create-story-container">
@@ -107,6 +115,22 @@ const CreateStory = ({ closeModal }) => { // Recebe a função closeModal como p
                         placeholder="Conteúdo da história"
                         required
                     />
+                </label>
+                <label>
+                    Categoria:
+                    <select 
+                        value={category} 
+                        onChange={(e) => setCategory(e.target.value)} 
+                        required
+                    >
+                        <option value="">Selecione uma categoria</option>
+                        <option value="Aventura">Aventura</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Terror">Terror</option>
+                        <option value="Fantasia">Fantasia</option>
+                        <option value="Mistério">Mistério</option>
+                        <option value="Ficção Científica">Ficção Científica</option>
+                    </select>
                 </label>
                 <label>
                     Imagem (Opcional):

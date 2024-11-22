@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import './LoginPage.css';
 import BlackButton from '../components/BlackButton'; // Certifique-se de que o caminho está correto
 
-const LoginPage = () => {
+const LoginPageMain = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate(); // Substituindo useHistory por useNavigate
@@ -15,9 +15,9 @@ const LoginPage = () => {
             const response = await api.post('/auth/login', { username, password });
             localStorage.setItem('token', response.data.token); // Salva o token no localStorage
             api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`; // Configura o header de autorização global do Axios
-
+    
             alert('Login bem-sucedido!');
-            navigate('/profile'); // Redireciona para a página de perfil
+            navigate(`/profile/${username}`); // Redireciona para a página de perfil com o username
         } catch (error) {
             alert('Erro ao fazer login. Verifique suas credenciais.');
         }
@@ -51,4 +51,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default LoginPageMain;

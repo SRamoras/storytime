@@ -3,33 +3,29 @@ import './SecLayout.css';
 import NavButton from '../components/NavButton';
 import LogoText from '../components/LogoText';
 import BlackButton from '../components/BlackButton';
+import { Outlet } from 'react-router-dom'; // Importar Outlet para rotas aninhadas
 
-
-
-function SecLayout({ children }) {
-
+function SecLayout() {
   const [isScrolled, setIsScrolled] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    // Add scroll event listener
+    // Adicionar evento de scroll
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup the event listener
+    // Limpar evento ao desmontar o componente
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-
-
-
   return (
     <div className="layout">
-       {/* Header */}
-       <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+      {/* Header */}
+      <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
         <nav className="header-container">
           {/* LogoText à esquerda */}
           <div className="logo">
@@ -38,7 +34,7 @@ function SecLayout({ children }) {
 
           {/* Botões à direita */}
           <div className="nav-buttons">
-          <NavButton text="Home" to="/" />
+            <NavButton text="Home" to="/" />
             <NavButton text="Topics" to="/" />
             <NavButton text="About Us" to="/explore" />
             <NavButton text="Profile" to="/about" />
@@ -49,7 +45,7 @@ function SecLayout({ children }) {
 
       {/* Conteúdo Principal */}
       <main className="content">
-        {children}
+        <Outlet /> {/* Renderiza as rotas aninhadas aqui */}
       </main>
 
       {/* Rodapé */}

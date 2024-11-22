@@ -1,4 +1,4 @@
-// auth.js
+// routes/auth.js
 
 const jwt = require('jsonwebtoken');
 const express = require('express');
@@ -7,11 +7,17 @@ const pool = require('../db');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 // Configuração do armazenamento para Multer
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, 'uploads/');  // Pasta onde o arquivo será salvo
+        const uploadDir = path.join(__dirname, '..', 'uploads');
+        // Certifique-se de que a pasta existe
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        cb(null, uploadDir);
     },
     filename: function(req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -32,29 +38,33 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-// Limite de tamanho do arquivo (por exemplo, 2MB)
+// Limite de tamanho do arquivo (5MB)
 const upload = multer({ 
     storage: storage,
-    limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
     fileFilter: fileFilter
 });
 
 // Middleware de autenticação
 const authenticateToken = require('../middleware/authMiddleware');
 
-// Rota de Registro
+// Rotas de Registro
 router.post('/register', async (req, res) => {
     const { username, firstname, lastname, email, password } = req.body;
+
+    console.log('Recebendo requisição de registro:', { username, email });
 
     try {
         // Gera o hash da senha
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log('Senha hash gerada.');
 
         // Insere o usuário no banco de dados
         const result = await pool.query(
             'INSERT INTO users (username, firstname, lastname, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email, created_at',
             [username, firstname, lastname, email, hashedPassword]
         );
+        console.log('Usuário inserido no banco de dados:', result.rows[0]);
 
         res.status(201).json({
             message: 'Usuário registrado com sucesso!',
@@ -62,6 +72,13 @@ router.post('/register', async (req, res) => {
         });
     } catch (error) {
         console.error('Erro ao registrar o usuário:', error);
+
+        // Verifica se o erro é devido a violação de constraints (e.g., username ou email duplicados)
+        if (error.code === '23505') { // Código de erro para violação de unique constraint no PostgreSQL
+            const field = error.constraint.includes('username') ? 'username' : 'email';
+            return res.status(400).json({ error: `O ${field} já está em uso.` });
+        }
+
         res.status(500).json({ error: 'Erro ao registrar o usuário.' });
     }
 });
@@ -127,74 +144,126 @@ router.get('/protected-route', authenticateToken, (req, res) => {
     res.json({ message: 'Acesso permitido!', user: req.user });
 });
 
-// Rota para listar histórias
-router.get('/stories', async (req, res) => {
-    const { user_id } = req.query; // Obter o user_id dos parâmetros de consulta
-    console.log(`Recebido user_id: ${user_id}`); // Log para verificar o recebimento do user_id
+// 1. Rota GET para obter histórias do usuário autenticado ou de outro usuário via query
+router.get('/stories', authenticateToken, async (req, res) => {
+    console.log('GET /stories foi chamado');
+    const { id: authUserId } = req.user;
+    const { user_id } = req.query;
+
+    const userId = user_id || authUserId;
+    console.log('Buscando histórias para user_id:', userId);
 
     try {
-        let result;
-
-        if (user_id) {
-            // Se um user_id for fornecido, filtrar as histórias por esse user_id
-            result = await pool.query(
-                `SELECT stories.*, users.username 
-                 FROM stories 
-                 JOIN users ON stories.user_id = users.id 
-                 WHERE users.id = $1 
-                 ORDER BY stories.created_at DESC`,
-                [user_id]
-            );
-            console.log(`Histórias retornadas para user_id ${user_id}:`, result.rows);
-        } else {
-            // Caso contrário, retornar todas as histórias
-            result = await pool.query(
-                `SELECT stories.*, users.username 
-                 FROM stories 
-                 JOIN users ON stories.user_id = users.id 
-                 ORDER BY stories.created_at DESC`
-            );
-            console.log(`Todas as histórias retornadas:`, result.rows);
-        }
-
+        const result = await pool.query(
+            `SELECT * FROM stories WHERE user_id = $1 ORDER BY created_at DESC`,
+            [userId]
+        );
+        console.log('Histórias carregadas:', result.rows);
         res.status(200).json(result.rows);
     } catch (error) {
-        console.error('Erro ao listar histórias:', error);
-        res.status(500).json({ error: 'Erro ao listar histórias.' });
+        console.error('Erro ao carregar histórias:', error);
+        res.status(500).json({ error: 'Erro interno ao carregar histórias.' });
     }
 });
 
-// **Nova Rota POST para criar uma história**
-router.post('/stories', authenticateToken, upload.single('img'), async (req, res) => {
-    const { title, content } = req.body;
-    const userId = req.user.id; // Obtido do middleware de autenticação
+// 2. Rota GET para obter histórias de um usuário específico pelo username
+router.get('/stories/:username', async (req, res) => {
+    const { username } = req.params;
 
-    // Validação básica
-    if (!title || !content) {
-        return res.status(400).json({ error: 'Título e conteúdo são obrigatórios.' });
+    try {
+        // Primeiro, obtenha o ID do usuário com base no username
+        const userResult = await pool.query(
+            'SELECT id FROM users WHERE username = $1',
+            [username]
+        );
+
+        if (userResult.rows.length === 0) {
+            return res.status(404).json({ error: 'Usuário não encontrado.' });
+        }
+
+        const userId = userResult.rows[0].id;
+
+        // Agora, obtenha as histórias desse usuário
+        const storiesResult = await pool.query(
+            `SELECT * FROM stories WHERE user_id = $1 ORDER BY created_at DESC`,
+            [userId]
+        );
+
+        console.log(`Histórias carregadas para o usuário ${username}:`, storiesResult.rows);
+        res.status(200).json(storiesResult.rows);
+    } catch (error) {
+        console.error('Erro ao carregar histórias:', error);
+        res.status(500).json({ error: 'Erro interno ao carregar histórias.' });
+    }
+});
+router.get('/stories/id/:id', authenticateToken, async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const storyResult = await pool.query(
+            'SELECT stories.*, users.username FROM stories JOIN users ON stories.user_id = users.id WHERE stories.id = $1',
+            [id]
+        );
+
+        if (storyResult.rows.length === 0) {
+            return res.status(404).json({ error: 'História não encontrada.' });
+        }
+
+        console.log(`História carregada com ID ${id}:`, storyResult.rows[0]);
+        res.status(200).json(storyResult.rows[0]);
+    } catch (error) {
+        console.error('Erro ao carregar história:', error);
+        res.status(500).json({ error: 'Erro interno ao carregar história.' });
+    }
+});
+router.get('/stories_all', authenticateToken, async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT stories.*, users.username 
+             FROM stories 
+             JOIN users ON stories.user_id = users.id 
+             ORDER BY stories.created_at DESC`
+        );
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Erro ao carregar todas as histórias:', error);
+        res.status(500).json({ error: 'Erro interno ao carregar histórias.' });
+    }
+});
+// 3. Rota POST para criar uma nova história
+// 3. Rota POST para criar uma nova história
+router.post('/stories', authenticateToken, upload.single('img'), async (req, res) => {
+    console.log('Recebendo requisição para criar história');
+    console.log('Body:', req.body);
+    console.log('Arquivo:', req.file);
+
+    const { title, content, category } = req.body;
+    const userId = req.user.id; // ID do usuário autenticado
+
+    // Validação dos campos obrigatórios
+    if (!title || !content || !category) {
+        return res.status(400).json({ error: 'Título, conteúdo e categoria são obrigatórios.' });
     }
 
+    // Obter o caminho da imagem, se houver
     let imageUrl = null;
     if (req.file) {
-        // Construir a URL completa para acessar a imagem
         imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+        console.log('Imagem recebida e salva em:', imageUrl);
     }
 
     try {
-        // Inserir a nova história no banco de dados
         const result = await pool.query(
-            `INSERT INTO stories (user_id, title, content, img) 
-             VALUES ($1, $2, $3, $4) RETURNING *`,
-            [userId, title, content, imageUrl]
+            `INSERT INTO stories (title, content, category, user_id, img, created_at)
+             VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *`,
+            [title, content, category, userId, imageUrl]
         );
 
-        res.status(201).json({
-            message: 'História criada com sucesso!',
-            story: result.rows[0],
-        });
+        console.log('Nova história criada:', result.rows[0]);
+        res.status(201).json(result.rows[0]); // Retorna a história criada
     } catch (error) {
         console.error('Erro ao criar história:', error);
-        res.status(500).json({ error: 'Erro ao criar história.' });
+        res.status(500).json({ error: 'Erro interno ao criar história.' });
     }
 });
 
@@ -269,6 +338,11 @@ router.post('/upload-profile-image', authenticateToken, upload.single('profileIm
         console.error('Erro no banco de dados:', error);
         res.status(500).json({ error: 'Falha ao atualizar a imagem de perfil no banco de dados.' });
     }
+});
+
+// Rota de teste existente
+router.get('/test', (req, res) => {
+    res.json({ message: 'Rota de teste funciona!' });
 });
 
 // Exporta o router **APÓS** todas as rotas estarem definidas

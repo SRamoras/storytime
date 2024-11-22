@@ -1,6 +1,6 @@
 // Profile.js
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; // Importar useParams para obter parâmetros da URL
+import { useParams, Link } from 'react-router-dom'; // Importar useParams para obter parâmetros da URL
 import api from '../services/api';
 import './Profile.css';
 import books from '../Assets/books.jpg';
@@ -40,9 +40,9 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                 <p className='subtitle-container-info'>Bio</p>
                 <p>{bio || "No bio yet"}</p>
                 {/* Mostrar botão de edição se for o dono do perfil */}
-                {isOwner && (
+                {/* {isOwner && (
                     <button onClick={handleEdit} className="edit-profile-button">Editar Perfil</button>
-                )}
+                )} */}
             </div>
         </div>
     </div>
@@ -129,15 +129,36 @@ const UserStories = React.memo(({ stories }) => (
         {stories.length === 0 ? (
             <p>Este usuário ainda não publicou histórias.</p>
         ) : (
-            <ul>
-                {stories.map(story => (
-                    <li key={story.id}>
-                        <h3>{story.title}</h3>
-                        <p>{story.content}</p>
-                        <small>Por: {story.username}</small>
-                    </li>
-                ))}
-            </ul>
+
+
+
+<div className="stories-grid">
+    {stories.map(story => (
+        <Link to={`/story/${story.id}`} key={story.id} className='story-container-link'>
+            <div className='story-container'>
+                <div className='story-image'>
+                    <img 
+                        src={story.img} 
+                        alt={story.title || "Imagem da história"} 
+                        onError={(e) => {
+                            e.target.src = 'https://via.placeholder.com/150'; // Fallback
+                            console.error(`Erro ao carregar a imagem: ${story.img}`);
+                        }}
+                    />
+                </div>    
+                <div className='story-content'>
+                    <h3>{story.title}</h3>
+                    <p>{story.content}</p>
+                    <p><strong>Categoria:</strong> {story.category}</p>
+                    <small>Por: {story.username}</small>
+                </div>
+            </div>  
+        </Link>
+    ))}
+</div>
+
+
+
         )}
     </div>
 ));
@@ -195,20 +216,26 @@ const Profile = () => {
         }
     };
 
-    // Buscar as histórias do usuário do perfil
     const fetchUserStories = async () => {
-        if (!profileUser) return;  // Certifique-se de que profileUser está definido
         try {
-            console.log(`Buscando histórias para user_id: ${profileUser.id}`);
-            // Faz uma solicitação para obter as histórias do usuário atual
-            const response = await api.get(`/auth/stories?user_id=${profileUser.id}`);
-            console.log('Histórias recebidas:', response.data);
+            let response;
+            if (username) {
+                // Chamar a rota que recebe o username como parâmetro de URL
+                response = await api.get(`/auth/stories/${username}`);
+            } else {
+                // Chamar a rota que recebe o user_id como query param
+                response = await api.get('/auth/stories', { params: { user_id: currentUser.id } });
+            }
             setStories(response.data);
         } catch (error) {
             console.error('Erro ao carregar histórias:', error);
-            alert('Erro ao carregar histórias.');
+            alert('Falha ao carregar histórias.');
+        } finally {
+            setLoading(false);
         }
     };
+    
+    
 
     // useEffect para buscar perfil e usuário atual quando o username mudar
     useEffect(() => {

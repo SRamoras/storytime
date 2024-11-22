@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './SecLayout.css';
-import NavButton from '../components/NavButton';
 import LogoText from '../components/LogoText';
-import BlackButton from '../components/BlackButton';
+import { Outlet } from 'react-router-dom'; // Importar Outlet
 
-function ThirdLayout({ children }) {
+function ThirdLayout() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -12,10 +11,10 @@ function ThirdLayout({ children }) {
       setIsScrolled(window.scrollY > 50);
     };
 
-    // Add scroll event listener
+    // Adicionar evento de scroll
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup the event listener
+    // Limpar evento ao desmontar o componente
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -31,17 +30,16 @@ function ThirdLayout({ children }) {
             <LogoText text="StoryHub" to="/" />
           </div>
 
-          {/* Navigation Buttons */}
-         
+          {/* Botões de navegação (se necessários, podem ser adicionados aqui) */}
         </nav>
       </header>
 
-      {/* Main Content */}
+      {/* Conteúdo Principal */}
       <main className="content">
-        {children}
+        <Outlet /> {/* Renderiza as rotas aninhadas */}
       </main>
 
-      {/* Footer */}
+      {/* Rodapé */}
       <footer className="footer">
         <p>&copy; 2024 StoryTime. Todos os direitos reservados.</p>
       </footer>

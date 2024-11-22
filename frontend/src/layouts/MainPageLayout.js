@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './SecLayout.css';
-import NavButton from '../components/NavButton';
 import LogoText from '../components/LogoText';
 import BlackButton from '../components/BlackButton';
+import { Outlet } from 'react-router-dom'; // Importar Outlet
 
-function MainLayout({ children }) {
+function MainPageLayout() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -12,10 +12,8 @@ function MainLayout({ children }) {
       setIsScrolled(window.scrollY > 50);
     };
 
-    // Add scroll event listener
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup the event listener
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -26,21 +24,18 @@ function MainLayout({ children }) {
       {/* Header */}
       <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
         <nav className="header-container">
-          {/* Logo */}
           <div className="logo">
             <LogoText text="StoryHub" to="/" />
           </div>
-
-          {/* Navigation Buttons */}
           <div className="nav-buttons">
             <BlackButton text="Start now" to="/login" />
           </div>
         </nav>
       </header>
 
-      {/* Main Content */}
+      {/* Conteúdo Principal */}
       <main className="content">
-        {children}
+        <Outlet /> {/* Renderiza os componentes filhos */}
       </main>
 
       {/* Footer */}
@@ -51,4 +46,4 @@ function MainLayout({ children }) {
   );
 }
 
-export default MainLayout;
+export default MainPageLayout;
