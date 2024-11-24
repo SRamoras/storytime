@@ -81,6 +81,122 @@ router.post('/register', async (req, res) => {
 
         res.status(500).json({ error: 'Erro ao registrar o usuário.' });
     }
+});// Rota POST para salvar uma história
+
+// Rota POST para salvar uma história
+router.post('/save_story', authenticateToken, async (req, res) => {
+    console.log('Recebendo requisição para salvar história.');
+    console.log('req.body:', req.body);
+    const { storyId } = req.body;
+    const userId = req.user.id;
+    const dataSaved = new Date();
+
+    console.log('Dados recebidos:', { userId, storyId });
+
+    try {
+        // Verificar se a história já foi salva pelo usuário
+        const checkResult = await pool.query(
+            'SELECT * FROM storiessaved WHERE userid = $1 AND storyid = $2',
+            [userId, storyId]
+        );
+
+        console.log('Resultado da verificação:', checkResult.rows);
+
+        if (checkResult.rows.length > 0) {
+            return res.status(400).json({ error: 'História já salva.' });
+        }
+
+        // Inserir na tabela StoriesSaved
+        const insertResult = await pool.query(
+            'INSERT INTO storiessaved (userid, storyid, datasaved) VALUES ($1, $2, $3)',
+            [userId, storyId, dataSaved]
+        );
+
+        console.log('História salva com sucesso:', insertResult);
+
+        res.status(201).json({ message: 'História salva com sucesso!' });
+    } catch (error) {
+        console.error('Erro ao salvar história:', error);
+        res.status(500).json({ error: 'Erro interno ao salvar história.' });
+    }
+});
+
+
+// Rota GET para obter as histórias salvas por um usuário
+// Rota GET para obter as histórias salvas por um usuário
+// Rota GET para obter as histórias salvas por um usuário
+router.get('/saved_stories/:userId', authenticateToken, async (req, res) => {
+    const { userId } = req.params;
+    console.log(`Rota /saved_stories/${userId} chamada`);
+
+    try {
+        const result = await pool.query(
+            `SELECT stories.*, users.username 
+             FROM storiessaved 
+             JOIN stories ON storiessaved.storyid = stories.id 
+             JOIN users ON stories.user_id = users.id 
+             WHERE storiessaved.userid = $1`,
+            [userId]
+        );
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Erro ao carregar histórias salvas:', error);
+        res.status(500).json({ error: 'Erro interno ao carregar histórias salvas.' });
+    }
+});
+
+router.delete('/save_story/:storyId', authenticateToken, async (req, res) => {
+    const { storyId } = req.params;
+    const userId = req.user.id;
+
+    console.log('Recebendo requisição para remover história salva.');
+    console.log('Dados recebidos:', { userId, storyId });
+
+    try {
+        // Verificar se a história está salva pelo usuário
+        const checkResult = await pool.query(
+            'SELECT * FROM storiessaved WHERE userid = $1 AND storyid = $2',
+            [userId, storyId]
+        );
+
+        console.log('Resultado da verificação:', checkResult.rows);
+
+        if (checkResult.rows.length === 0) {
+            return res.status(400).json({ error: 'História não está salva.' });
+        }
+
+        // Remover a história salva
+        const deleteResult = await pool.query(
+            'DELETE FROM storiessaved WHERE userid = $1 AND storyid = $2',
+            [userId, storyId]
+        );
+
+        console.log('História removida com sucesso:', deleteResult);
+
+        res.status(200).json({ message: 'História removida com sucesso!' });
+    } catch (error) {
+        console.error('Erro ao remover história salva:', error);
+        res.status(500).json({ error: 'Erro interno ao remover história salva.' });
+    }
+});
+// Rota para retornar informações do usuário autenticado
+router.get('/me', authenticateToken, async (req, res) => {
+    try {
+        // Retorna apenas o que for necessário
+        const { id, username, email, firstname, lastname, bio, profile_image } = req.user;
+        res.status(200).json({
+            id,
+            username,
+            email,
+            firstname,
+            lastname,
+            bio,
+            profile_image,
+        });
+    } catch (error) {
+        console.error('Erro ao carregar dados do usuário:', error);
+        res.status(500).json({ error: 'Erro interno ao carregar dados do usuário.' });
+    }
 });
 
 // Rota para obter informações do usuário por username

@@ -59,7 +59,7 @@
 /* Estilos para o Componente UserInfo */
 .user-info {
     align-items: center;
-  background-color: #bbbbbb;
+  background-color: #ccc;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -98,10 +98,12 @@
 
 }
 .border-line{
-border: #000 solid 1px;
+border: #ccc solid 0.1px;
+border-radius: 10px;
+margin: 0 auto;
 }
 .menu-item {
-    margin: 0 10px;
+    margin-right: 20px;
     padding: 10px 20px;
     cursor: pointer;
     background-color: #fff;
@@ -127,9 +129,9 @@ border: #000 solid 1px;
 .profile {
     width: 100%;
     background-color: #fff;
-    padding: 20px;
+    padding-top: 50px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
 }
 
 .menu-container{
@@ -139,14 +141,9 @@ border: #000 solid 1px;
 }
 
 
-.profile-content h3 {
-    margin-bottom: 0;
-    margin-top: 15px;
-    color: #000;
-}
+
 
 .profile-content p {
-    margin: 10px 0;
     color: #000;
 
 }
@@ -274,20 +271,23 @@ border: #000 solid 1px;
 
 
 
-
+.story-content2 {
+ margin: 0;
+}
 
 
 
 
 /* Container Principal do Story */
 .story-container {
-    display: flex;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
     padding: 15px;
-    max-width: 600px;
-    transition: box-shadow 0.3s;
+    transition: box-shadow 0.5s, transform 0.5s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 /* Efeito de Hover no Container */
@@ -349,13 +349,13 @@ border: #000 solid 1px;
         height: 80px;
     }
 }
-.stories-grid {
+.stories-grid-profile {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+
+
+
 }
 
 

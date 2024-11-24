@@ -3,10 +3,14 @@ import './SecLayout.css';
 import NavButton from '../components/NavButton';
 import LogoText from '../components/LogoText';
 import BlackButton from '../components/BlackButton';
-import { Outlet } from 'react-router-dom'; // Importar Outlet para rotas aninhadas
+import { Outlet, useNavigate, Link } from 'react-router-dom';
+import api from '../services/api';
 
 function SecLayout() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [username, setUsername] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate(); // Para redirecionar após logout
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +26,40 @@ function SecLayout() {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setIsAuthenticated(false);
+        return;
+      }
+
+      try {
+        const response = await api.get('/auth/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log('Dados do usuário autenticado:', response.data);
+        setUsername(response.data.username);
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Erro ao autenticar usuário:', error);
+        setIsAuthenticated(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // Função para lidar com o logout
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setUsername('');
+    navigate('/'); // Redireciona para a página de login
+  };
+
   return (
     <div className="layout">
       {/* Header */}
@@ -34,10 +72,28 @@ function SecLayout() {
 
           {/* Botões à direita */}
           <div className="nav-buttons">
-            <NavButton text="Home" to="/" />
+            <NavButton text="Home" to="/StorysPage" />
             <NavButton text="Topics" to="/" />
             <NavButton text="About Us" to="/explore" />
-            <NavButton text="Profile" to="/about" />
+
+            {/* Exibe o menu de perfil com dropdown */}
+            {isAuthenticated && username && (
+              <div className="profile-menu">
+                <span className="nav-button">{username}</span>
+                <div className="dropdown-content">
+                  <Link to={`/Profile/${username}`} className="dropdown-item">
+                    Profile
+                  </Link>
+                  <Link to="/settings" className="dropdown-item">
+                    Settings
+                  </Link>
+                  <button className="dropdown-item" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </div>
+              </div>
+            )}
+
             <BlackButton text="Create Story" to="/create-story" />
           </div>
         </nav>

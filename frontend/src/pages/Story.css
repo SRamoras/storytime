@@ -1,47 +1,126 @@
 /* Story.css */
 
 .story-page {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+    border-radius: 16px;
+
+    font-family: 'Roboto', sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.story-page:hover {
+    transform: translateY(-5px);
+
+}
+.intro-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.main-container-story {
+
+    margin-top: 130px;
+}
 .story-page h1 {
-    font-size: 2em;
+    font-size: 2.5em;
     color: #333333;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     text-align: center;
+    font-weight: 700;
+    margin-top: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
 }
 
 .story-image-container {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    width: 40%;
 }
 
 .story-image-container img {
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: 12px;
+    border: 4px solid #eeeeee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.story-image-container img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 .story-content {
-    font-size: 1.1em;
-    line-height: 1.6;
+    font-size: 1.2em;
+    line-height: 1.8;
     color: #555555;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    text-align: justify;
+    text-indent: 2em;
 }
 
 .story-page p {
     margin: 10px 0;
+    color: #444444;
+}
+
+.story-page strong {
+    color: #3498db;
+    font-weight: 600;
 }
 
 .story-page small {
     display: block;
-    margin-top: 10px;
-    color: #888888;
+    margin-top: 20px;
+    color: #999999;
     font-size: 0.9em;
-    text-align: right;
+    text-align: start;
+    font-style: italic;
+}
+
+/* Adicione animação de entrada */
+.story-page {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+    .story-page {
+        padding: 20px;
+    }
+
+    .story-page h1 {
+        font-size: 2em;
+    }
+
+    .story-content {
+        font-size: 1em;
+        text-indent: 1em;
+    }
+
+    .story-page small {
+        font-size: 0.85em;
+    }
 }

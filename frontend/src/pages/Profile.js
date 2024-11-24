@@ -1,6 +1,7 @@
 // Profile.js
+
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom'; // Importar useParams para obter parâmetros da URL
+import { useParams, Link } from 'react-router-dom';
 import api from '../services/api';
 import './Profile.css';
 import books from '../Assets/books.jpg';
@@ -26,19 +27,19 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                 {/* <p><strong>Email:</strong> {user.email}</p> */}
                 <div className='div-line'></div>
                 <div className='container-info-medium'>
-                    <p>Storys:</p>
-                    <p>0</p>
+                    <p>Histórias:</p>
+                    <p>{user.storyCount || 0}</p>
                 </div>
                 <div className='container-info-medium'>
-                    <p>Favourited:</p>
-                    <p>0</p>
+                    <p>Favoritas:</p>
+                    <p>{user.favoriteCount || 0}</p>
                 </div>
                 <div className='container-info-medium'>
-                    <p>Stories Read</p>
-                    <p>0</p>
+                    <p>Histórias Lidas:</p>
+                    <p>{user.readCount || 0}</p>
                 </div>
                 <p className='subtitle-container-info'>Bio</p>
-                <p>{bio || "No bio yet"}</p>
+                <p>{bio || "Sem bio ainda"}</p>
                 {/* Mostrar botão de edição se for o dono do perfil */}
                 {/* {isOwner && (
                     <button onClick={handleEdit} className="edit-profile-button">Editar Perfil</button>
@@ -115,85 +116,116 @@ const UserSettings = React.memo(({
     </div>
 ));
 
-const UserPhotos = React.memo(() => (
+const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStoryIds }) => (
     <div className="profile-content">
-        <h2>Fotos</h2>
-        <p>Aqui vão algumas fotos...</p>
-        {/* Adicione aqui a lógica para exibir as fotos do usuário */}
+        <h2>Histórias Salvas</h2>
+        {savedStories.length === 0 ? (
+            <p>Nenhuma história salva.</p>
+        ) : (
+            <div className="stories-grid-profile">
+                {savedStories.map(story => {
+                    const isSaved = savedStoryIds.includes(story.id);
+                    return (
+                        <div key={story.id} className='story-container2'>
+                            <Link to={`/story/${story.id}`} className='story-container-link'>
+                                <div className='intro-container'>
+                                    <div className='story-image'>
+                                        <img
+                                            src={story.img || 'https://via.placeholder.com/150'}
+                                            alt={story.title || "Imagem da história"}
+                                            onError={(e) => {
+                                                e.target.src = 'https://via.placeholder.com/150'; // Fallback
+                                                console.error(`Erro ao carregar a imagem: ${story.img}`);
+                                            }}
+                                        />
+                                    </div>
+                                    <div className='text-container-info'>
+                                        <h3>{story.title}</h3>
+                                        <p>{story.category}</p>
+                                    </div>
+                                </div>
+                                <div className='story-content2'>
+                                    <p>{story.content.length > 100 ? `${story.content.substring(0, 100)}...` : story.content}</p>
+                                    <small>Por: {story.username}</small>
+                                </div>
+                            </Link>
+                            <button
+                                className="save-button"
+                                onClick={() => handleSaveStory(story.id)}
+                            >
+                                {isSaved ? 'Remover História' : 'Salvar História'}
+                            </button>
+                        </div>
+                    )
+                })}
+            </div>
+        )}
     </div>
 ));
 
-const UserStories = React.memo(({ stories }) => (
+const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds }) => (
     <div className="profile-content">
-        <h2>Histórias</h2>
         {stories.length === 0 ? (
             <p>Este usuário ainda não publicou histórias.</p>
         ) : (
-
-
-
-<div className="stories-grid">
-    {stories.map(story => (
-        <Link to={`/story/${story.id}`} key={story.id} className='story-container-link'>
-            <div className='story-container'>
-                <div className='story-image'>
-                    <img 
-                        src={story.img} 
-                        alt={story.title || "Imagem da história"} 
-                        onError={(e) => {
-                            e.target.src = 'https://via.placeholder.com/150'; // Fallback
-                            console.error(`Erro ao carregar a imagem: ${story.img}`);
-                        }}
-                    />
-                </div>    
-                <div className='story-content'>
-                    <h3>{story.title}</h3>
-                    <p>{story.content}</p>
-                    <p><strong>Categoria:</strong> {story.category}</p>
-                    <small>Por: {story.username}</small>
-                </div>
-            </div>  
-        </Link>
-    ))}
-</div>
-
-
-
+            <div className="stories-grid-profile">
+                {stories.map(story => {
+                    const isSaved = savedStoryIds.includes(story.id);
+                    return (
+                        <div key={story.id} className='story-container2'>
+                            <Link to={`/story/${story.id}`} className='story-container-link'>
+                                <div className='intro-container'>
+                                    <div className='story-image'>
+                                        <img
+                                            src={story.img || 'https://via.placeholder.com/150'}
+                                            alt={story.title || "Imagem da história"}
+                                            onError={(e) => {
+                                                e.target.src = 'https://via.placeholder.com/150'; // Fallback
+                                                console.error(`Erro ao carregar a imagem: ${story.img}`);
+                                            }}
+                                        />
+                                    </div>
+                                    <div className='text-container-info'>
+                                        <h3>{story.title}</h3>
+                                        <p>{story.category}</p>
+                                    </div>
+                                </div>
+                                <div className='story-content2'>
+                                    <p>{story.content.length > 100 ? `${story.content.substring(0, 100)}...` : story.content}</p>
+                                    <small>Por: {story.username}</small>
+                                </div>
+                            </Link>
+                            <button
+                                className="save-button"
+                                onClick={() => handleSaveStory(story.id)}
+                            >
+                                {isSaved ? 'Remover História' : 'Salvar História'}
+                            </button>
+                        </div>
+                    )
+                })}
+            </div>
         )}
     </div>
 ));
 
 const Profile = () => {
-    const { username } = useParams(); // Obter o parâmetro 'username' da URL
-    const [profileUser, setProfileUser] = useState(null); // Usuário do perfil que está sendo visualizado
-    const [currentUser, setCurrentUser] = useState(null); // Usuário autenticado
+    const { username } = useParams();
+    const [profileUser, setProfileUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
     const [stories, setStories] = useState([]);
-    const [content, setContent] = useState('stories'); // Estado para controlar o conteúdo exibido
+    const [savedStories, setSavedStories] = useState([]);
+    const [savedStoryIds, setSavedStoryIds] = useState([]);
+    const [content, setContent] = useState('stories');
     const [bio, setBio] = useState("");
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [profileImage, setProfileImage] = useState("");
-    const [imageFile, setImageFile] = useState(null); // Estado para armazenar o arquivo selecionado
+    const [imageFile, setImageFile] = useState(null);
 
-    const [loading, setLoading] = useState(true); // Estado de carregamento
+    const [loading, setLoading] = useState(true);
 
-    const defaultAvatar = "https://www.gravatar.com/avatar/?d=mp&f=y"; // Link para avatar padrão
-
-    // Função para buscar os dados do perfil baseado no username da URL
-    const fetchProfileUser = async () => {
-        try {
-            const response = await api.get(`/auth/users/${username}`); // Endpoint para buscar usuário por username
-            console.log('Dados do perfil recebidos:', response.data.user); // Log para depuração
-            setProfileUser(response.data.user);
-            setBio(response.data.user.bio || "");
-            setFirstname(response.data.user.firstname || "");
-            setLastname(response.data.user.lastname || "");
-            setProfileImage(response.data.user.profile_image || defaultAvatar);
-        } catch (error) {
-            console.error('Erro ao buscar dados do perfil:', error);
-            alert('Erro ao buscar dados do perfil.');
-        }
-    };
+    const defaultAvatar = "https://www.gravatar.com/avatar/?d=mp&f=y";
 
     // Função para buscar o usuário autenticado
     const fetchCurrentUser = async () => {
@@ -206,9 +238,9 @@ const Profile = () => {
 
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         try {
-            const response = await api.get('/auth/protected-route'); // Endpoint para obter usuário autenticado
-            console.log('Dados do usuário autenticado:', response.data.user); // Log para depuração
-            setCurrentUser(response.data.user);
+            const response = await api.get('/auth/me');
+            console.log('Dados do usuário autenticado:', response.data);
+            setCurrentUser(response.data);
         } catch (error) {
             console.error('Erro ao buscar dados do usuário autenticado:', error);
         } finally {
@@ -216,14 +248,28 @@ const Profile = () => {
         }
     };
 
+    // Função para buscar os dados do perfil baseado no username da URL
+    const fetchProfileUser = async () => {
+        try {
+            const response = await api.get(`/auth/users/${username}`);
+            console.log('Dados do perfil recebidos:', response.data.user);
+            setProfileUser(response.data.user);
+            setBio(response.data.user.bio || "");
+            setFirstname(response.data.user.firstname || "");
+            setLastname(response.data.user.lastname || "");
+            setProfileImage(response.data.user.profile_image || defaultAvatar);
+        } catch (error) {
+            console.error('Erro ao buscar dados do perfil:', error);
+            alert('Erro ao buscar dados do perfil.');
+        }
+    };
+
     const fetchUserStories = async () => {
         try {
             let response;
             if (username) {
-                // Chamar a rota que recebe o username como parâmetro de URL
                 response = await api.get(`/auth/stories/${username}`);
-            } else {
-                // Chamar a rota que recebe o user_id como query param
+            } else if (currentUser) {
                 response = await api.get('/auth/stories', { params: { user_id: currentUser.id } });
             }
             setStories(response.data);
@@ -234,22 +280,65 @@ const Profile = () => {
             setLoading(false);
         }
     };
-    
-    
+
+    // Função para buscar as histórias salvas pelo usuário do perfil
+    const fetchProfileUserSavedStories = async () => {
+        if (!profileUser) return;
+
+        try {
+            const response = await api.get(`/auth/saved_stories/${profileUser.id}`);
+            setSavedStories(response.data);
+        } catch (error) {
+            console.error('Erro ao carregar histórias salvas do usuário do perfil:', error);
+            alert('Falha ao carregar histórias salvas do usuário do perfil.');
+        }
+    };
+
+    // Função para buscar os IDs das histórias salvas pelo usuário autenticado
+    const fetchCurrentUserSavedStoryIds = async () => {
+        if (!currentUser) {
+            console.log('Usuário não autenticado.');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.log('Nenhum token encontrado');
+                return;
+            }
+
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+            const response = await api.get(`/auth/saved_stories/${currentUser.id}`);
+            const ids = response.data.map(story => story.id);
+            setSavedStoryIds(ids);
+        } catch (error) {
+            console.error('Erro ao carregar IDs de histórias salvas do usuário atual:', error);
+            alert('Falha ao carregar IDs de histórias salvas do usuário atual.');
+        }
+    };
 
     // useEffect para buscar perfil e usuário atual quando o username mudar
     useEffect(() => {
-        setLoading(true);
-        fetchProfileUser();
-        fetchCurrentUser();
-    }, [username]); // Refazer a chamada quando o username na URL mudar
+        const initialize = async () => {
+            setLoading(true);
+            await fetchCurrentUser();
+            await fetchProfileUser();
+        };
+        initialize();
+    }, [username]);
 
-    // useEffect para buscar histórias quando profileUser for definido
+    // useEffect para buscar histórias quando profileUser e currentUser forem definidos
     useEffect(() => {
-        fetchUserStories();
-    }, [profileUser]); // Refazer a chamada quando profileUser mudar
+        if (profileUser && currentUser) {
+            fetchUserStories();
+            fetchProfileUserSavedStories();
+            fetchCurrentUserSavedStoryIds();
+        }
+    }, [profileUser, currentUser]);
 
-    const [isOwner, setIsOwner] = useState(false); // Estado para verificar se é o dono do perfil
+    const [isOwner, setIsOwner] = useState(false);
 
     // useEffect para determinar se o usuário atual é o dono do perfil
     useEffect(() => {
@@ -263,6 +352,50 @@ const Profile = () => {
             setIsOwner(false);
         }
     }, [currentUser, profileUser]);
+
+    // Função para salvar ou remover a história
+    const handleSaveStory = async (storyId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Você precisa estar logado para salvar histórias.');
+            return;
+        }
+
+        if (!currentUser) {
+            alert('Erro ao obter o ID do usuário.');
+            return;
+        }
+
+        try {
+            const isSaved = savedStoryIds.includes(storyId);
+
+            if (isSaved) {
+                // Remover a história salva
+                await api.delete(`/auth/save_story/${storyId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                alert('História removida com sucesso!');
+                // Atualizar o estado local
+                setSavedStoryIds(savedStoryIds.filter(id => id !== storyId));
+            } else {
+                // Salvar a história
+                await api.post('/auth/save_story', { storyId }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                alert('História salva com sucesso!');
+                // Atualizar o estado local
+                setSavedStoryIds([...savedStoryIds, storyId]);
+            }
+        } catch (error) {
+            console.error('Erro ao salvar/remover a história:', error);
+            alert('Erro ao salvar/remover a história.');
+        }
+    };
 
     const handleUpdateProfile = async () => {
         const token = localStorage.getItem('token');
@@ -358,6 +491,11 @@ const Profile = () => {
         }
     };
 
+    // Função para lidar com o clique no botão de editar perfil
+    const handleEditProfile = () => {
+        setContent('settings');
+    };
+
     // Função para renderizar o conteúdo com base no menu selecionado
     const renderContent = () => {
         if (!profileUser) {
@@ -381,18 +519,21 @@ const Profile = () => {
                             imageFile={imageFile} 
                             defaultAvatar={defaultAvatar} 
                         />;
-            case 'photos':
-                return <UserPhotos />;
+            case 'saved_stories':
+                return <UserSavedStories 
+                            savedStories={savedStories} 
+                            handleSaveStory={handleSaveStory} 
+                            savedStoryIds={savedStoryIds} 
+                        />;
             case 'stories':
-                return <UserStories stories={stories} />;
+                return <UserStories 
+                            stories={stories} 
+                            handleSaveStory={handleSaveStory} 
+                            savedStoryIds={savedStoryIds} 
+                        />;
             default:
                 return null;
         }
-    };
-
-    // Função para lidar com o clique no botão de editar perfil
-    const handleEditProfile = () => {
-        setContent('settings');
     };
 
     if (loading) {
@@ -423,12 +564,17 @@ const Profile = () => {
                 {/* Menu Atualizado */}
                 <div className='menu-container'>
                     <div className="menu">
-                        {/* Removida a opção "Informações" e adicionada "Histórias" */}
                         <div 
                             className={`menu-item ${content === 'stories' ? 'active' : ''}`} 
                             onClick={() => setContent('stories')}
                         >
                             Histórias
+                        </div>
+                        <div 
+                            className={`menu-item ${content === 'saved_stories' ? 'active' : ''}`} 
+                            onClick={() => setContent('saved_stories')}
+                        >
+                            Histórias Salvas
                         </div>
                         {isOwner && (
                             <div 
@@ -438,15 +584,8 @@ const Profile = () => {
                                 Configurações
                             </div>
                         )}
-                        <div 
-                            className={`menu-item ${content === 'photos' ? 'active' : ''}`} 
-                            onClick={() => setContent('photos')}
-                        >
-                            Fotos
-                        </div>
-                     
                     </div>
-   <div className='border-line'></div>
+                    <div className='border-line'></div>
                     {/* Conteúdo Condicional */}
                     <div className="profile">
                         {renderContent()}

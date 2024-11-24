@@ -41,15 +41,24 @@ const Story = () => {
 
     return (
         <div className="story-page">
-            <h1>{story.title}</h1>
+            <div className='main-container-story'>
+            <div className='intro-container'>
+                <div> <h1>{story.title}</h1>    
+              <p><strong>Category:</strong> {story.category}</p>
+                 <small>Made by: {story.username}</small>    
+              </div>   
+           
+          
+           
             {story.img && (
                 <div className="story-image-container">
                     <img src={story.img} alt={story.title} />
                 </div>
             )}
+            </div>
             <p className="story-content">{story.content}</p>
-            <p><strong>Categoria:</strong> {story.category}</p>
-            <small>Por: {story.username}</small>
+       
+       </div>
         </div>
     );
 };

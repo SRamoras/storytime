@@ -48,7 +48,7 @@ z-index: 1000;
 .content {
   flex: 1; /* Faz com que o conteúdo ocupe o espaço restante */
   display: flex;
-  align-items: center;
+
   justify-content: center;
 
   background-color: #fff;
@@ -67,4 +67,53 @@ z-index: 1000;
   color: white;
   text-align: center;
   padding: 1rem;
+}
+/* Estilos para o menu de perfil */
+.profile-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-menu .nav-button {
+  cursor: pointer;
+  padding: 10px;
+  color: #000;
+}
+
+.profile-menu .dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0; /* Alinha o menu à direita */
+  background-color: #ffffff;
+  min-width: 160px;
+  z-index: 1;
+  border: 1px solid #ddd;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+}
+
+.profile-menu:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content .dropdown-item {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  background-color: #fff;
+}
+
+.dropdown-content .dropdown-item:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Ajuste para os links dentro do dropdown */
+.dropdown-content a.dropdown-item {
+  padding: 12px 16px;
+  color: #333;
+}
+
+.dropdown-content a.dropdown-item:hover {
+  background-color: #f1f1f1;
 }

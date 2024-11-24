@@ -33,7 +33,7 @@ const HomePage = () => {
             <div className="text-section">
                 <h1>Explore <br />diverse stories</h1>
                 <p>Discover captivating stories and connect with others.</p>
-                <BlackButton text="Get started" to="/StorysPage" />
+                <BlackButton text="Get started" to="/login" />
             </div>
             <div className="image-section">
                 <div className="image-wrapper">
