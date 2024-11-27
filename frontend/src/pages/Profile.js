@@ -5,7 +5,7 @@ import { useParams, Link } from 'react-router-dom';
 import api from '../services/api';
 import './Profile.css';
 import books from '../Assets/books.jpg';
-
+import StoryCard from '../components/StoryCard';
 // Subcomponentes definidos fora do componente principal
 
 const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, defaultAvatar, isOwner, handleEdit }) => (
@@ -118,50 +118,27 @@ const UserSettings = React.memo(({
 
 const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStoryIds }) => (
     <div className="profile-content">
-        <h2>Histórias Salvas</h2>
-        {savedStories.length === 0 ? (
-            <p>Nenhuma história salva.</p>
-        ) : (
-            <div className="stories-grid-profile">
-                {savedStories.map(story => {
-                    const isSaved = savedStoryIds.includes(story.id);
-                    return (
-                        <div key={story.id} className='story-container2'>
-                            <Link to={`/story/${story.id}`} className='story-container-link'>
-                                <div className='intro-container'>
-                                    <div className='story-image'>
-                                        <img
-                                            src={story.img || 'https://via.placeholder.com/150'}
-                                            alt={story.title || "Imagem da história"}
-                                            onError={(e) => {
-                                                e.target.src = 'https://via.placeholder.com/150'; // Fallback
-                                                console.error(`Erro ao carregar a imagem: ${story.img}`);
-                                            }}
-                                        />
-                                    </div>
-                                    <div className='text-container-info'>
-                                        <h3>{story.title}</h3>
-                                        <p>{story.category}</p>
-                                    </div>
-                                </div>
-                                <div className='story-content2'>
-                                    <p>{story.content.length > 100 ? `${story.content.substring(0, 100)}...` : story.content}</p>
-                                    <small>Por: {story.username}</small>
-                                </div>
-                            </Link>
-                            <button
-                                className="save-button"
-                                onClick={() => handleSaveStory(story.id)}
-                            >
-                                {isSaved ? 'Remover História' : 'Salvar História'}
-                            </button>
-                        </div>
-                    )
-                })}
-            </div>
-        )}
+      <h2>Histórias Salvas</h2>
+      {savedStories.length === 0 ? (
+        <p>Nenhuma história salva.</p>
+      ) : (
+        <div className="stories-grid-profile">
+          {savedStories.map(story => {
+            const isSaved = savedStoryIds.includes(story.id);
+            return (
+              <StoryCard
+                key={story.id}
+                story={story}
+                isSaved={isSaved}
+                handleSaveStory={handleSaveStory}
+                showSaveButton={true}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
-));
+  ));
 
 const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds }) => (
     <div className="profile-content">

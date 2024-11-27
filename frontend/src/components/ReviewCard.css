@@ -16,7 +16,9 @@
     gap: 2rem;
     width: 100%;
   }
-  
+  .review-description{
+ color: #333;
+  }
   /* Cards alinhados no centro */
   .review-cards {
 
@@ -54,13 +56,27 @@
   }
   
   .review-card.dark {
-    background-color: #333;
-    color: #fff;
-  }
-  
+    position: relative;
+    background-color: #fff;
+    color: #333; /* Alterado para preto para contraste */
+    padding: 10px; /* Espaço interno */
+    box-sizing: border-box; /* Garante que o padding não adicione largura/altura */
+}
+
+.review-card.dark::after {
+    content: "";
+    position: absolute;
+    top: -2px; /* Deslocamento da borda simulada */
+    left: -2px; /* Deslocamento da borda simulada */
+    right: -2px; /* Deslocamento da borda simulada */
+    bottom: -2px; /* Deslocamento da borda simulada */
+    z-index: -1;
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+    border-radius: inherit; /* Mantém o mesmo raio da borda do elemento pai */
+}
+
   .review-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
   }
   
   /* Avatar dos perfis */

@@ -5,18 +5,19 @@ import BlackButton from "./BlackButton";
 const ReviewCards = () => {
   const reviews = [
     {
-      initials: "JL",
-      title: "Product Review",
-      stars: 4,
-      text: "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born...",
+      initials: "EM",
+      title: "Absolutely Engaging!",
+      stars: 5,
+      text: "I can't get enough of this site! The stories are so captivating that I lose track of time every time I visit.",
     },
     {
-      initials: "SM",
-      title: "Great Experience",
-      stars: 5,
-      text: "This product has changed my life completely! I cannot recommend it enough for everyone out there.",
+      initials: "LR",
+      title: "A Reader's Paradise",
+      stars: 4,
+      text: "This platform has reignited my passion for reading. I spend hours here exploring new stories every day.",
     },
   ];
+
 
   return (
     <section className="review-cards-container">

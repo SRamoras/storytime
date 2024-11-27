@@ -47,7 +47,7 @@ z-index: 1000;
 /* Conteúdo principal */
 .content {
   flex: 1; /* Faz com que o conteúdo ocupe o espaço restante */
-  display: flex;
+
 
   justify-content: center;
 
