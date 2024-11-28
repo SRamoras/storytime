@@ -37,15 +37,22 @@
     margin: 0 auto;
     margin-top: 20px;
 }
+.img-container-top::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 15%;
+    background: linear-gradient(to top, transparent, #fff 100%); /* Degradê da esquerda para a direita */
+}
 
 .img-container-top {
     width: 100vw; /* Largura completa da viewport */
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: bottom;
     overflow: hidden; /* Evita o overflow */
     margin-bottom: 20px;
-    height: 35vh /* Altura fixa */
+    height: 40vh /* Altura fixa */
 }
 
 .img-container-top img {
@@ -59,14 +66,14 @@
 /* Estilos para o Componente UserInfo */
 .user-info {
     align-items: center;
-  background-color: #ccc;
+  background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     width: 100%;
     max-width: 300px;
    position: relative;
-   bottom: 150px;
+   bottom: 134px;
 }
 
 .profile-image {
@@ -97,11 +104,7 @@
 
 
 }
-.border-line{
-border: #ccc solid 0.1px;
-border-radius: 10px;
-margin: 0 auto;
-}
+
 .menu-item {
     margin-right: 20px;
     padding: 10px 20px;
@@ -140,17 +143,17 @@ margin: 0 auto;
     margin: 20px;
 }
 
-
-
-
-.profile-content p {
-    color: #000;
-
+.bio-text {
+    margin: 0 auto;
+    color: #333;
 }
+
+
+
 .div-line{
     width: 100%;
     height: 1px;
-    background-color: #000;
+    background-color: #ccc;
     margin: 10px 0;
 }
 .user-name-container p {

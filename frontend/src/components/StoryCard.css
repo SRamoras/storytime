@@ -6,7 +6,7 @@
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 15px;
-  transition: box-shadow 0.5s, transform 0.5s;
+  transition: border 0.3s, transform 0.5s;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -14,7 +14,7 @@
 
 /* Efeito de Hover no Container */
 .story-container2:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #000;
 }
 
 /* Link styling */
@@ -47,11 +47,6 @@
   font-size: 0.95em;
 }
 
-.story-content2 small {
-  color: #888;
-  font-size: 0.8em;
-}
-
 /* Additional styles */
 .intro-container {
   display: flex;
@@ -65,16 +60,31 @@
   margin: 0;
   font-size: 1.2em;
   color: #333;
+  word-wrap: break-word; /* Quebra palavras longas */
+  word-break: break-word; /* Quebra palavras muito grandes */
+  overflow-wrap: break-word; /* Suporte adicional para quebra */
+  white-space: normal; /* Permite que o texto ocupe várias linhas */
 }
 
-.text-container-info p {
+.text-container-info .category-text {
   margin: 5px 0;
-  color: #666;
+  color: #fff;
   font-size: 0.95em;
+  border-radius: 15px;
+  width: fit-content; /* Ajusta a largura ao conteúdo */
+  background-color: #000;
+  padding: 2px 8px; /* Espaçamento interno */
+}
+
+/* Estilo do conteúdo da história */
+.story-content2 p {
+  color: #555;
+  font-size: 15px;
+  margin: 0;
+  line-height: 1;
 }
 
 .save-button {
-  margin-top: 10px;
   padding: 10px;
   background-color: #000;
   color: #fff;
@@ -85,6 +95,19 @@
 
 .save-button:hover {
   background-color: #333;
+}
+
+/* Imagem da História */
+.story-image {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* Conteúdo da História */
+.text-container-info {
+  width: 100%;
+  justify-content: start;
 }
 
 /* Responsividade para Telas Menores */
@@ -113,3 +136,122 @@
     margin-left: 0;
   }
 }
+
+.bottom-story-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Estilo para o contêiner de informações do autor */
+.author-info {
+  display: flex;
+  align-items: center;
+}
+
+/* Estilo para a imagem de perfil do autor */
+.author-profile-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+  border: #000 solid 1px;
+}
+
+/* Estilo para o nome de usuário */
+.author-info .username-text {
+  font-size: 14px;
+  max-width: 100px; /* Defina a largura máxima conforme necessário */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Estilo para o nome de usuário no hover */
+.author-info .username-text:hover {
+  overflow: visible;
+  white-space: normal;
+}
+/* StoryCard.css */
+
+/* ... (outros estilos existentes) ... */
+/* StoryCard.css */
+
+/* ... seus estilos existentes ... */
+
+/* Botão do ícone de salvar */
+.save-icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 0;
+}
+
+/* Ícone de salvar */
+.save-icon {
+  font-family: 'Material Symbols Outlined';
+  font-size: 27px;
+  transition: color 0.3s, font-variation-settings 0.3s;
+  color: #000;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;
+}
+
+/* Ícone quando a história está salva */
+.save-icon[data-filled="true"] {
+  color: #000;
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;
+}
+
+/* Tooltip */
+.save-icon-button .tooltip {
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+  white-space: nowrap;
+  margin: 0;
+  width: auto;
+  height: auto;
+}
+
+/* Seta do Tooltip */
+.save-icon-button .tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}
+
+/* Mostrar o tooltip no hover */
+.save-icon-button:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ... demais estilos ... */

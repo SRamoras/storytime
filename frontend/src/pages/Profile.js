@@ -38,8 +38,9 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                     <p>Histórias Lidas:</p>
                     <p>{user.readCount || 0}</p>
                 </div>
-                <p className='subtitle-container-info'>Bio</p>
-                <p>{bio || "Sem bio ainda"}</p>
+                <div className='div-line'></div>
+                <p className='subtitle-container-info'>About Me</p>
+                <p className='bio-text'>{bio || "no info"}</p>
                 {/* Mostrar botão de edição se for o dono do perfil */}
                 {/* {isOwner && (
                     <button onClick={handleEdit} className="edit-profile-button">Editar Perfil</button>
@@ -140,7 +141,7 @@ const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStory
     </div>
   ));
 
-const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds }) => (
+  const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds }) => (
     <div className="profile-content">
         {stories.length === 0 ? (
             <p>Este usuário ainda não publicou histórias.</p>
@@ -149,37 +150,14 @@ const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds }) => 
                 {stories.map(story => {
                     const isSaved = savedStoryIds.includes(story.id);
                     return (
-                        <div key={story.id} className='story-container2'>
-                            <Link to={`/story/${story.id}`} className='story-container-link'>
-                                <div className='intro-container'>
-                                    <div className='story-image'>
-                                        <img
-                                            src={story.img || 'https://via.placeholder.com/150'}
-                                            alt={story.title || "Imagem da história"}
-                                            onError={(e) => {
-                                                e.target.src = 'https://via.placeholder.com/150'; // Fallback
-                                                console.error(`Erro ao carregar a imagem: ${story.img}`);
-                                            }}
-                                        />
-                                    </div>
-                                    <div className='text-container-info'>
-                                        <h3>{story.title}</h3>
-                                        <p>{story.category}</p>
-                                    </div>
-                                </div>
-                                <div className='story-content2'>
-                                    <p>{story.content.length > 100 ? `${story.content.substring(0, 100)}...` : story.content}</p>
-                                    <small>Por: {story.username}</small>
-                                </div>
-                            </Link>
-                            <button
-                                className="save-button"
-                                onClick={() => handleSaveStory(story.id)}
-                            >
-                                {isSaved ? 'Remover História' : 'Salvar História'}
-                            </button>
-                        </div>
-                    )
+                        <StoryCard
+                            key={story.id}
+                            story={story}
+                            isSaved={isSaved}
+                            handleSaveStory={handleSaveStory}
+                            showSaveButton={true}
+                        />
+                    );
                 })}
             </div>
         )}
@@ -257,6 +235,7 @@ const Profile = () => {
             setLoading(false);
         }
     };
+    
 
     // Função para buscar as histórias salvas pelo usuário do perfil
     const fetchProfileUserSavedStories = async () => {
@@ -562,7 +541,7 @@ const Profile = () => {
                             </div>
                         )}
                     </div>
-                    <div className='border-line'></div>
+                    <div className='div-line'></div>
                     {/* Conteúdo Condicional */}
                     <div className="profile">
                         {renderContent()}

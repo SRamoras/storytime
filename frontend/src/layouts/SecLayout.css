@@ -7,58 +7,39 @@
 
 /* Cabeçalho */
 .header {
-  background-color: transparent; /* Transparent by default */
-  transition: background-color 0.3s ease; /* Smooth transition for background color */
-  color: white; /* White text by default */
+  background-color: transparent; /* Transparente por padrão */
+  transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
+  color: white; /* Cor do texto por padrão */
   position: fixed;
   width: 100%;
-z-index: 1000;
+  z-index: 1000;
   padding: 1rem;
+}
 
-}
 .header.scrolled {
-  background-color: #fff; /* White when scrolled */
-  color: #333; /* Dark text color when scrolled */
+  background-color: #fff; /* Branco quando rolado */
+  color: #333; /* Cor do texto escuro quando rolado */
 }
+
 .header-container {
   display: flex;
   margin: 0 auto;
-  justify-content: space-between; /* Espaço entre o LogoText e os botões */
-  align-items: center; /* Centraliza os itens verticalmente */
-  width: 85vw; /* Garante que o container ocupe toda a largura */
+  justify-content: space-between; /* Espaço entre logo e botões */
+  align-items: center; /* Alinhamento vertical dos itens */
+  width: 85vw; /* Ocupa toda a largura */
 }
-
 
 /* Logo à esquerda */
 .logo {
-  flex: 1; /* Garante que o LogoText fique alinhado à esquerda */
+  flex: 1; /* Faz com que o logotipo fique alinhado à esquerda */
 }
 
-/* Botões à direita */
-.buttons {
-  display: flex;
-  gap: 1rem; /* Espaçamento entre os botões */
-}
-
-.buttons button {
-  flex-shrink: 0; /* Garante que os botões não encolham */
-}
-
-/* Conteúdo principal */
-.content {
-  flex: 1; /* Faz com que o conteúdo ocupe o espaço restante */
-
-
-  justify-content: center;
-
-  background-color: #fff;
-}
 /* Botões à direita */
 .nav-buttons {
-  display: flex; /* Torna os botões flexíveis */
+  display: flex;
   gap: 1rem; /* Espaçamento entre os botões */
-  margin-left: auto; /* Move o container de botões para a direita */
-  align-items: center; /* Centraliza verticalmente com o cabeçalho */
+  margin-left: auto; /* Move os botões para a direita */
+  align-items: center; /* Alinha verticalmente com o cabeçalho */
 }
 
 /* Rodapé */
@@ -77,22 +58,31 @@ z-index: 1000;
 .profile-menu .nav-button {
   cursor: pointer;
   padding: 10px;
-  color: #000;
+  background-color: transparent; /* Torna o fundo transparente */
+  border: 1px solid transparent; /* Borda transparente */
+  border-radius: 5px; /* Bordas arredondadas */
+  color: #000; /* Cor do texto */
+  transition: background-color 0.3s ease, border-color 0.3s ease; /* Transição suave para o fundo e borda */
 }
 
 .profile-menu .dropdown-content {
-  display: none;
+  display: block;
   position: absolute;
-  right: 0; /* Alinha o menu à direita */
-  background-color: #ffffff;
+  right: 50%; /* Centraliza baseado na metade da largura do menu */
+  transform: translateX(50%); /* Ajusta o posicionamento para centralizar */
+  background-color: #fff;
   min-width: 160px;
   z-index: 1;
-  border: 1px solid #ddd;
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  top: 55px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Sombra para profundidade */
+  opacity: 0; /* Inicialmente transparente */
+  visibility: hidden; /* Inicialmente oculto */
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Transição suave para opacidade e visibilidade */
 }
 
 .profile-menu:hover .dropdown-content {
-  display: block;
+  opacity: 1; /* Torna visível ao passar o mouse */
+  visibility: visible; /* Torna visível ao passar o mouse */
 }
 
 .dropdown-content .dropdown-item {
@@ -100,20 +90,19 @@ z-index: 1000;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
-  background-color: #fff;
+  transition: background-color 0.3s; /* Transição suave de hover */
 }
 
 .dropdown-content .dropdown-item:hover {
-  background-color: #f1f1f1;
+  background-color: #f1f1f1; /* Cor de fundo ao passar o mouse */
   cursor: pointer;
 }
 
-/* Ajuste para os links dentro do dropdown */
+/* Ajuste para links dentro do dropdown */
 .dropdown-content a.dropdown-item {
-  padding: 12px 16px;
-  color: #333;
+  color: #333; /* Cor do texto dos links */
 }
 
 .dropdown-content a.dropdown-item:hover {
-  background-color: #f1f1f1;
+  background-color: #e2e2e2; /* Cor de fundo ao passar o mouse nos links */
 }

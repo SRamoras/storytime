@@ -131,7 +131,7 @@ router.get('/saved_stories/:userId', authenticateToken, async (req, res) => {
 
     try {
         const result = await pool.query(
-            `SELECT stories.*, users.username 
+            `SELECT stories.*, users.username, users.profile_image 
              FROM storiessaved 
              JOIN stories ON storiessaved.storyid = stories.id 
              JOIN users ON stories.user_id = users.id 
@@ -144,6 +144,7 @@ router.get('/saved_stories/:userId', authenticateToken, async (req, res) => {
         res.status(500).json({ error: 'Erro interno ao carregar histórias salvas.' });
     }
 });
+
 
 router.delete('/save_story/:storyId', authenticateToken, async (req, res) => {
     const { storyId } = req.params;
@@ -261,26 +262,37 @@ router.get('/protected-route', authenticateToken, (req, res) => {
 });
 
 // 1. Rota GET para obter histórias do usuário autenticado ou de outro usuário via query
-router.get('/stories', authenticateToken, async (req, res) => {
-    console.log('GET /stories foi chamado');
-    const { id: authUserId } = req.user;
-    const { user_id } = req.query;
+// routes/auth.js
 
-    const userId = user_id || authUserId;
-    console.log('Buscando histórias para user_id:', userId);
+// ... existing imports and configurations ...
+
+// New POST /stories route to create a story with optional image upload
+router.post('/stories', authenticateToken, upload.single('img'), async (req, res) => {
+    console.log('POST /stories was called');
+    const { id: authUserId } = req.user;
+    const { title, content, category } = req.body;
+    const image = req.file ? req.file.filename : null;
+
+    // Validate required fields
+    if (!title || !content || !category) {
+        return res.status(400).json({ error: 'Title, content, and category are required.' });
+    }
 
     try {
+        // Insert the new story into the database
         const result = await pool.query(
-            `SELECT * FROM stories WHERE user_id = $1 ORDER BY created_at DESC`,
-            [userId]
+            `INSERT INTO stories (user_id, title, content, category, img, created_at) 
+             VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *`,
+            [authUserId, title, content, category, image]
         );
-        console.log('Histórias carregadas:', result.rows);
-        res.status(200).json(result.rows);
+        console.log('New story created:', result.rows[0]);
+        res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Erro ao carregar histórias:', error);
-        res.status(500).json({ error: 'Erro interno ao carregar histórias.' });
+        console.error('Error creating story:', error);
+        res.status(500).json({ error: 'Internal server error while creating story.' });
     }
 });
+
 
 // 2. Rota GET para obter histórias de um usuário específico pelo username
 router.get('/stories/:username', async (req, res) => {
@@ -299,9 +311,13 @@ router.get('/stories/:username', async (req, res) => {
 
         const userId = userResult.rows[0].id;
 
-        // Agora, obtenha as histórias desse usuário
+        // Agora, obtenha as histórias desse usuário com username e profile_image
         const storiesResult = await pool.query(
-            `SELECT * FROM stories WHERE user_id = $1 ORDER BY created_at DESC`,
+            `SELECT stories.*, users.username, users.profile_image
+             FROM stories
+             JOIN users ON stories.user_id = users.id
+             WHERE stories.user_id = $1
+             ORDER BY stories.created_at DESC`,
             [userId]
         );
 
@@ -312,12 +328,13 @@ router.get('/stories/:username', async (req, res) => {
         res.status(500).json({ error: 'Erro interno ao carregar histórias.' });
     }
 });
+
 router.get('/stories/id/:id', authenticateToken, async (req, res) => {
     const { id } = req.params;
 
     try {
         const storyResult = await pool.query(
-            'SELECT stories.*, users.username FROM stories JOIN users ON stories.user_id = users.id WHERE stories.id = $1',
+            'SELECT stories.*, users.username, users.profile_image FROM stories JOIN users ON stories.user_id = users.id WHERE stories.id = $1',
             [id]
         );
 
@@ -332,10 +349,13 @@ router.get('/stories/id/:id', authenticateToken, async (req, res) => {
         res.status(500).json({ error: 'Erro interno ao carregar história.' });
     }
 });
+
+// Rota para obter todas as histórias
+// Exemplo de rota atualizada
 router.get('/stories_all', authenticateToken, async (req, res) => {
     try {
         const result = await pool.query(
-            `SELECT stories.*, users.username 
+            `SELECT stories.*, users.username, users.profile_image 
              FROM stories 
              JOIN users ON stories.user_id = users.id 
              ORDER BY stories.created_at DESC`
@@ -346,42 +366,13 @@ router.get('/stories_all', authenticateToken, async (req, res) => {
         res.status(500).json({ error: 'Erro interno ao carregar histórias.' });
     }
 });
+
+
+
 // 3. Rota POST para criar uma nova história
 // 3. Rota POST para criar uma nova história
-router.post('/stories', authenticateToken, upload.single('img'), async (req, res) => {
-    console.log('Recebendo requisição para criar história');
-    console.log('Body:', req.body);
-    console.log('Arquivo:', req.file);
 
-    const { title, content, category } = req.body;
-    const userId = req.user.id; // ID do usuário autenticado
 
-    // Validação dos campos obrigatórios
-    if (!title || !content || !category) {
-        return res.status(400).json({ error: 'Título, conteúdo e categoria são obrigatórios.' });
-    }
-
-    // Obter o caminho da imagem, se houver
-    let imageUrl = null;
-    if (req.file) {
-        imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-        console.log('Imagem recebida e salva em:', imageUrl);
-    }
-
-    try {
-        const result = await pool.query(
-            `INSERT INTO stories (title, content, category, user_id, img, created_at)
-             VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *`,
-            [title, content, category, userId, imageUrl]
-        );
-
-        console.log('Nova história criada:', result.rows[0]);
-        res.status(201).json(result.rows[0]); // Retorna a história criada
-    } catch (error) {
-        console.error('Erro ao criar história:', error);
-        res.status(500).json({ error: 'Erro interno ao criar história.' });
-    }
-});
 
 // Rota para atualizar o perfil do usuário
 router.put('/update-profile', authenticateToken, async (req, res) => {

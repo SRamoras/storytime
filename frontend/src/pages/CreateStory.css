@@ -1,60 +1,168 @@
 /* CreateStory.css */
 
 .create-story-container {
-  max-width: 600px;
-  margin: 50px auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+width: 87vw;
+
+  margin: 150px auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 10px;
 }
 
-.create-story-container h2 {
+.form-section, .preview-section {
+  flex: 1;
+  background-color: #fff;
+  padding: 25px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-section h2, .preview-section h2 {
   text-align: center;
   margin-bottom: 20px;
+  color: #333;
 }
 
 .create-story-form label {
   display: block;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   font-weight: bold;
+  color: #555;
 }
 
 .create-story-form input[type="text"],
-.create-story-form textarea {
+.create-story-form textarea,
+.create-story-form select,
+.create-story-form input[type="file"] {
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
+  padding: 12px 15px;
+  margin-top: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: #fefefe;
+  font-size: 1em;
+  color: #333;
+  transition: border 0.3s, background-color 0.3s;
 }
 
-.create-story-form input[type="file"] {
-  margin-top: 5px;
+.create-story-form input[type="text"]:focus,
+.create-story-form textarea:focus,
+.create-story-form select:focus,
+.create-story-form input[type="file"]:focus {
+  border-color: #000;
+  background-color: #f0f0f0;
+  outline: none;
+}
+
+.create-story-form textarea {
+  resize: vertical;
+  min-height: 150px;
 }
 
 .image-preview {
   text-align: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .image-preview img {
   max-width: 100%;
   height: auto;
   border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .create-story-form button {
   width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
+  padding: 14px;
+  background-color: #000;
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1.1em;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .create-story-form button:hover {
-  background-color: #0056b3;
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+.create-story-form button:disabled {
+  background-color: #555;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.preview-section .story-preview {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.preview-section .story-preview h3 {
+  margin: 0 0 10px 0;
+  color: #000;
+}
+
+.preview-section .story-preview p {
+  margin: 0 0 10px 0;
+  color: #555;
+}
+
+.intro-container-replaca {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 15px;
+}
+.story-image-container {
+  flex: 0 0 50%; /* Aloca mais espaço para a imagem */
+  text-align: center;
+}
+
+.story-image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.story-content {
+  white-space: pre-wrap;      /* Preserva quebras de linha e espaços */
+  word-wrap: break-word;      /* Permite quebra de palavras longas */
+  word-break: break-word;     /* Garante quebra de palavras se necessário */
+  color: #333;
+  line-height: 1.6;
+  max-width: 100%;            /* Garante que o conteúdo não exceda a largura do contêiner */
+}
+
+@media (max-width: 768px) {
+  .create-story-container {
+    flex-direction: column;
+  }
+
+  .form-section, .preview-section {
+    width: 100%;
+    max-width: none; /* Remove a largura máxima em telas pequenas */
+  }
+
+  .create-story-container {
+    margin: 20px;
+    padding: 10px;
+  }
+
+  .intro-container-replaca {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .story-image-container {
+    flex: none;
+    width: 80%;
+  }
 }
