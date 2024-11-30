@@ -408,20 +408,25 @@ router.put('/update-profile', authenticateToken, async (req, res) => {
         res.status(500).json({ error: 'Falha ao atualizar o perfil.' });
     }
 });
+// routes/auth.js
 
-// Rota para upload de imagem de perfil
+// ... (outras importações e configurações)
+
 router.post('/upload-profile-image', authenticateToken, upload.single('profileImage'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'Nenhum arquivo enviado.' });
     }
 
-    const imagePath = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+    const imageFilename = req.file.filename; // Apenas o nome do arquivo
 
     try {
         const userId = req.user.id; // Certifique-se de que o ID do usuário está sendo extraído corretamente do token
 
-        // Atualiza o caminho da imagem no banco de dados usando pool.query
-        const updateResult = await pool.query('UPDATE users SET profile_image = $1 WHERE id = $2 RETURNING *', [imagePath, userId]);
+        // Atualiza o nome da imagem no banco de dados usando pool.query
+        const updateResult = await pool.query(
+            'UPDATE users SET profile_image = $1 WHERE id = $2 RETURNING *',
+            [imageFilename, userId]
+        );
 
         if (updateResult.rows.length > 0) {
             const updatedUser = updateResult.rows[0];
@@ -434,10 +439,14 @@ router.post('/upload-profile-image', authenticateToken, upload.single('profileIm
                 firstname: updatedUser.firstname,
                 lastname: updatedUser.lastname,
                 bio: updatedUser.bio,
-                profile_image: updatedUser.profile_image
+                profile_image: updatedUser.profile_image // Agora é apenas o nome do arquivo
             }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-            res.status(200).json({ message: 'Imagem de perfil atualizada com sucesso!', token: newToken, imagePath });
+            res.status(200).json({ 
+                message: 'Imagem de perfil atualizada com sucesso!', 
+                token: newToken, 
+                imageName: imageFilename // Retorna apenas o nome da imagem
+            });
         } else {
             res.status(404).json({ message: 'Usuário não encontrado.' });
         }
@@ -446,6 +455,11 @@ router.post('/upload-profile-image', authenticateToken, upload.single('profileIm
         res.status(500).json({ error: 'Falha ao atualizar a imagem de perfil no banco de dados.' });
     }
 });
+
+// ... (restante do código)
+
+
+module.exports = router;
 
 // Rota de teste existente
 router.get('/test', (req, res) => {

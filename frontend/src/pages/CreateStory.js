@@ -18,18 +18,30 @@ const CreateStory = ({ closeModal }) => {
     const [uploading, setUploading] = useState(false);
     const navigate = useNavigate();
 
+    // Define maximum characters
+    const MAX_TITLE_LENGTH = 100;
+    const MAX_CONTENT_LENGTH = 5000;
+
+    // Function to determine character count class
+    const getCharCountClass = (currentLength, maxLength) => {
+        if (currentLength > maxLength * 0.8) { // If more than 80% of maxLength
+            return 'char-count warning';
+        }
+        return 'char-count';
+    };
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
             if (!allowedTypes.includes(file.type)) {
-                toast.error('Apenas arquivos de imagem são permitidos (jpeg, jpg, png, gif).');
+                toast.error('Only image files are allowed (jpeg, jpg, png, gif).');
                 return;
             }
 
             const maxSize = 5 * 1024 * 1024; // 5MB
             if (file.size > maxSize) {
-                toast.error('A imagem deve ter no máximo 5MB.');
+                toast.error('The image must be at most 5MB.');
                 return;
             }
 
@@ -49,7 +61,7 @@ const CreateStory = ({ closeModal }) => {
         e.preventDefault();
 
         if (!title || !content || !category) {
-            toast.warn('Por favor, preencha o título, o conteúdo e selecione uma categoria.');
+            toast.warn('Please fill in the title, content, and select a category.');
             return;
         }
 
@@ -66,24 +78,24 @@ const CreateStory = ({ closeModal }) => {
             const response = await api.post('/auth/stories', formData, {
                 headers: { 
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}` // Inclui o token
+                    'Authorization': `Bearer ${token}` // Include the token
                 }
             });
 
             if (response.status === 201) {
                 const newStory = response.data;
-                toast.success('História criada com sucesso!');
+                toast.success('Story created successfully!');
                 navigate(`/story/${newStory.id}`);
                 if (closeModal) closeModal();
             } else {
-                toast.error('Falha ao criar a história.');
+                toast.error('Failed to create the story.');
             }
         } catch (error) {
-            console.error('Erro ao criar a história:', error);
+            console.error('Error creating the story:', error);
             if (error.response && error.response.data && error.response.data.error) {
-                toast.error(`Falha ao criar a história: ${error.response.data.error}`);
+                toast.error(`Failed to create the story: ${error.response.data.error}`);
             } else {
-                toast.error('Falha ao criar a história.');
+                toast.error('Failed to create the story.');
             }
         } finally {
             setUploading(false);
@@ -91,53 +103,65 @@ const CreateStory = ({ closeModal }) => {
     };
 
     if (!currentUser) {
-        return <p>Carregando...</p>; // Ou redirecionar para o login
+        return <p>Loading...</p>; // Or redirect to login
     }
 
     return (
         <div className="create-story-container">
             <ToastContainer />
             <div className="form-section">
-                <h2>Criar Nova História</h2>
+                <h2>Create New Story</h2>
                 <form onSubmit={handleSubmit} className="create-story-form">
-                    <label>
-                        Título:
+                    <label htmlFor="story-title">
+                        Title:
                         <input 
+                            id="story-title"
                             type="text" 
                             value={title} 
                             onChange={(e) => setTitle(e.target.value)} 
-                            placeholder="Título da História"
+                            placeholder="Story Title"
+                            maxLength={MAX_TITLE_LENGTH} // Set maxLength
                             required
                         />
+                        <small className={getCharCountClass(title.length, MAX_TITLE_LENGTH)}>
+                            {title.length}/{MAX_TITLE_LENGTH}
+                        </small>
                     </label>
-                    <label>
-                        Conteúdo:
+                    <label htmlFor="story-content">
+                        Content:
                         <textarea 
+                            id="story-content"
                             value={content} 
                             onChange={(e) => setContent(e.target.value)} 
-                            placeholder="Conteúdo da História"
+                            placeholder="Story Content"
+                            maxLength={MAX_CONTENT_LENGTH} // Set maxLength
                             required
                         />
+                        <small className={getCharCountClass(content.length, MAX_CONTENT_LENGTH)}>
+                            {content.length}/{MAX_CONTENT_LENGTH}
+                        </small>
                     </label>
-                    <label>
-                        Categoria:
+                    <label htmlFor="story-category">
+                        Category:
                         <select 
+                            id="story-category"
                             value={category} 
                             onChange={(e) => setCategory(e.target.value)} 
                             required
                         >
-                            <option value="">Selecione uma categoria</option>
-                            <option value="Adventure">Aventura</option>
+                            <option value="">Select a category</option>
+                            <option value="Adventure">Adventure</option>
                             <option value="Romance">Romance</option>
                             <option value="Horror">Horror</option>
-                            <option value="Fantasy">Fantasia</option>
-                            <option value="Mystery">Mistério</option>
-                            <option value="Science Fiction">Ficção Científica</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Mystery">Mystery</option>
+                            <option value="Science Fiction">Science Fiction</option>
                         </select>
                     </label>
-                    <label>
-                        Imagem (Opcional):
+                    <label htmlFor="story-image">
+                        Image:
                         <input 
+                            id="story-image"
                             type="file" 
                             accept="image/*" 
                             onChange={handleImageChange} 
@@ -145,29 +169,29 @@ const CreateStory = ({ closeModal }) => {
                     </label>
                     {previewImage && (
                         <div className="image-preview">
-                            <img src={previewImage} alt="Pré-visualização" />
+                            <img src={previewImage} alt="Preview" />
                         </div>
                     )}
                     <button type="submit" disabled={uploading}>
-                        {uploading ? 'Criando...' : 'Criar História'}
+                        {uploading ? 'Creating...' : 'Create Story'}
                     </button>
                 </form>
             </div>
             <div className="preview-section">
-                <h2>Pré-visualização ao Vivo</h2>
+                <h2>Live Preview</h2>
                 <div className="story-preview">
                     <div className="intro-container-replaca">
                         <div>   
-                            <h3>{title || 'Título da História'}</h3>
-                            <p><strong>Categoria:</strong> {category || 'Selecione uma categoria'}</p>
+                            <h3>{title || 'Story Title'}</h3>
+                            <p><strong>Category:</strong> {category || 'Select a category'}</p>
                         </div>  
                         {previewImage && (
                             <div className="story-image-container">
-                                <img src={previewImage} alt="Pré-visualização da História" />
+                                <img src={previewImage} alt="Story Preview" />
                             </div>
                         )}
                     </div>
-                    <p className="story-content">{content || 'O conteúdo da história aparecerá aqui...'}</p>
+                    <p className="story-content">{content || 'Story content will appear here...'}</p>
                 </div>
             </div>
         </div>

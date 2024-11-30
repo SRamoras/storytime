@@ -49,7 +49,7 @@
   text-align: center;
   padding: 1rem;
 }
-/* Estilos para o menu de perfil */
+
 .profile-menu {
   position: relative;
   display: inline-block;
@@ -57,25 +57,25 @@
 
 .profile-menu .nav-button {
   cursor: pointer;
-  padding: 10px;
-  background-color: transparent; /* Torna o fundo transparente */
-  border: 1px solid transparent; /* Borda transparente */
-  border-radius: 5px; /* Bordas arredondadas */
-  color: #000; /* Cor do texto */
-  transition: background-color 0.3s ease, border-color 0.3s ease; /* Transição suave para o fundo e borda */
+  min-width: 100px;
+  background-color: transparent; 
+  border: 1px solid transparent; 
+  border-radius: 5px; 
+  color: #000;
+  transition: background-color 0.3s ease, border-color 0.3s ease; 
 }
 
 .profile-menu .dropdown-content {
   display: block;
   position: absolute;
-  right: 50%; /* Centraliza baseado na metade da largura do menu */
-  transform: translateX(50%); /* Ajusta o posicionamento para centralizar */
+  right: 50%;
+  transform: translateX(50%); 
   background-color: #fff;
   min-width: 160px;
   z-index: 1;
   top: 55px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Sombra para profundidade */
-  opacity: 0; /* Inicialmente transparente */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  opacity: 0;
   visibility: hidden; /* Inicialmente oculto */
   transition: opacity 0.3s ease, visibility 0.3s ease; /* Transição suave para opacidade e visibilidade */
 }

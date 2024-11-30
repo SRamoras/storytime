@@ -1,54 +1,65 @@
 // Profile.js
 
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import api from '../services/api';
 import './Profile.css';
 import books from '../Assets/books.jpg';
 import StoryCard from '../components/StoryCard';
+
 // Subcomponentes definidos fora do componente principal
 
-const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, defaultAvatar, isOwner, handleEdit }) => (
-    <div className="profile-content">
-        <div className="user-info">
-            <div className="user-img">
-                <img 
-                    src={profileImage || defaultAvatar} 
-                    alt="Perfil" 
-                    width="150" 
-                    height="150" 
-                />
-            </div>
-            <div>
-                <div className='user-name-container'>
-                    <p><strong>{user.username}</strong><br /></p>
-                    <p>{firstname} {lastname}</p>
+const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, defaultAvatar, isOwner, handleEdit, baseImageUrl }) => {
+    // Construir o caminho completo da imagem de perfil
+    const profileImageSrc = profileImage 
+        ? (profileImage.startsWith('data:') ? profileImage : `${baseImageUrl}${profileImage}`) 
+        : defaultAvatar;
+
+    console.log('UserInfo - profileImageSrc:', profileImageSrc); // Debug
+
+    return (
+        <div className="profile-content">
+            <div className="user-info">
+                <div className="user-img">
+                    <img 
+                        src={profileImageSrc} 
+                        alt="Perfil" 
+                        width="150" 
+                        height="150" 
+                        onError={(e) => { e.target.src = defaultAvatar; }}
+                    />
                 </div>
-                {/* <p><strong>Email:</strong> {user.email}</p> */}
-                <div className='div-line'></div>
-                <div className='container-info-medium'>
-                    <p>Histórias:</p>
-                    <p>{user.storyCount || 0}</p>
+                <div>
+                    <div className='user-name-container'>
+                        <p><strong>{user.username}</strong><br /></p>
+                        <p>{firstname} {lastname}</p>
+                    </div>
+                    {/* <p><strong>Email:</strong> {user.email}</p> */}
+                    <div className='div-line'></div>
+                    <div className='container-info-medium'>
+                        <p>Histórias:</p>
+                        <p>{user.storyCount || 0}</p>
+                    </div>
+                    <div className='container-info-medium'>
+                        <p>Favoritas:</p>
+                        <p>{user.favoriteCount || 0}</p>
+                    </div>
+                    <div className='container-info-medium'>
+                        <p>Histórias Lidas:</p>
+                        <p>{user.readCount || 0}</p>
+                    </div>
+                    <div className='div-line'></div>
+                    <p className='subtitle-container-info'>About Me</p>
+                    <p className='bio-text'>{bio || "no info"}</p>
+                    {/* Mostrar botão de edição se for o dono do perfil */}
+                    {isOwner && (
+                        <button onClick={handleEdit} className="edit-profile-button">Editar Perfil</button>
+                    )}
                 </div>
-                <div className='container-info-medium'>
-                    <p>Favoritas:</p>
-                    <p>{user.favoriteCount || 0}</p>
-                </div>
-                <div className='container-info-medium'>
-                    <p>Histórias Lidas:</p>
-                    <p>{user.readCount || 0}</p>
-                </div>
-                <div className='div-line'></div>
-                <p className='subtitle-container-info'>About Me</p>
-                <p className='bio-text'>{bio || "no info"}</p>
-                {/* Mostrar botão de edição se for o dono do perfil */}
-                {/* {isOwner && (
-                    <button onClick={handleEdit} className="edit-profile-button">Editar Perfil</button>
-                )} */}
             </div>
         </div>
-    </div>
-));
+    );
+});
 
 const UserSettings = React.memo(({ 
     firstname, 
@@ -62,60 +73,70 @@ const UserSettings = React.memo(({
     handleImageChange, 
     profileImage, 
     imageFile, 
-    defaultAvatar 
-}) => (
-    <div className="profile-content">
-        <h2>Configurações</h2>
-        <h3>Atualizar Imagem de Perfil</h3>
-        <form onSubmit={handleImageUpload}>
-            <input 
-                type="file" 
-                accept="image/*" 
-                onChange={handleImageChange} 
-            />
-            {imageFile && (
-                <img 
-                    src={profileImage} 
-                    alt="Pré-visualização" 
-                    width="100" 
-                    height="100" 
-                    style={{ borderRadius: '50%', marginTop: '10px' }} 
-                />
-            )}
-            <button type="submit">Fazer Upload da Imagem</button>
-        </form>
-        <br /><br />
-        <div className="settings-form">
-            <label>
-                Nome:
+    defaultAvatar,
+    baseImageUrl
+}) => {
+    // Construir o caminho completo da imagem para pré-visualização
+    const profileImageSrc = profileImage 
+        ? (profileImage.startsWith('data:') ? profileImage : `${baseImageUrl}${profileImage}`) 
+        : defaultAvatar;
+
+    console.log('UserSettings - profileImageSrc:', profileImageSrc); // Debug
+
+    return (
+        <div className="profile-content">
+            <h2>Configurações</h2>
+            <h3>Atualizar Imagem de Perfil</h3>
+            <form onSubmit={handleImageUpload}>
                 <input 
-                    type="text" 
-                    value={firstname} 
-                    onChange={(e) => setFirstname(e.target.value)} 
-                    placeholder="Nome"
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleImageChange} 
                 />
-            </label>
-            <label>
-                Sobrenome:
-                <input 
-                    type="text" 
-                    value={lastname} 
-                    onChange={(e) => setLastname(e.target.value)} 
-                    placeholder="Sobrenome"
-                />
-            </label>
-            <label>
-                Bio:
-                <textarea 
-                    value={bio} 
-                    onChange={(e) => setBio(e.target.value)} 
-                    placeholder="Bio"
-                />
-            </label>
-            <button onClick={handleUpdateProfile}>Salvar Alterações</button>
+                {(imageFile || profileImage) && (
+                    <img 
+                        src={profileImageSrc} 
+                        alt="Pré-visualização" 
+                        width="100" 
+                        height="100" 
+                        style={{ borderRadius: '50%', marginTop: '10px' }} 
+                    />
+                )}
+                <button type="submit">Fazer Upload da Imagem</button>
+            </form>
+            <br /><br />
+            <div className="settings-form">
+                <label>
+                    Nome:
+                    <input 
+                        type="text" 
+                        value={firstname} 
+                        onChange={(e) => setFirstname(e.target.value)} 
+                        placeholder="Nome"
+                    />
+                </label>
+                <label>
+                    Sobrenome:
+                    <input 
+                        type="text" 
+                        value={lastname} 
+                        onChange={(e) => setLastname(e.target.value)} 
+                        placeholder="Sobrenome"
+                    />
+                </label>
+                <label>
+                    Bio:
+                    <textarea 
+                        value={bio} 
+                        onChange={(e) => setBio(e.target.value)} 
+                        placeholder="Bio"
+                    />
+                </label>
+                <button type="button" onClick={handleUpdateProfile}>Salvar Alterações</button>
+            </div>
         </div>
-    </div>
-));
+    );
+});
 
 const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStoryIds }) => (
     <div className="profile-content">
@@ -139,9 +160,9 @@ const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStory
         </div>
       )}
     </div>
-  ));
+));
 
-  const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds }) => (
+const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds }) => (
     <div className="profile-content">
         {stories.length === 0 ? (
             <p>Este usuário ainda não publicou histórias.</p>
@@ -181,6 +202,7 @@ const Profile = () => {
     const [loading, setLoading] = useState(true);
 
     const defaultAvatar = "https://www.gravatar.com/avatar/?d=mp&f=y";
+    const baseImageUrl = process.env.REACT_APP_BASE_IMAGE_URL || 'http://localhost:5000/uploads/';
 
     // Função para buscar o usuário autenticado
     const fetchCurrentUser = async () => {
@@ -212,7 +234,7 @@ const Profile = () => {
             setBio(response.data.user.bio || "");
             setFirstname(response.data.user.firstname || "");
             setLastname(response.data.user.lastname || "");
-            setProfileImage(response.data.user.profile_image || defaultAvatar);
+            setProfileImage(response.data.user.profile_image || "");
         } catch (error) {
             console.error('Erro ao buscar dados do perfil:', error);
             alert('Erro ao buscar dados do perfil.');
@@ -235,7 +257,6 @@ const Profile = () => {
             setLoading(false);
         }
     };
-    
 
     // Função para buscar as histórias salvas pelo usuário do perfil
     const fetchProfileUserSavedStories = async () => {
@@ -368,7 +389,7 @@ const Profile = () => {
 
             if (response.data.token) {
                 localStorage.setItem('token', response.data.token); // Atualiza o token no localStorage
-                fetchProfileUser(); // Recarrega o perfil com os novos dados
+                await fetchProfileUser(); // Recarrega o perfil com os novos dados
             }
 
             alert('Perfil atualizado com sucesso!');
@@ -405,12 +426,12 @@ const Profile = () => {
 
             if (response.data.token) {
                 localStorage.setItem('token', response.data.token); // Atualiza o token no localStorage
-                fetchProfileUser(); // Recarrega o perfil para mostrar a nova imagem
+                await fetchProfileUser(); // Recarrega o perfil para mostrar a nova imagem
                 alert('Imagem de perfil atualizada com sucesso!');
                 setImageFile(null);
             } else {
                 // Caso o backend não retorne um novo token, ainda assim atualizar o perfil
-                fetchProfileUser();
+                await fetchProfileUser();
                 alert('Imagem de perfil atualizada com sucesso!');
                 setImageFile(null);
             }
@@ -438,12 +459,12 @@ const Profile = () => {
             setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProfileImage(reader.result);
+                setProfileImage(reader.result); // Data URL para pré-visualização
             };
             reader.readAsDataURL(file);
         } else {
             setImageFile(null);
-            setProfileImage(profileUser.profile_image ? profileUser.profile_image : defaultAvatar);
+            setProfileImage(profileUser.profile_image ? `${baseImageUrl}${profileUser.profile_image}` : defaultAvatar);
         }
     };
 
@@ -473,7 +494,8 @@ const Profile = () => {
                             handleImageChange={handleImageChange} 
                             profileImage={profileImage} 
                             imageFile={imageFile} 
-                            defaultAvatar={defaultAvatar} 
+                            defaultAvatar={defaultAvatar}
+                            baseImageUrl={baseImageUrl}
                         />;
             case 'saved_stories':
                 return <UserSavedStories 
@@ -499,7 +521,7 @@ const Profile = () => {
     return (
         <div className='main-profile-container'> 
             <div className='img-container-top'>
-                <img src={books} alt="" />
+                <img src={books} alt="Banner" />
             </div>
             <div className="container-profile">
                 {/* Exibição Permanente do UserInfo */}
@@ -514,6 +536,7 @@ const Profile = () => {
                             defaultAvatar={defaultAvatar} 
                             isOwner={isOwner} 
                             handleEdit={handleEditProfile}
+                            baseImageUrl={baseImageUrl}
                         />
                     )}
                 </div> 
