@@ -1,3 +1,5 @@
+// src/layouts/SecLayout.js
+
 import React, { useEffect, useState } from 'react';
 import './SecLayout.css';
 import NavButton from '../components/NavButton';
@@ -10,6 +12,7 @@ function SecLayout() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [username, setUsername] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [categories, setCategories] = useState([]); // Estado para armazenar categorias
   const navigate = useNavigate(); // Para redirecionar após logout
 
   useEffect(() => {
@@ -49,15 +52,40 @@ function SecLayout() {
       }
     };
 
+    const fetchCategories = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return;
+      }
+
+      try {
+        const response = await api.get('/auth/categories', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setCategories(response.data.categories);
+        console.log('Categorias obtidas:', response.data.categories); // Debug
+      } catch (error) {
+        console.error('Erro ao buscar categorias:', error);
+      }
+    };
+
     fetchUser();
+    fetchCategories();
   }, []);
+
+  // Adicionar useEffect para depuração do estado categories
+  useEffect(() => {
+    console.log('Estado "categories" atualizado:', categories);
+  }, [categories]);
 
   // Função para lidar com o logout
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsAuthenticated(false);
     setUsername('');
-    navigate('/'); // Redireciona para a página de login
+    navigate('/login'); // Redireciona para a página de login
   };
 
   return (
@@ -73,7 +101,27 @@ function SecLayout() {
           {/* Botões à direita */}
           <div className="nav-buttons">
             <NavButton text="Home" to="/StorysPage" />
-            <NavButton text="Topics" to="/" />
+
+            {/* Menu de "Topics" com dropdown */}
+            <div className="topics-menu">
+              <span className="nav-button">Topics</span>
+              <div className="dropdown-content">
+                {categories.length > 0 ? (
+                  categories.map((category) => (
+                    <Link
+                      key={category.id}
+                      to={`/StorysPage?category=${encodeURIComponent(category.name)}`}
+                      className="dropdown-item"
+                    >
+                      {category.name}
+                    </Link>
+                  ))
+                ) : (
+                  <p className="dropdown-item">Nenhuma categoria disponível</p>
+                )}
+              </div>
+            </div>
+
             <NavButton text="About Us" to="/explore" />
 
             {/* Exibe o menu de perfil com dropdown */}
@@ -84,7 +132,10 @@ function SecLayout() {
                   <Link to={`/Profile/${username}`} className="dropdown-item">
                     Profile
                   </Link>
-                  <Link to="/settings" className="dropdown-item">
+                  <Link
+                    to={`/Profile/${username}?tab=settings`}
+                    className="dropdown-item"
+                  >
                     Settings
                   </Link>
                   <button className="dropdown-item" onClick={handleLogout}>

@@ -1,7 +1,7 @@
-// Profile.js
+// src/pages/Profile.js
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import api from '../services/api';
 import './Profile.css';
 import books from '../Assets/books.jpg';
@@ -52,9 +52,7 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                     <p className='subtitle-container-info'>About Me</p>
                     <p className='bio-text'>{bio || "no info"}</p>
                     {/* Mostrar botão de edição se for o dono do perfil */}
-                    {isOwner && (
-                        <button onClick={handleEdit} className="edit-profile-button">Editar Perfil</button>
-                    )}
+
                 </div>
             </div>
         </div>
@@ -187,6 +185,7 @@ const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds }) => 
 
 const Profile = () => {
     const { username } = useParams();
+    const location = useLocation();
     const [profileUser, setProfileUser] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [stories, setStories] = useState([]);
@@ -213,13 +212,17 @@ const Profile = () => {
             return;
         }
 
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         try {
-            const response = await api.get('/auth/me');
+            const response = await api.get('/auth/me', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             console.log('Dados do usuário autenticado:', response.data);
             setCurrentUser(response.data);
         } catch (error) {
             console.error('Erro ao buscar dados do usuário autenticado:', error);
+            // O interceptor do Axios irá redirecionar para a página de login
         } finally {
             setLoading(false);
         }
@@ -279,14 +282,6 @@ const Profile = () => {
         }
 
         try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.log('Nenhum token encontrado');
-                return;
-            }
-
-            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
             const response = await api.get(`/auth/saved_stories/${currentUser.id}`);
             const ids = response.data.map(story => story.id);
             setSavedStoryIds(ids);
@@ -329,6 +324,21 @@ const Profile = () => {
             setIsOwner(false);
         }
     }, [currentUser, profileUser]);
+
+    // useEffect para definir a aba ativa com base no parâmetro de consulta 'tab'
+    useEffect(() => {
+        if (profileUser) {
+            const params = new URLSearchParams(location.search);
+            const tab = params.get('tab');
+            if (tab === 'settings' && isOwner) {
+                setContent('settings');
+            } else if (tab === 'saved_stories') {
+                setContent('saved_stories');
+            } else {
+                setContent('stories');
+            }
+        }
+    }, [profileUser, location.search, isOwner]);
 
     // Função para salvar ou remover a história
     const handleSaveStory = async (storyId) => {

@@ -1,15 +1,20 @@
-// StorysPage.js
+// src/pages/StorysPage.js
 
 import React, { useEffect, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import StoryCard from '../components/StoryCard';
 import './StorysPage.css';
 
 const StorysPage = () => {
+    const location = useLocation(); // Hook para acessar a localização atual
+    const navigate = useNavigate();
+    const queryParams = new URLSearchParams(location.search);
+    const initialCategory = queryParams.get('category') || 'Todas';
+
     const [stories, setStories] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('Todas');
+    const [categories, setCategories] = useState(['Todas']);
+    const [selectedCategory, setSelectedCategory] = useState(initialCategory);
     const [sortOrder, setSortOrder] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
@@ -35,6 +40,7 @@ const StorysPage = () => {
                 setCurrentUser(response.data);
             } catch (error) {
                 console.error('Erro ao obter o usuário atual:', error);
+                // O interceptor do Axios irá redirecionar para a página de login
             }
         };
 
@@ -60,9 +66,9 @@ const StorysPage = () => {
         fetchSavedStories();
     }, [currentUser]);
 
-    // Buscar todas as histórias
+    // Buscar todas as histórias e categorias
     useEffect(() => {
-        const fetchStories = async () => {
+        const fetchStoriesAndCategories = async () => {
             try {
                 const token = localStorage.getItem('token');
                 const response = await api.get('/auth/stories_all', {
@@ -72,8 +78,8 @@ const StorysPage = () => {
                 });
                 setStories(response.data);
 
-                // Extrair categorias únicas
-                const uniqueCategories = ['Todas', ...new Set(response.data.map(story => story.category))];
+                // Extrair categorias únicas das histórias
+                const uniqueCategories = ['Todas', ...new Set(response.data.map(story => story.category).filter(Boolean))];
                 setCategories(uniqueCategories);
             } catch (error) {
                 console.error('Erro ao carregar histórias:', error);
@@ -83,13 +89,28 @@ const StorysPage = () => {
             }
         };
 
-        fetchStories();
+        fetchStoriesAndCategories();
     }, []);
+
+    // Atualizar o selectedCategory quando o parâmetro de consulta muda
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const category = params.get('category') || 'Todas';
+        setSelectedCategory(category);
+        setCurrentPage(1); // Resetar para a primeira página ao mudar a categoria
+    }, [location.search]);
 
     // Funções de manipulação
     const handleCategoryClick = (category) => {
         setSelectedCategory(category);
         setCurrentPage(1);
+
+        // Atualizar a URL com o parâmetro de categoria usando useNavigate
+        if (category === 'Todas') {
+            navigate('/StorysPage');
+        } else {
+            navigate(`/StorysPage?category=${encodeURIComponent(category)}`);
+        }
     };
 
     const handleSort = (order) => {
@@ -204,7 +225,7 @@ const StorysPage = () => {
 
     return (
         <div className="home-page">
-            <h1>Interative Storys Explorer</h1>
+            <h1>Interactive Stories Explorer</h1>
             <h6>
                 Mergulhe em aventuras incríveis e tome decisões que moldam o destino de cada história. Cada escolha leva a caminhos inesperados, repletos de mistérios, desafios e finais surpreendentes.
             </h6>

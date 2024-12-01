@@ -1,13 +1,16 @@
 // routes/auth.js
 
-const jwt = require('jsonwebtoken');
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const pool = require('../db');
+const pool = require('../db'); // Assegure-se de que o caminho está correto
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+
+// Middleware de autenticação
+const authenticateToken = require('../middleware/authMiddleware');
 
 // Configuração do armazenamento para Multer
 const storage = multer.diskStorage({
@@ -45,10 +48,13 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
-// Middleware de autenticação
-const authenticateToken = require('../middleware/authMiddleware');
+// ============================
+// Rotas de Autenticação
+// ============================
 
-// Rotas de Registro
+/**
+ * Rota de Registro de Usuário
+ */
 router.post('/register', async (req, res) => {
     const { username, firstname, lastname, email, password } = req.body;
 
@@ -81,147 +87,11 @@ router.post('/register', async (req, res) => {
 
         res.status(500).json({ error: 'Erro ao registrar o usuário.' });
     }
-});// Rota POST para salvar uma história
-
-// Rota POST para salvar uma história
-router.post('/save_story', authenticateToken, async (req, res) => {
-    console.log('Recebendo requisição para salvar história.');
-    console.log('req.body:', req.body);
-    const { storyId } = req.body;
-    const userId = req.user.id;
-    const dataSaved = new Date();
-
-    console.log('Dados recebidos:', { userId, storyId });
-
-    try {
-        // Verificar se a história já foi salva pelo usuário
-        const checkResult = await pool.query(
-            'SELECT * FROM storiessaved WHERE userid = $1 AND storyid = $2',
-            [userId, storyId]
-        );
-
-        console.log('Resultado da verificação:', checkResult.rows);
-
-        if (checkResult.rows.length > 0) {
-            return res.status(400).json({ error: 'História já salva.' });
-        }
-
-        // Inserir na tabela StoriesSaved
-        const insertResult = await pool.query(
-            'INSERT INTO storiessaved (userid, storyid, datasaved) VALUES ($1, $2, $3)',
-            [userId, storyId, dataSaved]
-        );
-
-        console.log('História salva com sucesso:', insertResult);
-
-        res.status(201).json({ message: 'História salva com sucesso!' });
-    } catch (error) {
-        console.error('Erro ao salvar história:', error);
-        res.status(500).json({ error: 'Erro interno ao salvar história.' });
-    }
 });
 
-
-// Rota GET para obter as histórias salvas por um usuário
-// Rota GET para obter as histórias salvas por um usuário
-// Rota GET para obter as histórias salvas por um usuário
-router.get('/saved_stories/:userId', authenticateToken, async (req, res) => {
-    const { userId } = req.params;
-    console.log(`Rota /saved_stories/${userId} chamada`);
-
-    try {
-        const result = await pool.query(
-            `SELECT stories.*, users.username, users.profile_image 
-             FROM storiessaved 
-             JOIN stories ON storiessaved.storyid = stories.id 
-             JOIN users ON stories.user_id = users.id 
-             WHERE storiessaved.userid = $1`,
-            [userId]
-        );
-        res.status(200).json(result.rows);
-    } catch (error) {
-        console.error('Erro ao carregar histórias salvas:', error);
-        res.status(500).json({ error: 'Erro interno ao carregar histórias salvas.' });
-    }
-});
-
-
-router.delete('/save_story/:storyId', authenticateToken, async (req, res) => {
-    const { storyId } = req.params;
-    const userId = req.user.id;
-
-    console.log('Recebendo requisição para remover história salva.');
-    console.log('Dados recebidos:', { userId, storyId });
-
-    try {
-        // Verificar se a história está salva pelo usuário
-        const checkResult = await pool.query(
-            'SELECT * FROM storiessaved WHERE userid = $1 AND storyid = $2',
-            [userId, storyId]
-        );
-
-        console.log('Resultado da verificação:', checkResult.rows);
-
-        if (checkResult.rows.length === 0) {
-            return res.status(400).json({ error: 'História não está salva.' });
-        }
-
-        // Remover a história salva
-        const deleteResult = await pool.query(
-            'DELETE FROM storiessaved WHERE userid = $1 AND storyid = $2',
-            [userId, storyId]
-        );
-
-        console.log('História removida com sucesso:', deleteResult);
-
-        res.status(200).json({ message: 'História removida com sucesso!' });
-    } catch (error) {
-        console.error('Erro ao remover história salva:', error);
-        res.status(500).json({ error: 'Erro interno ao remover história salva.' });
-    }
-});
-// Rota para retornar informações do usuário autenticado
-router.get('/me', authenticateToken, async (req, res) => {
-    try {
-        // Retorna apenas o que for necessário
-        const { id, username, email, firstname, lastname, bio, profile_image } = req.user;
-        res.status(200).json({
-            id,
-            username,
-            email,
-            firstname,
-            lastname,
-            bio,
-            profile_image,
-        });
-    } catch (error) {
-        console.error('Erro ao carregar dados do usuário:', error);
-        res.status(500).json({ error: 'Erro interno ao carregar dados do usuário.' });
-    }
-});
-
-// Rota para obter informações do usuário por username
-router.get('/users/:username', async (req, res) => {
-    const { username } = req.params;
-
-    try {
-        const result = await pool.query(
-            'SELECT id, username, firstname, lastname, email, bio, profile_image FROM users WHERE username = $1',
-            [username]
-        );
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Usuário não encontrado.' });
-        }
-
-        res.status(200).json({ user: result.rows[0] });
-    } catch (error) {
-        console.error('Erro ao buscar usuário:', error);
-        res.status(500).json({ error: 'Erro ao buscar usuário.' });
-    }
-});
-
-// Rota de Login
+/**
+ * Rota de Login de Usuário
+ */
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -256,45 +126,92 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Rota Protegida para Teste
+/**
+ * Rota Protegida para Teste
+ */
 router.get('/protected-route', authenticateToken, (req, res) => {
     res.json({ message: 'Acesso permitido!', user: req.user });
 });
 
-// 1. Rota GET para obter histórias do usuário autenticado ou de outro usuário via query
-// routes/auth.js
+// ============================
+// Rotas de Histórias
+// ============================
 
-// ... existing imports and configurations ...
-
-// New POST /stories route to create a story with optional image upload
+/**
+ * Rota POST para Criar uma Nova História
+ * Endpoint: /auth/stories
+ */
 router.post('/stories', authenticateToken, upload.single('img'), async (req, res) => {
-    console.log('POST /stories was called');
+    console.log('POST /stories foi chamado');
+
     const { id: authUserId } = req.user;
-    const { title, content, category } = req.body;
+    const { title, content, category_id } = req.body; // Alterado para category_id
     const image = req.file ? req.file.filename : null;
 
-    // Validate required fields
-    if (!title || !content || !category) {
-        return res.status(400).json({ error: 'Title, content, and category are required.' });
+    // Log dos dados recebidos
+    console.log('Dados recebidos:', { title, content, category_id, image });
+
+    // Validação dos campos obrigatórios
+    if (!title || !content || !category_id) {
+        return res.status(400).json({ error: 'Title, content, and category_id são obrigatórios.' });
+    }
+
+    // Converter category_id para número
+    const parsedCategoryId = parseInt(category_id, 10);
+
+    if (isNaN(parsedCategoryId)) {
+        return res.status(400).json({ error: 'category_id deve ser um número válido.' });
     }
 
     try {
-        // Insert the new story into the database
-        const result = await pool.query(
-            `INSERT INTO stories (user_id, title, content, category, img, created_at) 
-             VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *`,
-            [authUserId, title, content, category, image]
+        // Verificar se o category_id existe na tabela categories
+        const categoryCheck = await pool.query(
+            'SELECT id FROM categories WHERE id = $1',
+            [parsedCategoryId]
         );
-        console.log('New story created:', result.rows[0]);
+
+        if (categoryCheck.rows.length === 0) {
+            return res.status(400).json({ error: 'category_id inválido. Categoria não existe.' });
+        }
+
+        // Inserir a nova história no banco de dados usando category_id
+        const result = await pool.query(
+            `INSERT INTO stories (user_id, title, content, category_id, img, created_at) 
+             VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *`,
+            [authUserId, title, content, parsedCategoryId, image]
+        );
+        console.log('Nova história criada:', result.rows[0]);
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating story:', error);
-        res.status(500).json({ error: 'Internal server error while creating story.' });
+        console.error('Erro ao criar história:', error);
+        res.status(500).json({ error: 'Erro interno ao criar história.' });
     }
 });
 
+/**
+ * Rota GET para Obter Todas as Histórias com Nome da Categoria
+ * Endpoint: /auth/stories_all
+ */
+router.get('/stories_all', authenticateToken, async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT stories.*, categories.name AS category, users.username, users.profile_image 
+             FROM stories 
+             JOIN users ON stories.user_id = users.id 
+             JOIN categories ON stories.category_id = categories.id 
+             ORDER BY stories.created_at DESC`
+        );
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Erro ao carregar todas as histórias:', error);
+        res.status(500).json({ error: 'Erro interno ao carregar histórias.' });
+    }
+});
 
-// 2. Rota GET para obter histórias de um usuário específico pelo username
+/**
+ * Rota GET para Obter Histórias de um Usuário Específico pelo Username
+ * Endpoint: /auth/stories/:username
+ */
 router.get('/stories/:username', async (req, res) => {
     const { username } = req.params;
 
@@ -313,9 +230,10 @@ router.get('/stories/:username', async (req, res) => {
 
         // Agora, obtenha as histórias desse usuário com username e profile_image
         const storiesResult = await pool.query(
-            `SELECT stories.*, users.username, users.profile_image
+            `SELECT stories.*, users.username, users.profile_image, categories.name AS category
              FROM stories
              JOIN users ON stories.user_id = users.id
+             JOIN categories ON stories.category_id = categories.id
              WHERE stories.user_id = $1
              ORDER BY stories.created_at DESC`,
             [userId]
@@ -329,12 +247,20 @@ router.get('/stories/:username', async (req, res) => {
     }
 });
 
+/**
+ * Rota GET para Obter uma História pelo ID
+ * Endpoint: /auth/stories/id/:id
+ */
 router.get('/stories/id/:id', authenticateToken, async (req, res) => {
     const { id } = req.params;
 
     try {
         const storyResult = await pool.query(
-            'SELECT stories.*, users.username, users.profile_image FROM stories JOIN users ON stories.user_id = users.id WHERE stories.id = $1',
+            `SELECT stories.*, users.username, users.profile_image, categories.name AS category
+             FROM stories
+             JOIN users ON stories.user_id = users.id
+             JOIN categories ON stories.category_id = categories.id
+             WHERE stories.id = $1`,
             [id]
         );
 
@@ -350,31 +276,166 @@ router.get('/stories/id/:id', authenticateToken, async (req, res) => {
     }
 });
 
-// Rota para obter todas as histórias
-// Exemplo de rota atualizada
-router.get('/stories_all', authenticateToken, async (req, res) => {
+// ============================
+// Rotas de Salvar e Remover Histórias Salvas
+// ============================
+
+/**
+ * Rota POST para Salvar uma História
+ * Endpoint: /auth/save_story
+ */
+router.post('/save_story', authenticateToken, async (req, res) => {
+    console.log('Recebendo requisição para salvar história.');
+    console.log('req.body:', req.body);
+    const { storyId } = req.body;
+    const userId = req.user.id;
+    const dataSaved = new Date();
+
+    console.log('Dados recebidos:', { userId, storyId });
+
     try {
-        const result = await pool.query(
-            `SELECT stories.*, users.username, users.profile_image 
-             FROM stories 
-             JOIN users ON stories.user_id = users.id 
-             ORDER BY stories.created_at DESC`
+        // Verificar se a história já foi salva pelo usuário
+        const checkResult = await pool.query(
+            'SELECT * FROM storiessaved WHERE userid = $1 AND storyid = $2',
+            [userId, storyId]
         );
-        res.status(200).json(result.rows);
+
+        console.log('Resultado da verificação:', checkResult.rows);
+
+        if (checkResult.rows.length > 0) {
+            return res.status(400).json({ error: 'História já salva.' });
+        }
+
+        // Inserir na tabela StoriesSaved
+        await pool.query(
+            'INSERT INTO storiessaved (userid, storyid, datasaved) VALUES ($1, $2, $3)',
+            [userId, storyId, dataSaved]
+        );
+
+        res.status(201).json({ message: 'História salva com sucesso!' });
     } catch (error) {
-        console.error('Erro ao carregar todas as histórias:', error);
-        res.status(500).json({ error: 'Erro interno ao carregar histórias.' });
+        console.error('Erro ao salvar história:', error);
+        res.status(500).json({ error: 'Erro interno ao salvar história.' });
     }
 });
 
+/**
+ * Rota DELETE para Remover uma História Salva
+ * Endpoint: /auth/save_story/:storyId
+ */
+router.delete('/save_story/:storyId', authenticateToken, async (req, res) => {
+    const { storyId } = req.params;
+    const userId = req.user.id;
 
+    console.log('Recebendo requisição para remover história salva.');
+    console.log('Dados recebidos:', { userId, storyId });
 
-// 3. Rota POST para criar uma nova história
-// 3. Rota POST para criar uma nova história
+    try {
+        // Verificar se a história está salva pelo usuário
+        const checkResult = await pool.query(
+            'SELECT * FROM storiessaved WHERE userid = $1 AND storyid = $2',
+            [userId, storyId]
+        );
 
+        console.log('Resultado da verificação:', checkResult.rows);
 
+        if (checkResult.rows.length === 0) {
+            return res.status(400).json({ error: 'História não está salva.' });
+        }
 
-// Rota para atualizar o perfil do usuário
+        // Remover a história salva
+        await pool.query(
+            'DELETE FROM storiessaved WHERE userid = $1 AND storyid = $2',
+            [userId, storyId]
+        );
+
+        res.status(200).json({ message: 'História removida com sucesso!' });
+    } catch (error) {
+        console.error('Erro ao remover história salva:', error);
+        res.status(500).json({ error: 'Erro interno ao remover história salva.' });
+    }
+});
+
+/**
+ * Rota GET para Obter Histórias Salvas por um Usuário
+ * Endpoint: /auth/saved_stories/:userId
+ */
+router.get('/saved_stories/:userId', authenticateToken, async (req, res) => {
+    const { userId } = req.params;
+    console.log(`Rota /saved_stories/${userId} chamada`);
+
+    try {
+        const result = await pool.query(
+            `SELECT stories.*, users.username, users.profile_image, categories.name AS category
+             FROM storiessaved 
+             JOIN stories ON storiessaved.storyid = stories.id 
+             JOIN users ON stories.user_id = users.id 
+             JOIN categories ON stories.category_id = categories.id
+             WHERE storiessaved.userid = $1`,
+            [userId]
+        );
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Erro ao carregar histórias salvas:', error);
+        res.status(500).json({ error: 'Erro interno ao carregar histórias salvas.' });
+    }
+});
+
+// ============================
+// Rotas de Perfil de Usuário
+// ============================
+
+/**
+ * Rota GET para Retornar Informações do Usuário Autenticado
+ * Endpoint: /auth/me
+ */
+router.get('/me', authenticateToken, async (req, res) => {
+    try {
+        // Retorna apenas o que for necessário
+        const { id, username, email, firstname, lastname, bio, profile_image } = req.user;
+        res.status(200).json({
+            id,
+            username,
+            email,
+            firstname,
+            lastname,
+            bio,
+            profile_image,
+        });
+    } catch (error) {
+        console.error('Erro ao carregar dados do usuário:', error);
+        res.status(500).json({ error: 'Erro interno ao carregar dados do usuário.' });
+    }
+});
+
+/**
+ * Rota GET para Obter Informações do Usuário por Username
+ * Endpoint: /auth/users/:username
+ */
+router.get('/users/:username', async (req, res) => {
+    const { username } = req.params;
+
+    try {
+        const result = await pool.query(
+            'SELECT id, username, firstname, lastname, email, bio, profile_image FROM users WHERE username = $1',
+            [username]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Usuário não encontrado.' });
+        }
+
+        res.status(200).json({ user: result.rows[0] });
+    } catch (error) {
+        console.error('Erro ao buscar usuário:', error);
+        res.status(500).json({ error: 'Erro ao buscar usuário.' });
+    }
+});
+
+/**
+ * Rota PUT para Atualizar o Perfil do Usuário
+ * Endpoint: /auth/update-profile
+ */
 router.put('/update-profile', authenticateToken, async (req, res) => {
     const { bio, firstname, lastname } = req.body;
     const userId = req.user.id;  // Certifique-se que req.user.id está disponível e correto
@@ -408,10 +469,11 @@ router.put('/update-profile', authenticateToken, async (req, res) => {
         res.status(500).json({ error: 'Falha ao atualizar o perfil.' });
     }
 });
-// routes/auth.js
 
-// ... (outras importações e configurações)
-
+/**
+ * Rota POST para Upload de Imagem de Perfil
+ * Endpoint: /auth/upload-profile-image
+ */
 router.post('/upload-profile-image', authenticateToken, upload.single('profileImage'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'Nenhum arquivo enviado.' });
@@ -456,15 +518,41 @@ router.post('/upload-profile-image', authenticateToken, upload.single('profileIm
     }
 });
 
-// ... (restante do código)
+// ============================
+// Rota GET para Obter Categorias
+// ============================
 
+/**
+ * Rota GET para Obter Categorias
+ * Endpoint: /auth/categories
+ */
+router.get('/categories', authenticateToken, async (req, res) => {
+    console.log('GET /categories foi chamado.');
+    try {
+        const result = await pool.query('SELECT id, name FROM categories ORDER BY name ASC');
+        const categories = result.rows; // Array de objetos { id, name }
+        console.log('Categorias obtidas:', categories);
+        res.status(200).json({ categories });
+    } catch (error) {
+        console.error('Erro ao buscar categorias:', error);
+        res.status(500).json({ error: 'Erro ao buscar categorias.' });
+    }
+});
 
-module.exports = router;
+// ============================
+// Rotas de Teste
+// ============================
 
-// Rota de teste existente
+/**
+ * Rota de Teste para Verificar o Funcionamento das Rotas
+ * Endpoint: /auth/test
+ */
 router.get('/test', (req, res) => {
     res.json({ message: 'Rota de teste funciona!' });
 });
 
-// Exporta o router **APÓS** todas as rotas estarem definidas
+// ============================
+// Exportação do Router
+// ============================
+
 module.exports = router;
