@@ -1,7 +1,7 @@
 // src/pages/Story.js
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import api from '../services/api';
 import './Story.css'; // Certifique-se de que o caminho está correto
 
@@ -43,14 +43,30 @@ const Story = () => {
     const baseImageUrl = process.env.REACT_APP_BASE_IMAGE_URL || 'http://localhost:5000/uploads/';
     const imgSrc = story.img ? `${baseImageUrl}${story.img}` : '';
 
+    // Construir o caminho completo da imagem de perfil do autor, se aplicável
+    const profileImageSrc = story.profile_image ? `${baseImageUrl}${story.profile_image}` : 'https://www.gravatar.com/avatar/?d=mp&f=y';
+
     return (
         <div className="story-page">
             <div className='main-container-story'>
                 <div className='intro-container'>
                     <div>
                         <h1>{story.title}</h1>    
-                        <p><strong>Categoria:</strong> {story.category}</p>
-                        <small>Feita por: {story.username}</small>    
+                        <p>
+                          
+                            <Link 
+                                to={`/StorysPage?category=${encodeURIComponent(story.category)}`} 
+                                className='category-link'
+                            >
+                                {story.category}
+                            </Link>
+                        </p>
+                        <small>
+                            Made by:{' '}
+                            <Link to={`/profile/${story.username}`} className='author-link'>
+                                {story.username}
+                            </Link>
+                        </small>    
                     </div>   
 
                     {story.img && (

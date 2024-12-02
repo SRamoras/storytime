@@ -1,6 +1,15 @@
+// src/pages/RegisterPage.js
+
 import React, { useState } from 'react';
 import api from '../services/api';
-import './RegisterPage.css';
+import { useNavigate, Link } from 'react-router-dom';
+import './LoginPage.css'; // Using the same CSS file as the login page
+import BlackButton from '../components/BlackButton';
+import registerImage from '../Assets/login_foto.jpg'; // Ensure this image exists or use the same as login
+
+// Importing icons from react-icons
+import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+
 const RegisterPage = () => {
     const [formData, setFormData] = useState({
         username: '',
@@ -10,6 +19,9 @@ const RegisterPage = () => {
         password: '',
     });
 
+    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -17,64 +29,119 @@ const RegisterPage = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/auth/register', formData);
-            alert('Usuário registrado com sucesso!');
+            const response = await api.post('/auth/register', formData);
+            alert('User registered successfully!');
+            navigate('/login'); // Redirect to login page after successful registration
         } catch (error) {
-            alert('Erro ao registrar o usuário.');
+            console.error('Error registering user:', error);
+            alert('Error registering user. Please check your data and try again.');
         }
     };
 
+    // Function to toggle password visibility
+    const toggleShowPassword = () => {
+        setShowPassword(prevState => !prevState);
+    };
+
     return (
-        <div className="register-container">
-            <form className="register-form" onSubmit={handleRegister}>
-                <h1>Registro</h1>
-                <input
-                    className="input-field"
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    value={formData.username}
-                    onChange={handleChange}
-                />
-                <input
-                    className="input-field"
-                    type="text"
-                    name="firstname"
-                    placeholder="First Name"
-                    value={formData.firstname}
-                    onChange={handleChange}
-                />
-                <input
-                    className="input-field"
-                    type="text"
-                    name="lastname"
-                    placeholder="Last Name"
-                    value={formData.lastname}
-                    onChange={handleChange}
-                />
-                <input
-                    className="input-field"
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                />
-                <input
-                    className="input-field"
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                />
-                <button className="button-black" type="submit">Registrar</button>
-                <div>
-                <p>Don have an account?   <a href="/login">Login here</a></p>
-             
-            </div> 
+        <div className="login-container"> {/* Reusing the same container class */}
+            <form className="login-form register-form" onSubmit={handleRegister}> {/* Adding a specific class if needed */}
+                <h1>Register</h1>
+                <p>Create your account</p>
+                
+                {/* Username Field with Icon */}
+                <div className="input-group">
+                    <FaUser className="input-icon" />
+                    <input
+                        className="input-field"
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        value={formData.username}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                {/* First Name Field with Icon */}
+                <div className="input-group">
+                    <FaUser className="input-icon" />
+                    <input
+                        className="input-field"
+                        type="text"
+                        name="firstname"
+                        placeholder="First Name"
+                        value={formData.firstname}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                {/* Last Name Field with Icon */}
+                <div className="input-group">
+                    <FaUser className="input-icon" />
+                    <input
+                        className="input-field"
+                        type="text"
+                        name="lastname"
+                        placeholder="Last Name"
+                        value={formData.lastname}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                {/* Email Field with Icon */}
+                <div className="input-group">
+                    <FaEnvelope className="input-icon" />
+                    <input
+                        className="input-field"
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                {/* Password Field with Icon and Toggle Button */}
+                <div className="input-group">
+                    <FaLock className="input-icon" />
+                    <input
+                        className="input-field"
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="Password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                    <button
+                        type="button"
+                        className="password-toggle-button"
+                        onClick={toggleShowPassword}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                </div>
+
+                {/* Register Button */}
+                <BlackButton type="submit" text="Register" />
+
+                {/* Link to Login */}
+                <div className="register-link">
+                    <p>Already have an account? <Link to="/login">Login here</Link></p>
+                </div>
             </form>
+
+            {/* Right Side Image */}
+            <div className="right-image">
+                <img src={registerImage} alt="Decorative right side" /> {/* Ensure this image exists */}
+            </div>
         </div>
     );
 };
+
 export default RegisterPage;

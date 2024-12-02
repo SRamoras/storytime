@@ -600,25 +600,63 @@ router.get('/me', authenticateToken, async (req, res) => {
  * Rota GET para Obter Informações do Usuário por Username
  * Endpoint: /auth/users/:username
  */
+// routes/auth.js
+// routes/auth.js
+
+// ... (outro código permanece o mesmo)
+
 router.get('/users/:username', async (req, res) => {
     const { username } = req.params;
 
     try {
-        const result = await pool.query(
+        // Busca os dados do usuário
+        const userResult = await pool.query(
             'SELECT id, username, firstname, lastname, email, bio, profile_image FROM users WHERE username = $1',
             [username]
         );
 
-        if (result.rows.length === 0) {
+        if (userResult.rows.length === 0) {
             return res.status(404).json({ error: 'Usuário não encontrado.' });
         }
 
-        res.status(200).json({ user: result.rows[0] });
+        const user = userResult.rows[0];
+        const userId = user.id;
+
+        // Obter o contador de histórias publicadas
+        const storyCountResult = await pool.query(
+            'SELECT COUNT(*) FROM stories WHERE user_id = $1',
+            [userId]
+        );
+        const storyCount = parseInt(storyCountResult.rows[0].count);
+
+        // Obter o contador de histórias salvas
+        const savedCountResult = await pool.query(
+            'SELECT COUNT(*) FROM storiessaved WHERE userid = $1',
+            [userId]
+        );
+        const savedCount = parseInt(savedCountResult.rows[0].count);
+
+        // Obter o contador de histórias lidas
+        const readCountResult = await pool.query(
+            'SELECT COUNT(*) FROM readstories WHERE userid = $1',
+            [userId]
+        );
+        const readCount = parseInt(readCountResult.rows[0].count);
+
+        // Adicionar os contadores ao objeto do usuário
+        user.storyCount = storyCount;
+        user.savedCount = savedCount;
+        user.readCount = readCount;
+
+        res.status(200).json({ user });
     } catch (error) {
         console.error('Erro ao buscar usuário:', error);
         res.status(500).json({ error: 'Erro ao buscar usuário.' });
     }
 });
+
+// ... (continuação do código)
+
 
 /**
  * Rota PUT para Atualizar o Perfil do Usuário

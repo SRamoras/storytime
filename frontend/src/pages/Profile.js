@@ -9,7 +9,12 @@ import StoryCard from '../components/StoryCard';
 import UserReadStories from '../components/UserReadStories';
 
 // Subcomponentes definidos fora do componente principal
+// src/pages/Profile.js
+// src/pages/Profile.js
 
+// ... (outro código permanece o mesmo)
+
+// Componente UserInfo atualizado
 const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, defaultAvatar, isOwner, handleEdit, baseImageUrl }) => {
     // Construir o caminho completo da imagem de perfil
     const profileImageSrc = profileImage 
@@ -35,31 +40,30 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                     </div>
                     <div className='div-line'></div>
                     <div className='container-info-medium'>
-                        <p>Histórias:</p>
+                        <p>Published Stories:</p>
                         <p>{user.storyCount || 0}</p>
                     </div>
                     <div className='container-info-medium'>
-                        <p>Favoritas:</p>
-                        <p>{user.favoriteCount || 0}</p>
+                        <p>Saved Stories:</p>
+                        <p>{user.savedCount || 0}</p>
                     </div>
                     <div className='container-info-medium'>
-                        <p>Histórias Lidas:</p>
+                        <p>Read Stories:</p>
                         <p>{user.readCount || 0}</p>
                     </div>
                     <div className='div-line'></div>
                     <p className='subtitle-container-info'>About Me</p>
                     <p className='bio-text'>{bio || "no info"}</p>
                     {/* Mostrar botão de edição se for o dono do perfil */}
-                    {isOwner && (
-                        <button className="edit-button" onClick={handleEdit}>
-                            Editar Perfil
-                        </button>
-                    )}
+             
                 </div>
             </div>
         </div>
     );
 });
+
+// ... (continuação do código)
+
 
 const UserSettings = React.memo(({ 
     firstname, 
@@ -236,20 +240,24 @@ const Profile = () => {
     };
 
     // Função para buscar os dados do perfil baseado no username da URL
-    const fetchProfileUser = async () => {
-        try {
-            const response = await api.get(`/auth/users/${username}`);
-            console.log('Dados do perfil recebidos:', response.data.user);
-            setProfileUser(response.data.user);
-            setBio(response.data.user.bio || "");
-            setFirstname(response.data.user.firstname || "");
-            setLastname(response.data.user.lastname || "");
-            setProfileImage(response.data.user.profile_image || "");
-        } catch (error) {
-            console.error('Erro ao buscar dados do perfil:', error);
-            alert('Erro ao buscar dados do perfil.');
-        }
-    };
+   // Dentro da função fetchProfileUser em Profile.js
+
+// Função para buscar os dados do perfil baseado no username da URL
+const fetchProfileUser = async () => {
+    try {
+        const response = await api.get(`/auth/users/${username}`);
+        console.log('Dados do perfil recebidos:', response.data.user);
+        setProfileUser(response.data.user);
+        setBio(response.data.user.bio || "");
+        setFirstname(response.data.user.firstname || "");
+        setLastname(response.data.user.lastname || "");
+        setProfileImage(response.data.user.profile_image || "");
+    } catch (error) {
+        console.error('Erro ao buscar dados do perfil:', error);
+        alert('Erro ao buscar dados do perfil.');
+    }
+};
+
 
     // Função para buscar as histórias do usuário
     const fetchUserStories = async () => {

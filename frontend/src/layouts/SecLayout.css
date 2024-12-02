@@ -46,11 +46,13 @@
 /* Botões à direita */
 .nav-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   align-items: center;
   height: 100%;
 }
-
+.logout-icon {
+  color: #d60000; /* Vermelho específico para o ícone de Logout */
+}
 /* Estilos para .nav-button */
 .nav-button {
   display: inline-flex;
@@ -63,7 +65,7 @@
   position: relative;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  color: inherit;
+ color: #000;
   text-decoration: none;
   transition: transform 0.3s ease; /* Adiciona transição para a transformação */
 }
@@ -81,18 +83,6 @@
   align-items: center;
   height: 100%;
 }
-
-/* Remova ou comente estas regras 
-/*
-.topics-menu .nav-button::after,
-.profile-menu .nav-button::after {
-  content: '\25BE'; 
-  margin-left: 5px;
-  display: inline-block;
-  vertical-align: middle;
-  transition: transform 0.3s ease;
-}
-
 
 /* Dropdown de Topics e Profile */
 .dropdown-content {
@@ -198,7 +188,6 @@
 
 /* Estilos para BlackButton */
 .black-button {
-  display: flex;
   align-items: center;
   text-decoration: none;
 }
@@ -276,3 +265,86 @@
   color: #ffcc00; /* Altere para a cor desejada */
   transform: scale(1.2); /* Aumenta 20% o tamanho */
 }
+
+/* --- Início das Adições --- */
+
+/* Estilos para os ícones nos botões de navegação */
+.nav-button .nav-icon {
+  margin-right: 8px; /* Espaço entre o ícone e o texto */
+  font-size: 24px; /* Tamanho dos ícones nos nav-buttons */
+  color: inherit; /* Herda a cor do nav-button */
+  display: flex;
+  align-items: center;
+}
+
+/* Estilos para os ícones de seta (arrow_downward) nos botões de navegação */
+.nav-button .arrow-icon {
+  margin-left: 5px; /* Espaço entre o texto e a seta */
+  font-size: 20px; /* Tamanho da seta */
+  display: flex;
+  align-items: center;
+}
+
+/* Estilos para os ícones nos itens do dropdown */
+.dropdown-item .dropdown-icon {
+  margin-right: 8px; /* Espaço entre o ícone e o texto */
+  font-size: 20px; /* Tamanho dos ícones nos dropdowns */
+
+  display: flex;
+  align-items: center;
+}
+
+/* Ajusta o padding-left para acomodar a linha vertical e o ícone nos itens do dropdown */
+.dropdown-item {
+  display: flex; /* Ativa Flexbox para alinhamento horizontal */
+  align-items: center; /* Alinha verticalmente ícone e texto */
+  white-space: nowrap; /* Evita que o texto quebre para uma nova linha */
+  padding-left: 20px; /* Espaço para a linha (12px) + ícone (20px) + margem (8px) */
+}
+
+/* Estilos para o botão "Create Story" com ícone */
+/* Removido, pois o botão "Create Story" agora não possui ícone */
+
+/* Estilos para os ícones no footer */
+.footer-link .footer-icon,
+.footer-social a .footer-social-icon {
+  margin-right: 8px; /* Espaço entre o ícone e o texto */
+  font-size: 24px; /* Tamanho dos ícones no footer */
+  color: #ffffff; /* Cor dos ícones no footer */
+  display: flex;
+  align-items: center;
+}
+
+/* Responsividade: Ajustes para telas menores */
+@media (max-width: 768px) {
+  /* Reduz o tamanho dos ícones nos nav-buttons */
+  .nav-button .nav-icon {
+    font-size: 20px;
+  }
+
+  /* Reduz o tamanho da seta nos nav-buttons */
+  .nav-button .arrow-icon {
+    font-size: 18px;
+  }
+
+  /* Reduz o tamanho dos ícones nos dropdowns */
+  .dropdown-item .dropdown-icon {
+    font-size: 18px;
+  }
+
+  /* Reduz o tamanho dos ícones no footer */
+  .footer-link .footer-icon,
+  .footer-social a .footer-social-icon {
+    font-size: 20px;
+  }
+
+  /* Ajusta o padding-left para telas menores */
+  .dropdown-item {
+    padding-left: 35px; /* Ajuste conforme necessário */
+  }
+
+  /* Reduz o tamanho do ícone no botão "Create Story" */
+  /* Não aplicável, pois o botão não possui ícone */
+}
+
+/* --- Fim das Adições --- */

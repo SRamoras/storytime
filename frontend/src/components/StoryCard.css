@@ -76,14 +76,32 @@
   white-space: normal; /* Permite que o texto ocupe várias linhas */
 }
 
-.text-container-info .category-text {
-  margin: 5px 0;
-  color: #fff;
+/* Estilo para o Link da Categoria */
+.category-text {
+  color: #fff; /* Cor do texto */
   font-size: 0.95em;
   border-radius: 15px;
   width: fit-content; /* Ajusta a largura ao conteúdo */
   background-color: #000;
   padding: 2px 8px; /* Espaçamento interno */
+  text-decoration: none; /* Remove o sublinhado */
+  display: inline-block; /* Garante que as propriedades de padding funcionem corretamente */
+  transition: background-color 0.3s, transform 0.3s; /* Transição suave para hover */
+  cursor: pointer; /* Indica que é clicável */
+}
+
+/* Efeito de Hover para a Categoria */
+.category-text:hover {
+  background-color: #333; /* Muda a cor de fundo no hover */
+  transform: scale(1.05); /* Aumenta ligeiramente o tamanho */
+}
+
+/* Responsividade para o Link da Categoria */
+@media (max-width: 600px) {
+  .category-text {
+    font-size: 1em;
+    padding: 4px 10px;
+  }
 }
 
 /* Estilo do conteúdo da história */
@@ -227,6 +245,38 @@
 .author-info {
   display: flex;
   align-items: center;
+  text-decoration: none; /* Remove o sublinhado */
+  transition: transform 0.3s ease; /* Transição suave para o efeito de escala */
+  cursor: pointer; /* Indica que o elemento é clicável */
+}
+
+/* Opção 1: Escalar o contêiner inteiro no hover */
+.author-info:hover {
+  transform: scale(1.05); /* Aumenta 5% o tamanho */
+}
+
+/* --- Ou --- */
+
+/* Opção 2: Escalar a imagem e o texto separadamente */
+
+/* Remover sublinhado do texto dentro do Link */
+.author-info .username-text {
+  text-decoration: none;
+  transition: transform 0.3s ease; /* Transição suave para o efeito de escala */
+}
+
+/* Efeito de hover para a imagem de perfil */
+.author-info img {
+  transition: transform 0.3s ease; /* Transição suave para o efeito de escala */
+}
+
+.author-info:hover img {
+  transform: scale(1.1); /* Aumenta 10% o tamanho da imagem */
+}
+
+/* Efeito de hover para o nome de usuário */
+.author-info:hover .username-text {
+  transform: scale(1.05); /* Aumenta 5% o tamanho do texto */
 }
 
 /* Estilo para a imagem de perfil do autor */
@@ -246,6 +296,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #000;
+  text-decoration: none;
 }
 
 /* Estilo para o nome de usuário no hover */

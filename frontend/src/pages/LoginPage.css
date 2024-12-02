@@ -1,35 +1,38 @@
+/* src/pages/LoginPage.css */
+
+
 .login-container {
     display: flex;
     align-items: center;
+    justify-content: center; 
     height: 100vh;
-    background: #fff; /* Fundo da página */
+    background: #fff; 
 }
 
 .login-form {
-    flex: 1; /* O formulário ocupa metade da parte esquerda da tela */
+    flex: 1; 
     display: flex;
-
-    flex-direction: column; /* Alinha os itens em coluna */
+    flex-direction: column;
     padding: 20px;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin: 0 auto; /* Centraliza o formulário na parte disponível */
-    max-width: 300px; /* Largura máxima do formulário */
+    margin: 0 auto; 
+    max-width: 350px;
+
 }
 
 .right-image {
-    flex: 0.5; /* A imagem ocupa exatamente a metade direita da tela */
-    width: 50vw; /* Define a largura exata para 50% da tela */
-    height: 100vh; /* Altura total da tela */
-    overflow: hidden; /* Garante que a imagem não ultrapasse o contêiner */
-    position: relative; /* Posição relativa para sobrepor o degradê */
+    flex: 0.5; 
+    width: 50vw; 
+    height: 100vh; 
+    overflow: hidden;
+    position: relative; 
 }
 
 .right-image img {
     height: 100%;
     width: 100%;
-    object-fit: cover; /* Garante que a imagem cubra todo o espaço sem distorção */
+    object-fit: cover; 
 }
 
 .right-image::after {
@@ -39,5 +42,119 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to left, transparent, #fff 100%); /* Degradê da esquerda para a direita */
+    background: linear-gradient(to left, transparent, #fff 100%); 
+}
+
+.login-form h1 {
+    margin: 0px;
+    color: #333;
+}
+
+.login-form p {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    color: #555;
+
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 18px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px 10px 10px 35px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 16px;
+    box-sizing: border-box; 
+    height: 40px; 
+}
+
+.input-field:focus {
+    border-color: #000;
+    outline: none;
+}
+
+.password-toggle-button {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    font-size: 18px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle-button:hover {
+    color: #555;
+    transform: translateY(-50%) scale(1.2); 
+}
+
+.password-toggle-button:focus {
+    outline: none;
+}
+
+.button-black {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.button-black:hover {
+    background-color: #555;
+}
+
+.register-link {
+    margin-top: 10px;
+}
+
+.register-link a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .right-image {
+        width: 100%;
+        height: 200px;
+    }
+
+    .login-form {
+        max-width: 100%;
+        width: 90%;
+    }
 }

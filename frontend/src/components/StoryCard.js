@@ -136,7 +136,13 @@ const StoryCard = ({ story, isSaved = false, handleSaveStory, showSaveButton = f
           </div>
           <div className='text-container-info'>
             <h3>{story.title}</h3>
-            <p className='category-text'>{story.category}</p>
+            {/* Categoria como Link */}
+            <Link 
+              to={`/StorysPage?category=${encodeURIComponent(story.category)}`} 
+              className='category-text'
+            >
+              {story.category}
+            </Link>
           </div>
         </div>
         <p className='introduction-paragraf'>Introduction</p>
@@ -145,7 +151,8 @@ const StoryCard = ({ story, isSaved = false, handleSaveStory, showSaveButton = f
         </div>
       </Link>
       <div className='bottom-story-container'>
-        <div className='author-info'>
+        {/* Contêiner clicável para redirecionar ao perfil do autor */}
+        <Link to={`/profile/${story.username}`} className='author-info'>
           <img
             src={profileImageSrc}
             alt={`Imagem de perfil de ${story.username}`}
@@ -159,7 +166,7 @@ const StoryCard = ({ story, isSaved = false, handleSaveStory, showSaveButton = f
           <small className='username-text' title={story.username}>
             {story.username}
           </small>
-        </div>
+        </Link>
         <div className='action-buttons'>
           {showSaveButton && handleSaveStory && (
             <button
