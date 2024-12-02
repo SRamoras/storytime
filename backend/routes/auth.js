@@ -188,6 +188,123 @@ router.post('/stories', authenticateToken, upload.single('img'), async (req, res
     }
 });
 
+
+
+
+
+
+
+
+
+
+
+router.post('/read_story', authenticateToken, async (req, res) => {
+    const { storyId } = req.body;
+    const userId = req.user.id;
+    const datavased = new Date();
+
+    console.log('Recebendo requisição para marcar história como lida:', { userId, storyId });
+
+    try {
+        // Verificar se a história já foi marcada como lida pelo usuário
+        const checkResult = await pool.query(
+            'SELECT * FROM readstories WHERE userid = $1 AND storyid = $2',
+            [userId, storyId]
+        );
+
+        if (checkResult.rows.length > 0) {
+            return res.status(400).json({ error: 'História já marcada como lida.' });
+        }
+
+        // Inserir na tabela readstories
+        const insertResult = await pool.query(
+            'INSERT INTO readstories (userid, storyid, datavased) VALUES ($1, $2, $3) RETURNING *',
+            [userId, storyId, datavased]
+        );
+
+        res.status(201).json({ message: 'História marcada como lida com sucesso!', readStory: insertResult.rows[0] });
+    } catch (error) {
+        console.error('Erro ao marcar história como lida:', error);
+        res.status(500).json({ error: 'Erro interno ao marcar história como lida.' });
+    }
+});
+
+/**
+ * Rota DELETE para Desmarcar uma História como Lida
+ * Endpoint: /auth/read_story/:storyId
+ */
+router.delete('/read_story/:storyId', authenticateToken, async (req, res) => {
+    const { storyId } = req.params;
+    const userId = req.user.id;
+
+    console.log(`Recebendo requisição para desmarcar história como lida: UserID=${userId}, StoryID=${storyId}`);
+
+    try {
+        // Verificar se a história está marcada como lida
+        const checkResult = await pool.query(
+            'SELECT * FROM readstories WHERE userid = $1 AND storyid = $2',
+            [userId, storyId]
+        );
+
+        if (checkResult.rows.length === 0) {
+            return res.status(400).json({ error: 'História não está marcada como lida.' });
+        }
+
+        // Remover a marcação de lida
+        await pool.query(
+            'DELETE FROM readstories WHERE userid = $1 AND storyid = $2',
+            [userId, storyId]
+        );
+
+        res.status(200).json({ message: 'História desmarcada como lida com sucesso!' });
+    } catch (error) {
+        console.error('Erro ao desmarcar história como lida:', error);
+        res.status(500).json({ error: 'Erro interno ao desmarcar história como lida.' });
+    }
+});
+
+/**
+ * Rota GET para Obter Todas as Histórias Lidas de um Usuário
+ * Endpoint: /auth/read_stories/:userId
+ */
+/**
+ * Rota GET para Obter Todas as Histórias Lidas de um Usuário
+ * Endpoint: /auth/read_stories/:userId
+ */
+
+
+// Rota GET para Obter Todas as Histórias Lidas de um Usuário
+// Endpoint: /auth/read_stories/:userId
+router.get('/read_stories/:userId', authenticateToken, async (req, res) => {
+    const { userId } = req.params;
+
+    // if (parseInt(userId, 10) !== req.user.id) {
+    //     return res.status(403).json({ error: 'Acesso negado. Você só pode ver suas próprias histórias lidas.' });
+    // }
+
+    try {
+        const result = await pool.query(
+            `SELECT stories.id AS id, readstories.id AS read_id, readstories.userid, readstories.storyid, readstories.datavased,
+                    stories.title, stories.content, stories.category_id, stories.img,
+                    categories.name AS category,  -- Alterado aqui
+                    users.username, users.profile_image
+             FROM readstories
+             JOIN stories ON readstories.storyid = stories.id
+             JOIN users ON stories.user_id = users.id
+             JOIN categories ON stories.category_id = categories.id
+             WHERE readstories.userid = $1
+             ORDER BY readstories.datavased DESC`,
+            [userId]
+        );
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Erro ao obter histórias lidas:', error);
+        res.status(500).json({ error: 'Erro interno ao obter histórias lidas.' });
+    }
+});
+
+
 /**
  * Rota GET para Obter Todas as Histórias com Nome da Categoria
  * Endpoint: /auth/stories_all
@@ -251,6 +368,77 @@ router.get('/stories/:username', async (req, res) => {
  * Rota GET para Obter uma História pelo ID
  * Endpoint: /auth/stories/id/:id
  */
+
+
+router.delete('/stories/:id', authenticateToken, async (req, res) => {
+    const storyId = req.params.id;
+    const { id: authUserId } = req.user;
+
+    console.log(`DELETE /stories/${storyId} chamado por usuário ID: ${authUserId}`);
+
+    try {
+        // Verificar se a história existe e pertence ao usuário
+        const storyCheck = await pool.query(
+            'SELECT * FROM stories WHERE id = $1',
+            [storyId]
+        );
+
+        if (storyCheck.rows.length === 0) {
+            return res.status(404).json({ error: 'História não encontrada.' });
+        }
+
+        const story = storyCheck.rows[0];
+
+        if (story.user_id !== authUserId) {
+            return res.status(403).json({ error: 'Acesso negado. Você não pode apagar esta história.' });
+        }
+
+        // Iniciar uma transação para garantir a atomicidade
+        await pool.query('BEGIN');
+
+        try {
+            // Remover as referências na tabela storiessaved
+            await pool.query(
+                'DELETE FROM storiessaved WHERE storyid = $1',
+                [storyId]
+            );
+            console.log(`Referências na tabela storiessaved para história ID: ${storyId} foram removidas.`);
+
+            // Remover a imagem associada, se existir
+            if (story.img) {
+                const imagePath = path.join(__dirname, '..', 'uploads', story.img);
+                fs.unlink(imagePath, (err) => {
+                    if (err) {
+                        console.error(`Erro ao apagar a imagem: ${imagePath}`, err);
+                        // Não retornamos erro aqui para não bloquear a deleção da história
+                    } else {
+                        console.log(`Imagem apagada: ${imagePath}`);
+                    }
+                });
+            }
+
+            // Apagar a história do banco de dados
+            await pool.query(
+                'DELETE FROM stories WHERE id = $1',
+                [storyId]
+            );
+
+            // Confirmar a transação
+            await pool.query('COMMIT');
+
+            console.log(`História ID: ${storyId} apagada por usuário ID: ${authUserId}`);
+            res.status(200).json({ message: 'História apagada com sucesso!' });
+        } catch (error) {
+            // Reverter a transação em caso de erro
+            await pool.query('ROLLBACK');
+            throw error;
+        }
+    } catch (error) {
+        console.error('Erro ao apagar história:', error);
+        res.status(500).json({ error: 'Erro interno ao apagar história.' });
+    }
+});
+
 router.get('/stories/id/:id', authenticateToken, async (req, res) => {
     const { id } = req.params;
 

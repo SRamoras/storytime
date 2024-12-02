@@ -7,146 +7,272 @@
 
 /* Cabeçalho */
 .header {
-  background-color: transparent; /* Transparente por padrão */
-  transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
-  color: white; /* Cor do texto por padrão */
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+  color: white;
   position: fixed;
   width: 100%;
   z-index: 1000;
-  padding: 1rem;
+  align-items: center;
+  height: 9vh; /* Fixed height */
+  padding: 0;
 }
 
 .header.scrolled {
-  background-color: #fff; /* Branco quando rolado */
-  color: #333; /* Cor do texto escuro quando rolado */
+  background-color: #fff;
+  color: #333;
+}
+
+/* Classe para alterar o fundo do cabeçalho quando um nav-button está hover */
+.header.background-hover {
+  background-color: #fff; /* Fundo branco */
+  color: #333; /* Cor do texto */
 }
 
 .header-container {
   display: flex;
   margin: 0 auto;
-  justify-content: space-between; /* Espaço entre logo e botões */
-  align-items: center; /* Alinhamento vertical dos itens */
-  width: 85vw; /* Ocupa toda a largura */
+  justify-content: space-between;
+  align-items: center;
+  width: 85vw;
+  height: 100%;
 }
 
 /* Logo à esquerda */
 .logo {
-  flex: 1; /* Faz com que o logotipo fique alinhado à esquerda */
+  flex: 1;
 }
 
 /* Botões à direita */
 .nav-buttons {
   display: flex;
-  gap: 1rem; /* Espaçamento entre os botões */
-  margin-left: auto; /* Move os botões para a direita */
-  align-items: center; /* Alinha verticalmente com o cabeçalho */
+  gap: 1rem;
+  align-items: center;
+  height: 100%;
 }
 
-/* Rodapé */
+/* Estilos para .nav-button */
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  height: 100%;
+  padding: 0 10px;
+  cursor: pointer;
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.3s ease; /* Adiciona transição para a transformação */
+}
+
+/* Aumenta o tamanho do texto ao passar o mouse */
+.nav-button:hover {
+  transform: scale(1.1); /* Aumenta 10% o tamanho */
+}
+
+/* Menus com Dropdown */
+.topics-menu,
+.profile-menu {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* Remova ou comente estas regras 
+/*
+.topics-menu .nav-button::after,
+.profile-menu .nav-button::after {
+  content: '\25BE'; 
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+
+/* Dropdown de Topics e Profile */
+.dropdown-content {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -10px);
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Anima o menu dropdown ao passar o mouse */
+.topics-menu:hover .dropdown-content,
+.profile-menu:hover .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+/* Itens do Dropdown */
+.dropdown-item {
+  position: relative; /* Necessário para o elemento ::before */
+  color: #333;
+  padding: 12px 16px;
+  padding-left: 20px; /* Espaço para a barra */
+  text-decoration: none;
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  transition: background-color 0.3s, transform 0.3s, color 0.3s, padding-left 0.3s;
+}
+
+/* Barra vertical antes de cada item do dropdown */
+.dropdown-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px; /* Espessura inicial da barra */
+  height: 100%;
+  background-color: #333; /* Cor inicial da barra */
+  transition: width 0.3s ease;
+}
+
+/* Efeito de hover nos itens do dropdown */
+.dropdown-item:hover {
+  background-color: #e2e2e2;
+  cursor: pointer;
+  transform: translateX(-5px); /* Move levemente para a esquerda */
+  color: #000;
+}
+
+/* Aumenta a espessura da barra ao passar o mouse */
+.dropdown-item:hover::before {
+  width: 6px; /* Espessura aumentada da barra */
+  background-color: #000; /* Cor da barra no hover */
+}
+
+/* Botão de Logout no Dropdown */
+.dropdown-content button.dropdown-item {
+  position: relative;
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  padding: 12px 16px;
+  padding-left: 20px; /* Espaço para a barra */
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  color: #d60000;
+  transition: background-color 0.3s, transform 0.3s, padding-left 0.3s;
+}
+
+/* Barra vertical antes do botão de logout */
+.dropdown-content button.dropdown-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background-color: #d60000;
+  transition: width 0.3s ease;
+}
+
+/* Efeito de hover no botão de logout */
+.dropdown-content button.dropdown-item:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+  transform: translateX(-5px);
+}
+
+/* Aumenta a espessura da barra no hover para o botão de logout */
+.dropdown-content button.dropdown-item:hover::before {
+  width: 6px;
+  background-color: #a50000;
+}
+
+/* Estilos para BlackButton */
+.black-button {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Estilos para os ícones de seta do Material Symbols */
+.material-symbols-outlined.arrow-icon {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;
+  font-size: 20px; /* Ajuste o tamanho conforme necessário */
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+/* Rotaciona o ícone ao passar o mouse sobre o menu */
+.topics-menu:hover .material-symbols-outlined.arrow-icon,
+.profile-menu:hover .material-symbols-outlined.arrow-icon {
+  transform: rotate(180deg);
+}
+
+/* Rodapé (Footer) */
 .footer {
   background-color: #333;
   color: white;
   text-align: center;
-  padding: 1rem;
+  padding: 2rem 1rem;
+  margin-top: auto; /* Garante que o footer fique na parte inferior */
 }
 
-.profile-menu {
-  position: relative;
-  display: inline-block;
-}
-
-.profile-menu .nav-button {
-  cursor: pointer;
-  min-width: 100px;
-  background-color: transparent; 
-  border: 1px solid transparent; 
-  border-radius: 5px; 
-  color: #000;
-  transition: background-color 0.3s ease, border-color 0.3s ease; 
-}
-
-.profile-menu .dropdown-content {
-  display: block;
-  position: absolute;
-  right: 50%;
-  transform: translateX(50%); 
-  background-color: #fff;
-  min-width: 160px;
-  z-index: 1;
-  top: 55px;
-
-  opacity: 0;
-  visibility: hidden; /* Inicialmente oculto */
-  transition: opacity 0.3s ease, visibility 0.3s ease; /* Transição suave para opacidade e visibilidade */
-}
-
-.profile-menu:hover .dropdown-content {
-  opacity: 1; /* Torna visível ao passar o mouse */
-  visibility: visible; /* Torna visível ao passar o mouse */
-}
-.dropdown-content button{
-  width: 100%;
-  border: none;
-}/* SecLayout.css */
-
-.topics-menu, .profile-menu {
-  position: relative;
-  display: inline-block;
-  margin-left: 20px;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.topics-menu:hover .dropdown-content,
-.profile-menu:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown-item {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-item:hover {
-  background-color: #f1f1f1;
-}
-
-.nav-button {
-  cursor: pointer;
-}
-
-.dropdown-content .dropdown-item {
-  color: #d60000;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  font-family: 'Poppins', sans-serif;
-  margin: 0 auto;  
-  font-weight: 900;
-  justify-content: center;
+.footer-container {
   display: flex;
-  transition: background-color 0.3s; /* Transição suave de hover */
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 85vw;
+  margin: 0 auto;
 }
 
-.dropdown-content .dropdown-item:hover {
-  background-color: #f1f1f1; /* Cor de fundo ao passar o mouse */
-  cursor: pointer;
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
 }
 
-/* Ajuste para links dentro do dropdown */
-.dropdown-content a.dropdown-item {
-  color: #333; /* Cor do texto dos links */
+.footer-link {
+  color: white;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.dropdown-content a.dropdown-item:hover {
-  background-color: #e2e2e2; /* Cor de fundo ao passar o mouse nos links */
+/* Efeito de hover nos links do footer */
+.footer-link:hover {
+  color: #ffcc00; /* Altere para a cor desejada */
+  transform: scale(1.1); /* Aumenta 10% o tamanho */
+}
+
+/* Direitos autorais */
+.footer-copyright {
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+/* Ícones de redes sociais no footer (opcional) */
+.footer-social a {
+  margin: 0 0.5rem;
+  color: white;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #ffcc00; /* Altere para a cor desejada */
+  transform: scale(1.2); /* Aumenta 20% o tamanho */
 }

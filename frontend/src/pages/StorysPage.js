@@ -7,7 +7,7 @@ import StoryCard from '../components/StoryCard';
 import './StorysPage.css';
 
 const StorysPage = () => {
-    const location = useLocation(); // Hook para acessar a localização atual
+    const location = useLocation();
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const initialCategory = queryParams.get('category') || 'Todas';
@@ -70,12 +70,7 @@ const StorysPage = () => {
     useEffect(() => {
         const fetchStoriesAndCategories = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const response = await api.get('/auth/stories_all', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const response = await api.get('/auth/stories_all');
                 setStories(response.data);
 
                 // Extrair categorias únicas das histórias
@@ -276,6 +271,7 @@ const StorysPage = () => {
                 {currentStories.length > 0 ? (
                     currentStories.map(story => {
                         const isSaved = savedStoryIds.includes(story.id);
+                        const isOwner = currentUser && currentUser.id === story.user_id;
                         return (
                             <StoryCard
                                 key={story.id}
@@ -283,6 +279,8 @@ const StorysPage = () => {
                                 isSaved={isSaved}
                                 handleSaveStory={handleSaveStory}
                                 showSaveButton={true}
+                                currentUser={currentUser}
+                                isOwner={isOwner}
                             />
                         );
                     })

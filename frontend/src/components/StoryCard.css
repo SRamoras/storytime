@@ -1,4 +1,4 @@
-/* StoryCard.css */
+/* src/components/StoryCard.css */
 
 /* Container Principal do Story */
 .story-container2 {
@@ -10,6 +10,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin-bottom: 20px; /* Espaçamento entre os cards */
+  max-height: 350px; /* Altura máxima do card */
+  position: relative; /* Necessário para posicionar tooltips */
 }
 
 /* Efeito de Hover no Container */
@@ -17,16 +20,29 @@
   border: 1px solid #000;
 }
 
+.introduction-paragraf {
+  font-size: 1.3em;
+  color: #000000;
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
 /* Link styling */
 .story-container-link {
   text-decoration: none;
   color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 /* Container da Imagem */
 .story-image {
   flex: 0 0 100px;
   margin-right: 15px;
+  display: flex;
+  justify-content: center;
 }
 
 .story-image img {
@@ -37,23 +53,17 @@
 }
 
 /* Container do Conteúdo da História */
-.story-content2 {
-  margin-top: 10px;
-}
-
-.story-content2 p {
-  margin: 5px 0;
-  color: #555;
-  font-size: 0.95em;
-}
-
-/* Additional styles */
 .intro-container {
   display: flex;
+  width: 100%;
 }
 
 .text-container-info {
   margin-left: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .text-container-info h3 {
@@ -77,43 +87,186 @@
 }
 
 /* Estilo do conteúdo da história */
+.story-content2 {
+  margin-top: 10px;
+  /* Limitar a 3 linhas */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .story-content2 p {
   color: #555;
   font-size: 15px;
   margin: 0;
-  line-height: 1;
+  line-height: 1.5;
 }
 
-.save-button {
-  padding: 10px;
-  background-color: #000;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.save-button:hover {
-  background-color: #333;
-}
-
-/* Imagem da História */
-.story-image {
-  flex: 0 0 auto;
+/* Container para os botões de ação */
+.action-buttons {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Espaço entre os botões */
 }
 
-/* Conteúdo da História */
-.text-container-info {
-  width: 100%;
-  justify-content: start;
+/* Botões de Ação: Salvar, Marcar como Lida, Desmarcar, Apagar */
+.save-icon-button,
+.delete-icon-button,
+.mark-read-button,
+.unmark-read-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Ícones de Marcar e Desmarcar como Lida, Salvar e Apagar */
+.mark-read-icon,
+.unmark-read-icon,
+.save-icon,
+.delete-icon {
+  font-family: 'Material Symbols Outlined';
+  font-size: 24px;
+  color: #000; /* Preto por padrão */
+  transition: transform 0.3s, color 0.3s; /* Transições suaves para transform e color */
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;
+}
+
+.mark-read-icon {
+  /* Cor será definida no hover */
+}
+
+.unmark-read-icon {
+  /* Cor será definida no hover */
+}
+
+.save-icon {
+  /* Cor será definida no hover */
+}
+
+.delete-icon {
+  /* Cor será definida no hover */
+}
+
+/* Hover Effects for Each Icon */
+
+/* Botão Marcar como Lida */
+.mark-read-button:hover .mark-read-icon {
+  color: #28a745; /* Verde para marcar como lida */
+  transform: scale(1.1); /* Aumenta ligeiramente o tamanho */
+}
+
+/* Botão Desmarcar como Lida */
+.unmark-read-button:hover .unmark-read-icon {
+  color: #dc3545; /* Vermelho para desmarcar como lida */
+  transform: scale(1.1);
+}
+
+/* Botão Salvar História */
+.save-icon-button:hover .save-icon {
+  color: #007bff; /* Azul para salvar */
+  transform: scale(1.1);
+}
+
+/* Botão Apagar História */
+.delete-icon-button:hover .delete-icon {
+  color: #ff0000; /* Vermelho para apagar */
+  transform: scale(1.1);
+}
+
+/* Tooltip */
+.tooltip {
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Posiciona acima do botão */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Seta do Tooltip */
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%; /* Na parte inferior do tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}
+
+/* Mostrar o tooltip no hover */
+.save-icon-button:hover .tooltip,
+.delete-icon-button:hover .tooltip,
+.mark-read-button:hover .tooltip,
+.unmark-read-button:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Estilo para o contêiner de informações do autor */
+.author-info {
+  display: flex;
+  align-items: center;
+}
+
+/* Estilo para a imagem de perfil do autor */
+.author-profile-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+  border: #000 solid 1px;
+}
+
+/* Estilo para o nome de usuário */
+.username-text {
+  font-size: 14px;
+  max-width: 100px; /* Defina a largura máxima conforme necessário */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Estilo para o nome de usuário no hover */
+.username-text:hover {
+  overflow: visible;
+  white-space: normal;
+}
+
+/* Alinhamento dos Botões na Tela */
+.bottom-story-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
 }
 
 /* Responsividade para Telas Menores */
 @media (max-width: 600px) {
   .story-container2 {
     max-width: 90%;
+    margin: 0 auto; /* Centraliza o card na tela */
   }
 
   .intro-container {
@@ -135,123 +288,27 @@
   .text-container-info {
     margin-left: 0;
   }
+
+  .action-buttons {
+    gap: 5px;
+  }
+
+  .mark-read-icon,
+  .unmark-read-icon,
+  .save-icon,
+  .delete-icon {
+    font-size: 20px;
+  }
+
+  .username-text {
+    max-width: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .username-text:hover {
+    overflow: visible;
+    white-space: normal;
+  }
 }
-
-.bottom-story-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-
-/* Estilo para o contêiner de informações do autor */
-.author-info {
-  display: flex;
-  align-items: center;
-}
-
-/* Estilo para a imagem de perfil do autor */
-.author-profile-image {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 8px;
-  border: #000 solid 1px;
-}
-
-/* Estilo para o nome de usuário */
-.author-info .username-text {
-  font-size: 14px;
-  max-width: 100px; /* Defina a largura máxima conforme necessário */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Estilo para o nome de usuário no hover */
-.author-info .username-text:hover {
-  overflow: visible;
-  white-space: normal;
-}
-/* StoryCard.css */
-
-/* ... (outros estilos existentes) ... */
-/* StoryCard.css */
-
-/* ... seus estilos existentes ... */
-
-/* Botão do ícone de salvar */
-.save-icon-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  position: relative;
-  padding: 0;
-}
-
-/* Ícone de salvar */
-.save-icon {
-  font-family: 'Material Symbols Outlined';
-  font-size: 27px;
-  transition: color 0.3s, font-variation-settings 0.3s;
-  color: #000;
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 48;
-}
-
-/* Ícone quando a história está salva */
-.save-icon[data-filled="true"] {
-  color: #000;
-  font-variation-settings:
-    'FILL' 1,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 48;
-}
-
-/* Tooltip */
-.save-icon-button .tooltip {
-  visibility: hidden;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 8px;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-size: 12px;
-  white-space: nowrap;
-  margin: 0;
-  width: auto;
-  height: auto;
-}
-
-/* Seta do Tooltip */
-.save-icon-button .tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
-}
-
-/* Mostrar o tooltip no hover */
-.save-icon-button:hover .tooltip {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* ... demais estilos ... */

@@ -6,6 +6,7 @@ import api from '../services/api';
 import './Profile.css';
 import books from '../Assets/books.jpg';
 import StoryCard from '../components/StoryCard';
+import UserReadStories from '../components/UserReadStories';
 
 // Subcomponentes definidos fora do componente principal
 
@@ -14,8 +15,6 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
     const profileImageSrc = profileImage 
         ? (profileImage.startsWith('data:') ? profileImage : `${baseImageUrl}${profileImage}`) 
         : defaultAvatar;
-
-    console.log('UserInfo - profileImageSrc:', profileImageSrc); // Debug
 
     return (
         <div className="profile-content">
@@ -34,7 +33,6 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                         <p><strong>{user.username}</strong><br /></p>
                         <p>{firstname} {lastname}</p>
                     </div>
-                    {/* <p><strong>Email:</strong> {user.email}</p> */}
                     <div className='div-line'></div>
                     <div className='container-info-medium'>
                         <p>Histórias:</p>
@@ -52,7 +50,11 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                     <p className='subtitle-container-info'>About Me</p>
                     <p className='bio-text'>{bio || "no info"}</p>
                     {/* Mostrar botão de edição se for o dono do perfil */}
-
+                    {isOwner && (
+                        <button className="edit-button" onClick={handleEdit}>
+                            Editar Perfil
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
@@ -78,8 +80,6 @@ const UserSettings = React.memo(({
     const profileImageSrc = profileImage 
         ? (profileImage.startsWith('data:') ? profileImage : `${baseImageUrl}${profileImage}`) 
         : defaultAvatar;
-
-    console.log('UserSettings - profileImageSrc:', profileImageSrc); // Debug
 
     return (
         <div className="profile-content">
@@ -136,31 +136,33 @@ const UserSettings = React.memo(({
     );
 });
 
-const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStoryIds }) => (
+const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStoryIds, currentUser, isOwner }) => (
     <div className="profile-content">
-      <h2>Histórias Salvas</h2>
-      {savedStories.length === 0 ? (
-        <p>Nenhuma história salva.</p>
-      ) : (
-        <div className="stories-grid-profile">
-          {savedStories.map(story => {
-            const isSaved = savedStoryIds.includes(story.id);
-            return (
-              <StoryCard
-                key={story.id}
-                story={story}
-                isSaved={isSaved}
-                handleSaveStory={handleSaveStory}
-                showSaveButton={true}
-              />
-            );
-          })}
-        </div>
-      )}
+        <h2>Histórias Salvas</h2>
+        {savedStories.length === 0 ? (
+            <p>Nenhuma história salva.</p>
+        ) : (
+            <div className="stories-grid-profile">
+                {savedStories.map(story => {
+                    const isSaved = savedStoryIds.includes(story.id);
+                    return (
+                        <StoryCard
+                            key={story.id}
+                            story={story}
+                            isSaved={isSaved}
+                            handleSaveStory={handleSaveStory}
+                            showSaveButton={true}
+                            currentUser={currentUser}
+                            isOwner={isOwner}
+                        />
+                    );
+                })}
+            </div>
+        )}
     </div>
 ));
 
-const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds }) => (
+const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds, currentUser, isOwner }) => (
     <div className="profile-content">
         {stories.length === 0 ? (
             <p>Este usuário ainda não publicou histórias.</p>
@@ -175,6 +177,8 @@ const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds }) => 
                             isSaved={isSaved}
                             handleSaveStory={handleSaveStory}
                             showSaveButton={true}
+                            currentUser={currentUser}
+                            isOwner={isOwner}
                         />
                     );
                 })}
@@ -190,6 +194,7 @@ const Profile = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [stories, setStories] = useState([]);
     const [savedStories, setSavedStories] = useState([]);
+    const [readStories, setReadStories] = useState([]);
     const [savedStoryIds, setSavedStoryIds] = useState([]);
     const [content, setContent] = useState('stories');
     const [bio, setBio] = useState("");
@@ -203,12 +208,15 @@ const Profile = () => {
     const defaultAvatar = "https://www.gravatar.com/avatar/?d=mp&f=y";
     const baseImageUrl = process.env.REACT_APP_BASE_IMAGE_URL || 'http://localhost:5000/uploads/';
 
+    const [isOwner, setIsOwner] = useState(null); // Inicializa como null
+
     // Função para buscar o usuário autenticado
     const fetchCurrentUser = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
             console.log('Nenhum token encontrado');
             setLoading(false);
+            setIsOwner(false); // Não é o dono do perfil
             return;
         }
 
@@ -222,7 +230,6 @@ const Profile = () => {
             setCurrentUser(response.data);
         } catch (error) {
             console.error('Erro ao buscar dados do usuário autenticado:', error);
-            // O interceptor do Axios irá redirecionar para a página de login
         } finally {
             setLoading(false);
         }
@@ -244,6 +251,7 @@ const Profile = () => {
         }
     };
 
+    // Função para buscar as histórias do usuário
     const fetchUserStories = async () => {
         try {
             let response;
@@ -274,6 +282,20 @@ const Profile = () => {
         }
     };
 
+    // Função para buscar as histórias lidas pelo usuário do perfil
+    const fetchProfileUserReadStories = async () => {
+        if (!profileUser) return;
+
+        try {
+            const response = await api.get(`/auth/read_stories/${profileUser.id}`);
+            setReadStories(response.data);
+            console.log('Histórias lidas obtidas:', response.data);
+        } catch (error) {
+            console.error('Erro ao carregar histórias lidas do usuário do perfil:', error);
+            alert('Falha ao carregar histórias lidas do usuário do perfil.');
+        }
+    };
+
     // Função para buscar os IDs das histórias salvas pelo usuário autenticado
     const fetchCurrentUserSavedStoryIds = async () => {
         if (!currentUser) {
@@ -301,29 +323,28 @@ const Profile = () => {
         initialize();
     }, [username]);
 
-    // useEffect para buscar histórias quando profileUser e currentUser forem definidos
-    useEffect(() => {
-        if (profileUser && currentUser) {
-            fetchUserStories();
-            fetchProfileUserSavedStories();
-            fetchCurrentUserSavedStoryIds();
-        }
-    }, [profileUser, currentUser]);
-
-    const [isOwner, setIsOwner] = useState(false);
-
     // useEffect para determinar se o usuário atual é o dono do perfil
     useEffect(() => {
         if (currentUser && profileUser) {
             const owner = String(currentUser.id) === String(profileUser.id);
             setIsOwner(owner);
-            console.log('Current User:', currentUser);
-            console.log('Profile User:', profileUser);
-            console.log('isOwner:', owner);
         } else {
             setIsOwner(false);
         }
     }, [currentUser, profileUser]);
+
+    // useEffect para buscar histórias quando profileUser e currentUser forem definidos
+    useEffect(() => {
+        if (profileUser) {
+            fetchUserStories();
+            fetchProfileUserSavedStories();
+            fetchProfileUserReadStories();
+        }
+
+        if (currentUser) {
+            fetchCurrentUserSavedStoryIds();
+        }
+    }, [profileUser, currentUser]);
 
     // useEffect para definir a aba ativa com base no parâmetro de consulta 'tab'
     useEffect(() => {
@@ -334,6 +355,8 @@ const Profile = () => {
                 setContent('settings');
             } else if (tab === 'saved_stories') {
                 setContent('saved_stories');
+            } else if (tab === 'read_stories') {
+                setContent('read_stories');
             } else {
                 setContent('stories');
             }
@@ -511,20 +534,32 @@ const Profile = () => {
                 return <UserSavedStories 
                             savedStories={savedStories} 
                             handleSaveStory={handleSaveStory} 
-                            savedStoryIds={savedStoryIds} 
+                            savedStoryIds={savedStoryIds}
+                            currentUser={currentUser}
+                            isOwner={isOwner}
+                        />;
+            case 'read_stories':
+                return <UserReadStories 
+                            readStories={readStories} 
+                            handleSaveStory={handleSaveStory} 
+                            savedStoryIds={savedStoryIds}
+                            currentUser={currentUser}
+                            isOwner={isOwner}
                         />;
             case 'stories':
                 return <UserStories 
                             stories={stories} 
                             handleSaveStory={handleSaveStory} 
-                            savedStoryIds={savedStoryIds} 
+                            savedStoryIds={savedStoryIds}
+                            currentUser={currentUser}
+                            isOwner={isOwner}
                         />;
             default:
                 return null;
         }
     };
 
-    if (loading) {
+    if (loading || isOwner === null) {
         return <p>Carregando perfil...</p>;
     }
 
@@ -564,6 +599,12 @@ const Profile = () => {
                             onClick={() => setContent('saved_stories')}
                         >
                             Histórias Salvas
+                        </div>
+                        <div 
+                            className={`menu-item ${content === 'read_stories' ? 'active' : ''}`} 
+                            onClick={() => setContent('read_stories')}
+                        >
+                            Histórias Lidas
                         </div>
                         {isOwner && (
                             <div 

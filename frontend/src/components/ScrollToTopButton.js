@@ -37,7 +37,7 @@ const ScrollToTopButton = () => {
     <>
       {showButton && (
         <button className="scroll-to-top-button" onClick={scrollToTop}>
-          <FaLongArrowAltUp className="arrow-icon" />
+          <FaLongArrowAltUp className="arrow-icon-main" />
         </button>
       )}
     </>
