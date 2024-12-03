@@ -275,19 +275,25 @@ router.delete('/read_story/:storyId', authenticateToken, async (req, res) => {
 
 // Rota GET para Obter Todas as Histórias Lidas de um Usuário
 // Endpoint: /auth/read_stories/:userId
+// Rota GET para Obter Todas as Histórias Lidas de um Usuário
 router.get('/read_stories/:userId', authenticateToken, async (req, res) => {
     const { userId } = req.params;
 
-    // if (parseInt(userId, 10) !== req.user.id) {
-    //     return res.status(403).json({ error: 'Acesso negado. Você só pode ver suas próprias histórias lidas.' });
-    // }
-
     try {
         const result = await pool.query(
-            `SELECT stories.id AS id, readstories.id AS read_id, readstories.userid, readstories.storyid, readstories.datavased,
-                    stories.title, stories.content, stories.category_id, stories.img,
-                    categories.name AS category,  -- Alterado aqui
-                    users.username, users.profile_image
+            `SELECT stories.id AS id, 
+                    readstories.id AS read_id, 
+                    readstories.userid, 
+                    readstories.storyid, 
+                    readstories.datavased,
+                    stories.title, 
+                    stories.content, 
+                    stories.category_id, 
+                    stories.img,
+                    stories.user_id AS user_id,  -- Adicione esta linha
+                    categories.name AS category,
+                    users.username, 
+                    users.profile_image
              FROM readstories
              JOIN stories ON readstories.storyid = stories.id
              JOIN users ON stories.user_id = users.id
@@ -303,6 +309,7 @@ router.get('/read_stories/:userId', authenticateToken, async (req, res) => {
         res.status(500).json({ error: 'Erro interno ao obter histórias lidas.' });
     }
 });
+
 
 
 /**

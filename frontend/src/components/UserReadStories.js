@@ -3,7 +3,7 @@
 import React from 'react';
 import StoryCard from './StoryCard';
 
-const UserReadStories = React.memo(({ readStories, handleSaveStory, savedStoryIds, currentUser, isOwner }) => (
+const UserReadStories = React.memo(({ readStories, handleSaveStory, savedStoryIds, currentUser }) => (
     <div className="profile-content">
         <h2>Histórias Lidas</h2>
         {readStories.length === 0 ? (
@@ -12,6 +12,8 @@ const UserReadStories = React.memo(({ readStories, handleSaveStory, savedStoryId
             <div className="stories-grid-profile">
                 {readStories.map(story => {
                     const isSaved = savedStoryIds.includes(story.id);
+                    const isOwner = currentUser && currentUser.id === story.user_id; // Agora deve funcionar
+
                     return (
                         <StoryCard
                             key={story.id}

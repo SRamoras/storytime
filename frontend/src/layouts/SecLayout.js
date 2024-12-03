@@ -255,41 +255,67 @@ function SecLayout() {
       {/* Rodapé (Footer) */}
       <footer className="footer">
         <div className="footer-container">
-          {/* Links de navegação no footer */}
-          <div className="footer-links">
-            <Link to="/about" className="footer-link">
-              <span className="material-symbols-outlined footer-icon">info</span>
-              Sobre Nós
-            </Link>
-            <Link to="/contact" className="footer-link">
-              <span className="material-symbols-outlined footer-icon">contact_mail</span>
-              Contato
-            </Link>
-            <Link to="/privacy" className="footer-link">
-              <span className="material-symbols-outlined footer-icon">privacy_tip</span>
-              Política de Privacidade
-            </Link>
-          </div>
-          
-          {/* Ícones de redes sociais (opcional) */}
-          <div className="footer-social">
-            <a href="https://facebook.com" className="footer-link" aria-label="Facebook">
-              <span className="material-symbols-outlined footer-social-icon">facebook</span>
-              Facebook
-            </a>
-            <a href="https://twitter.com" className="footer-link" aria-label="Twitter">
-              <span className="material-symbols-outlined footer-social-icon">twitter</span>
-              Twitter
-            </a>
-            <a href="https://instagram.com" className="footer-link" aria-label="Instagram">
-              <span className="material-symbols-outlined footer-social-icon">instagram</span>
-              Instagram
-            </a>
+          {/* Seção 1: StoryHub */}
+          <div className="footer-section">
+            <h3>Genre Links</h3>
+            <ul>
+            {categories.length > 0 ? (
+                  categories.map((category) => (
+                    
+                    <Link
+                      key={category.id}
+                      to={`/StorysPage?category=${encodeURIComponent(category.name)}`}
+                      className="footer-link"
+                    >
+                      {category.name}
+                    </Link>
+                  ))
+                ) : (
+                  <p>Nenhuma categoria disponível</p>
+                )}
+            </ul>
           </div>
 
-          {/* Direitos autorais */}
-          <div className="footer-copyright">
-            &copy; 2024 StoryTime. Todos os direitos reservados.
+          {/* Seção 2: Links */}
+          <div className="footer-section">
+            <h3>General Links</h3>
+            <ul>
+              <li><Link to='/StorysPage' className="footer-link">Home</Link></li>
+              <li><Link to='/StorysPage' className="footer-link">Topics</Link></li>
+              <li><Link to='/StorysPage' className="footer-link">About Us</Link></li>
+            </ul>
+          </div>
+
+          {/* Seção 3: Perfil */}
+          <div className="footer-section">
+            <h3>Profile Links</h3>
+            <ul>
+              <li><Link to={`/Profile/${username}`} className="footer-link">Profile</Link></li>
+              <li><Link   to={`/Profile/${username}?tab=settings`} className="footer-link">Settings</Link></li>
+              <li><Link to='/login' className="footer-link">Logout</Link></li>
+            </ul>
+          </div>
+
+          {/* Seção 4: Redes Sociais */}
+          <div className="footer-section socials">
+            <h3>Redes Sociais</h3>
+            <div className="social-icons">
+  {/* Instagram */}
+  <a href="https://www.instagram.com/_____s1lva_____/" className="social-link instagram" aria-label="Instagram">
+    <i className="fa fa-instagram social-icon"></i>
+  </a>
+
+  {/* GitHub */}
+  <a href="https://github.com/SRamoras" className="social-link github" aria-label="GitHub">
+    <i className="fa fa-github social-icon"></i>
+  </a>
+
+  {/* LinkedIn */}
+  <a href="https://www.linkedin.com/in/diogo-silva-94068613b/" className="social-link linkedin" aria-label="LinkedIn">
+    <i className="fa fa-linkedin social-icon"></i>
+  </a>
+</div>
+
           </div>
         </div>
       </footer>

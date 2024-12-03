@@ -87,27 +87,33 @@ const UserSettings = React.memo(({
 
     return (
         <div className="profile-content">
-            <h2>Configurações</h2>
-            <h3>Atualizar Imagem de Perfil</h3>
-            <form onSubmit={handleImageUpload}>
-                <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleImageChange} 
-                />
+            <h2>Update your Avatar</h2>
+        
+            <form className='settings-form' onSubmit={handleImageUpload}>
+               <div className='intro-img-container-input'>
+            
                 {(imageFile || profileImage) && (
                     <img 
                         src={profileImageSrc} 
                         alt="Pré-visualização" 
                         width="100" 
                         height="100" 
-                        style={{ borderRadius: '50%', marginTop: '10px' }} 
+                        style={{marginRight: '15px' }} 
                     />
-                )}
-                <button type="submit">Fazer Upload da Imagem</button>
+                )}    <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleImageChange} 
+                />
+</div>
+                <div className='button-submit-img'>
+                <button  type="submit">Save Image Changes</button></div>
             </form>
             <br /><br />
+           
+            
             <div className="settings-form">
+                <h2>Update the text on yout Profile</h2>
                 <label>
                     Nome:
                     <input 
@@ -134,7 +140,7 @@ const UserSettings = React.memo(({
                         placeholder="Bio"
                     />
                 </label>
-                <button type="button" onClick={handleUpdateProfile}>Salvar Alterações</button>
+                <button type="button" onClick={handleUpdateProfile}>Save text changes</button>
             </div>
         </div>
     );
@@ -142,7 +148,7 @@ const UserSettings = React.memo(({
 
 const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStoryIds, currentUser, isOwner }) => (
     <div className="profile-content">
-        <h2>Histórias Salvas</h2>
+        <h2>Saved Storys</h2>
         {savedStories.length === 0 ? (
             <p>Nenhuma história salva.</p>
         ) : (
@@ -168,6 +174,7 @@ const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStory
 
 const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds, currentUser, isOwner }) => (
     <div className="profile-content">
+            <h2>Saved Storys</h2>
         {stories.length === 0 ? (
             <p>Este usuário ainda não publicou histórias.</p>
         ) : (
@@ -513,6 +520,35 @@ const fetchProfileUser = async () => {
     const handleEditProfile = () => {
         setContent('settings');
     };
+// Dentro do componente Profile em src/pages/Profile.js
+
+const handleUnmarkAsRead = async (storyId) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Você precisa estar logado para remover histórias lidas.');
+        return;
+    }
+
+    if (!currentUser) {
+        alert('Erro ao obter o ID do usuário.');
+        return;
+    }
+
+    try {
+        // Remover a história lida
+        await api.delete(`/auth/read_story/${storyId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        alert('História removida das lidas com sucesso!');
+        // Atualizar o estado local, removendo a história das lidas
+        setReadStories(readStories.filter(story => story.id !== storyId));
+    } catch (error) {
+        console.error('Erro ao remover a história lida:', error);
+        alert('Erro ao remover a história lida.');
+    }
+};
 
     // Função para renderizar o conteúdo com base no menu selecionado
     const renderContent = () => {
@@ -546,14 +582,14 @@ const fetchProfileUser = async () => {
                             currentUser={currentUser}
                             isOwner={isOwner}
                         />;
-            case 'read_stories':
-                return <UserReadStories 
-                            readStories={readStories} 
-                            handleSaveStory={handleSaveStory} 
-                            savedStoryIds={savedStoryIds}
-                            currentUser={currentUser}
-                            isOwner={isOwner}
-                        />;
+                        case 'read_stories':
+                            return <UserReadStories 
+                                        readStories={readStories} 
+                                        handleSaveStory={handleSaveStory} 
+                                        savedStoryIds={savedStoryIds}
+                                        handleUnmarkAsRead={handleUnmarkAsRead}
+                                        currentUser={currentUser} // Passa currentUser
+                                    />;
             case 'stories':
                 return <UserStories 
                             stories={stories} 
@@ -600,26 +636,26 @@ const fetchProfileUser = async () => {
                             className={`menu-item ${content === 'stories' ? 'active' : ''}`} 
                             onClick={() => setContent('stories')}
                         >
-                            Histórias
+                            Published Stories
                         </div>
                         <div 
                             className={`menu-item ${content === 'saved_stories' ? 'active' : ''}`} 
                             onClick={() => setContent('saved_stories')}
                         >
-                            Histórias Salvas
+                            Saved Storys
                         </div>
                         <div 
                             className={`menu-item ${content === 'read_stories' ? 'active' : ''}`} 
                             onClick={() => setContent('read_stories')}
                         >
-                            Histórias Lidas
+                            Read Storys
                         </div>
                         {isOwner && (
                             <div 
                                 className={`menu-item ${content === 'settings' ? 'active' : ''}`} 
                                 onClick={() => setContent('settings')}
                             >
-                                Configurações
+                                Settings
                             </div>
                         )}
                     </div>

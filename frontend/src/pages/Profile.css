@@ -209,6 +209,7 @@
     border-radius: 4px;
     color: #fff;
     cursor: pointer;
+    font-family: 'Poppins', sans-serif;
     font-weight: bold;
     transition: background-color 0.3s;
 }
@@ -310,11 +311,38 @@
     object-fit: cover;
     border-radius: 6px;
 }
-
+.intro-img-container-input{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
 /* Container do Conteúdo da História */
 .story-content {
     flex: 1;
 }
+.button-submit-img{
+margin-top: 20px;
+}
+
+
+
+
+.profile-content h2::after{ content: ''; /* Necessário para exibir o pseudo-elemento */
+    display: block; /* Transforma o pseudo-elemento em um bloco para controlar a largura e altura */
+    width: 50px; /* Largura da barra - ajuste conforme necessário */
+    height: 3px; /* Altura da barra */
+    background-color: #0fad51; /* Cor da barra - ajuste conforme necessário */
+    margin-top: 5px; /* Espaçamento entre o título e a barra */
+    border-radius: 2px; /* Bordas arredondadas para suavizar a barra */}
+.settings-form h2::after {
+    content: ''; /* Necessário para exibir o pseudo-elemento */
+    display: block; /* Transforma o pseudo-elemento em um bloco para controlar a largura e altura */
+    width: 50px; /* Largura da barra - ajuste conforme necessário */
+    height: 3px; /* Altura da barra */
+    background-color: #0fad51; /* Cor da barra - ajuste conforme necessário */
+    margin-top: 5px; /* Espaçamento entre o título e a barra */
+    border-radius: 2px; /* Bordas arredondadas para suavizar a barra */
+  }
 
 .story-content h3 {
     margin: 0 0 8px 0;

@@ -1,11 +1,11 @@
-/* Layout geral */
+/* --- Layout Geral --- */
 .layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Cabeçalho */
+/* --- Cabeçalho (Header) --- */
 .header {
   background-color: transparent;
   transition: background-color 0.3s ease;
@@ -50,9 +50,7 @@
   align-items: center;
   height: 100%;
 }
-.logout-icon {
-  color: #d60000; /* Vermelho específico para o ícone de Logout */
-}
+
 /* Estilos para .nav-button */
 .nav-button {
   display: inline-flex;
@@ -65,7 +63,7 @@
   position: relative;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
- color: #000;
+  color: #000;
   text-decoration: none;
   transition: transform 0.3s ease; /* Adiciona transição para a transformação */
 }
@@ -210,62 +208,6 @@
   transform: rotate(180deg);
 }
 
-/* Rodapé (Footer) */
-.footer {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 2rem 1rem;
-  margin-top: auto; /* Garante que o footer fique na parte inferior */
-}
-
-.footer-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  max-width: 85vw;
-  margin: 0 auto;
-}
-
-.footer-links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.footer-link {
-  color: white;
-  text-decoration: none;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-/* Efeito de hover nos links do footer */
-.footer-link:hover {
-  color: #ffcc00; /* Altere para a cor desejada */
-  transform: scale(1.1); /* Aumenta 10% o tamanho */
-}
-
-/* Direitos autorais */
-.footer-copyright {
-  font-size: 0.9rem;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-}
-
-/* Ícones de redes sociais no footer (opcional) */
-.footer-social a {
-  margin: 0 0.5rem;
-  color: white;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.footer-social a:hover {
-  color: #ffcc00; /* Altere para a cor desejada */
-  transform: scale(1.2); /* Aumenta 20% o tamanho */
-}
-
 /* --- Início das Adições --- */
 
 /* Estilos para os ícones nos botões de navegação */
@@ -289,7 +231,6 @@
 .dropdown-item .dropdown-icon {
   margin-right: 8px; /* Espaço entre o ícone e o texto */
   font-size: 20px; /* Tamanho dos ícones nos dropdowns */
-
   display: flex;
   align-items: center;
 }
@@ -302,10 +243,7 @@
   padding-left: 20px; /* Espaço para a linha (12px) + ícone (20px) + margem (8px) */
 }
 
-/* Estilos para o botão "Create Story" com ícone */
-/* Removido, pois o botão "Create Story" agora não possui ícone */
-
-/* Estilos para os ícones no footer */
+/* Estilos para os ícones nos links do footer */
 .footer-link .footer-icon,
 .footer-social a .footer-social-icon {
   margin-right: 8px; /* Espaço entre o ícone e o texto */
@@ -348,3 +286,161 @@
 }
 
 /* --- Fim das Adições --- */
+
+/* --- Rodapé (Footer) --- */
+.footer {
+  background-color: #ffffff;
+  color: #000;
+  text-align: center;
+  border-top: #000 1px solid;
+  padding: 2rem 1rem;
+  margin-top: auto; /* Garante que o footer fique na parte inferior */
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap; /* Permite que as seções quebrem em linhas menores */
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  max-width: 1200px; /* Define uma largura máxima para o conteúdo */
+  margin: 0 auto;
+}
+
+/* Cada seção do footer */
+.footer-section {
+  flex: 1 1 200px; /* Flex-grow, flex-shrink, flex-basis */
+  text-align: left; /* Alinha o texto à esquerda */
+}
+
+/* Títulos das seções */
+.footer-section h3 {
+  margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  position: relative; /* Necessário para posicionar o pseudo-elemento */
+  display: inline-block; /* Permite que a barra tenha largura ajustável */
+}
+
+/* Pseudo-elemento ::after para criar a barra */
+.footer-section h3::after {
+  content: ''; /* Necessário para exibir o pseudo-elemento */
+  display: block; /* Transforma o pseudo-elemento em um bloco para controlar a largura e altura */
+  width: 50px; /* Largura da barra - ajuste conforme necessário */
+  height: 3px; /* Altura da barra */
+  background-color: #0fad51; /* Cor da barra - ajuste conforme necessário */
+  margin-top: 5px; /* Espaçamento entre o título e a barra */
+  border-radius: 2px; /* Bordas arredondadas para suavizar a barra */
+}
+
+/* Listas de links */
+.footer-section ul {
+  list-style-type: none;
+  padding: 0;
+  display: grid;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.5rem;
+}
+
+/* Links do footer */
+.footer-link {
+  color: #000;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.social-icons{
+  display: flex;
+  gap: 1rem;
+}
+/* Efeito de hover nos links do footer */
+.footer-link:hover {
+  color: #0fad51; /* Cor desejada no hover */
+}
+
+/* Direitos autorais */
+.footer-copyright {
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+/* --- Estilização dos Ícones das Redes Sociais com Font Awesome --- */
+
+/* Geral para os ícones do Font Awesome */
+.social-icon {
+  font-size: 24px; /* Ajuste o tamanho conforme necessário */
+  color: #ffffff; /* Cor inicial dos ícones */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Geral para os links das redes sociais */
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-decoration: none; /* Remove o sublinhado */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Instagram */
+.social-link.instagram {
+  background-color: #e4405f; /* Cor de fundo Instagram */
+}
+
+.social-link.instagram:hover {
+  background-color: #c13584; /* Cor de fundo Instagram no hover */
+}
+
+.social-link.instagram:hover .social-icon {
+  color: #ffffff; /* Mantém o ícone branco no hover */
+}
+
+/* GitHub */
+.social-link.github {
+  background-color: #333333; /* Cor de fundo GitHub */
+}
+
+.social-link.github:hover {
+  background-color: #24292e; /* Cor de fundo GitHub no hover */
+}
+
+.social-link.github:hover .social-icon {
+  color: #ffffff; /* Mantém o ícone branco no hover */
+}
+
+/* LinkedIn */
+.social-link.linkedin {
+  background-color: #0077B5; /* Cor de fundo LinkedIn */
+}
+
+.social-link.linkedin:hover {
+  background-color: #005582; /* Cor de fundo LinkedIn no hover */
+}
+
+.social-link.linkedin:hover .social-icon {
+  color: #ffffff; /* Mantém o ícone branco no hover */
+}
+
+/* Efeitos de hover */
+.social-link:hover {
+  transform: scale(1.1); /* Aumenta 10% o tamanho */
+  text-decoration: none; /* Garante que não há sublinhado */
+}
+
+/* Remove underline from social links */
+.footer-section .social-link {
+  text-decoration: none;
+}
+
+.footer-section .social-link:hover {
+  text-decoration: none;
+}
