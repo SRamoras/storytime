@@ -376,7 +376,6 @@ router.get('/stories/:username', async (req, res) => {
  * Endpoint: /auth/stories/id/:id
  */
 
-
 router.delete('/stories/:id', authenticateToken, async (req, res) => {
     const storyId = req.params.id;
     const { id: authUserId } = req.user;

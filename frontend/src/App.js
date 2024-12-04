@@ -7,7 +7,7 @@ import LoginPage from './pages/LoginPageMain'; // Ajuste o caminho conforme a es
 
 import RegisterPage from './pages/RegisterPage';
 import StorysPage from './pages/StorysPage';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/HomePagee';
 import MainPageLayout from './layouts/MainPageLayout'; 
 import SecLayout from './layouts/SecLayout';
 import ThirdLayout from './layouts/ThirdLayout';

@@ -4,68 +4,124 @@ body, html{
 }
 /* Remove background styles from .Intro-container */
 .Intro-container {
-    display: flex;
+    /* display: flex;
     align-items: center;
     justify-content: space-around;
     gap: 20rem;
-    padding: 0; /* Adjust padding as needed */
+    padding: 0; 
     width: 100%;
-
-height: 100vh;
+    height: 100vh;*/
     box-sizing: border-box;
-    /* Remove background and height properties */
+    margin-bottom:100px;
+    /* Remove background and height properties  */
 }
 
 /* New styles for .background-container */
 .background-container {
-    display: flex;
-    flex-direction: column; /* Stack components vertically */
+    /* display: flex;
+    flex-direction: column; 
     align-items: center;
     width: 100%;
     margin: 0 auto;
-    /* Background gradient */
+
     background-image: 
         radial-gradient(circle at 0% 0%, rgba(172, 131, 222, 1) 0%, rgba(134, 168, 231, 1) 2%, transparent 24%),
         radial-gradient(circle at 70% 30%, 
-        rgba(172, 131, 222, 1) 0%,      /* Start with blue color */
-        rgba(172, 131, 222, 1) 2%,      /* Solid blue up to 5% */
-        rgba(134, 168, 231, 1) 10%,     /* Transition to purple */
-        transparent 30%                 /* Fade out to transparent */
+        rgba(172, 131, 222, 1) 0%,     
+        rgba(172, 131, 222, 1) 2%,      
+        rgba(134, 168, 231, 1) 10%,   
+        transparent 30%                
     );
     background-size: 150% 150%;
     background-repeat: no-repeat;
-    /* Optional styles */
-   
+
+    */
 }
 
 /* Ensure that child components take full width */
-.Intro-container, .info-section {
-    width: 100%;
+
+
+.Intro-container img{
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    border-radius: 10px;
+    position: relative;
+    z-index: -1;
+    transition: transform 0.3s ease;
 }
-
-
 
 /* Seção de texto */
 .text-section {
-    max-width: 50%;
-    text-align: left;
+    position: absolute;
+
+    left:7vw;
+    display: flex;
+    flex-direction: column;
+    gap: 27px;
+    top: 30vh; 
 }
 
 .text-section h1 {
     font-size: 60px;
-    font-weight: 700;
     margin-bottom: 1rem;
+    margin: 0;
+    line-height: 1.1; /* Melhor legibilidade */
+    font-weight: 532; /* Valor válido (700 em vez de 764) */
+    letter-spacing: normal;
+    font-optical-sizing: auto; /* Habilita o ajuste óptico automático */
+    font-variation-settings: "opsz" 85, "wonk" 0;  /* Define o tamanho óptico específico */
+    color: var(--title-color);
 }
+
+
 
 .text-section p {
     font-size: 1.2rem;
-    margin-bottom: 2rem;
-    color: #616161;
+    margin: 0;
+    color: var(--sub-title-color);
+    font-family: "Inter", sans-serif;
 }
 
+.button-section {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+}
+
+
+.first-button{
+background-color: var(--title-color);
+border: 1px solid var(--title-color);
+color: #fff;    
+}
+
+
+.second-button{
+    color: var(--title-color);
+    background-color: transparent;
+    border: 1px solid var(--title-color);
+}
+.first-button, .second-button{
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    padding: 10px 15px 10px 15px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+
+.first-button:hover{
+    background-color: #333;
+}
+.second-button:hover{
+    color: #fff;
+    background-color: var(--title-color);
+}
 /* Botão */
 .get-started-btn {
-    background-color: black;
+    background-color: var(--title-color);
     color: white;
     border: none;
     border-radius: 5px;
@@ -83,33 +139,24 @@ height: 100vh;
     transform: scale(0.95);
 }
 
-/* Seção de imagem */
-.image-section {
-    position: relative;
-    display: flex;
-    justify-content: center; /* Centraliza a imagem horizontalmente */
-    align-items: center; /* Centraliza a imagem verticalmente */
-}
-
 .image-wrapper {
     position: absolute;
     display: inline-block;
-    right: 20px;
-    width: 1200px; /* Tamanho desejado da imagem */
-    height: 800px; /* Tamanho desejado da imagem */
+
+    width: 100vw ;/* Tamanho desejado da imagem */
+    height: 100vw; /* Tamanho desejado da imagem */
     overflow: hidden; /* Garante que a imagem não ultrapasse os limites do contêiner */
-    border-radius: 10px; /* Bordas arredondadas */
+    
   
 }
 
-/* Fundo cinza */
 .image-background {
     position: absolute;
     top: 10px; /* Deslocamento vertical */
     left: 10px; /* Deslocamento horizontal */
     width: calc(100% - 20px); /* Ajusta o tamanho com base no deslocamento */
     height: calc(100% - 20px); /* Ajusta o tamanho com base no deslocamento */
-    background-color: #adadad; /* Cor cinza clara */
+    background-color: var(--sub-title-color);
     border-radius: 10px; /* Igual ao da imagem */
     z-index: 0; /* Fica atrás da imagem */
 }
@@ -143,13 +190,13 @@ height: 100vh;
     text-align: center;
     margin-top: 270px;
     margin-bottom:0;
-    color: #000000;
+    color: var(--title-color);
 }
 
 .explorer-section p{
     font-size: 1.3rem;
     font-weight: 500;
-    color: #333;
+    color: var(--sub-title-color);
     text-align: center;
     width: 70%;
     line-height: 1.2;

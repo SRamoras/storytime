@@ -1,15 +1,12 @@
 /* Container Principal */
 .info-section {
-    width: 90%;
-    max-width: 86%; /* Define um limite para a largura máxima */
-
+    width: 85vw;
     margin: 0 auto;
     margin-bottom: 200px;
-    padding: 2rem;
-    color: #000; /* Cor principal do texto */
+    color: #1b1b1b; /* Cor principal do texto */
     background-color: #fff; /* Fundo branco */
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(238,174,202,0.5);
+
   }
   
   /* Layout das colunas */
@@ -28,29 +25,42 @@
   
   /* Coluna Esquerda */
   .info-left {
-    margin-top: 150px;
+    margin-top: 170px;
     flex: 1.5;
     display: flex;
   }
   .sec-container-component{
-    margin-left: 50px;
+    margin-left: 1.5rem;
   }
   .info-item {
     margin-bottom: 1.5rem;
-    width: 40%;
+
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #ebeaea;
+    border-radius: 15px;align-self: flex-start;
+    padding: 1.5rem;
   }
   
   .info-item h4 {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+    font-size: 26px;
+    margin-bottom: 1rem;
+    margin: 0;
+    line-height: 1.1; /* Melhor legibilidade */
+    font-weight: 532; /* Valor válido (700 em vez de 764) */
+    letter-spacing: normal;
+    font-optical-sizing: auto; /* Habilita o ajuste óptico automático */
+    font-variation-settings: "opsz" 85, "wonk" 0;  /* Define o tamanho óptico específico */
+    color: var(--title-color);
   }
   
   .info-item p {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #666; /* Texto mais claro */
-  }/* Estatísticas em Destaque */
+    font-size: 20px;
+    margin: 0;
+    color: var(--sub-title-color);
+    font-family: "Inter", sans-serif;
+  }
 
   .info-stats {
     display: flex;
@@ -73,9 +83,10 @@
     margin: 0; /* Remove margens desnecessárias */
     text-align: left; /* Alinha o texto à esquerda */
     font-size: 4rem; /* Tamanho consistente do texto */
-    background: linear-gradient(135deg, rgba(238,174,202,1) 0%, rgba(180,182,222,1) 28%, rgba(148,187,233,1) 100%);
-  -webkit-background-clip: text; /* Aplica o gradiente ao texto */
-  -webkit-text-fill-color: transparent; /* Deixa o fundo transparente para mostrar o gradiente */
+    /* background: linear-gradient(135deg, rgba(238,174,202,1) 0%, rgba(180,182,222,1) 28%, rgba(148,187,233,1) 100%);
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; */
+  color: #0fad51;
   }
   
   .time-class p {
@@ -114,20 +125,28 @@
   /* Coluna Direita */
   .info-right {
     flex: 1;
-    text-align: left;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #ebeaea;
+    border-radius: 15px;
+    padding: 1.5rem;
+    align-self: flex-start;
   }
   
   .info-right h2 {
     justify-content: left;
+
     font-size: 60px;
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin: 0;
     text-align: left;
   }
   
   .info-right p {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.6;  
+    margin: 0;
     color: #666;
   }
   
