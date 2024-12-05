@@ -1,34 +1,42 @@
-/* ScrollToTopButton.css */
+/* src/components/ScrollToTopButton.css */
 
 .scroll-to-top-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 1000;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1000;
 
-    transition: opacity 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .scroll-to-top-button:hover {
-    opacity: 1;
-  }
-  
-  .scroll-to-top-button:focus {
-    outline: none;
-  }
-  
-  .arrow-icon-main {
-    color: #fff; /* Cor do ícone */
-    font-size: 28px; /* Tamanho do ícone */
-  }
-  
+  /* Inicialmente, o botão está fora da tela à direita */
+  transform: translateX(100px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scroll-to-top-button.visible {
+  /* Quando visível, move o botão para a posição correta e torna-o opaco */
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.scroll-to-top-button:hover {
+  opacity: 0.8;
+}
+
+.scroll-to-top-button:focus {
+  outline: none;
+}
+
+.arrow-icon-main {
+  color: #fff; /* Cor do ícone */
+  font-size: 28px; /* Tamanho do ícone */
+}

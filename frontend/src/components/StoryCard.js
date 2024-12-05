@@ -142,6 +142,9 @@ const StoryCard = ({ story, isSaved = false, handleSaveStory, showSaveButton = f
               className='category-text'
             >
               {story.category}
+              <div className="tooltip">
+                Category
+              </div>
             </Link>
           </div>
         </div>
@@ -158,6 +161,7 @@ const StoryCard = ({ story, isSaved = false, handleSaveStory, showSaveButton = f
             alt={`Imagem de perfil de ${story.username}`}
             className='author-profile-image'
             onError={(e) => {
+              console.error(`aaaaaaaa`);
               e.target.src = defaultProfileImage;
               console.error(`Erro ao carregar a imagem de perfil de ${story.username}`);
             }}
@@ -166,6 +170,10 @@ const StoryCard = ({ story, isSaved = false, handleSaveStory, showSaveButton = f
           <small className='username-text' title={story.username}>
             {story.username}
           </small>
+          <div className="tooltip">
+                  Profile
+                </div>
+
         </Link>
         <div className='action-buttons'>
           {showSaveButton && handleSaveStory && (
@@ -178,7 +186,7 @@ const StoryCard = ({ story, isSaved = false, handleSaveStory, showSaveButton = f
                 {isSaved ? 'bookmark_check' : 'bookmark_add'}
               </span>
               <div className="tooltip">
-                {isSaved ? 'Remover História' : 'Salvar História'}
+                {isSaved ? 'Remove Story' : 'Save Story'}
               </div>
             </button>
           )}
@@ -192,7 +200,7 @@ const StoryCard = ({ story, isSaved = false, handleSaveStory, showSaveButton = f
               >
                 <span className="mark-read-icon">visibility</span>
                 <div className="tooltip">
-                  Marcar como Lida
+                  Check as Read
                 </div>
               </button>
             ) : (
@@ -203,7 +211,7 @@ const StoryCard = ({ story, isSaved = false, handleSaveStory, showSaveButton = f
               >
                 <span className="unmark-read-icon">visibility_off</span>
                 <div className="tooltip">
-                  Desmarcar como Lida
+                  Uncheck as Read
                 </div>
               </button>
             )
@@ -219,7 +227,7 @@ const StoryCard = ({ story, isSaved = false, handleSaveStory, showSaveButton = f
                 delete
               </span>
               <div className="tooltip">
-                Apagar História
+                Delte Story
               </div>
             </button>
           )}

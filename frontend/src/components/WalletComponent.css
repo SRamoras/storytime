@@ -19,7 +19,7 @@
 .container-sec-wallet {
   background-color: #fff;
 
-  max-width: 1400px;
+  min-width: 1400px;
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);

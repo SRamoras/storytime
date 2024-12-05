@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './SecLayout.css';
+
 import LogoText from '../components/LogoText';
 import { Outlet } from 'react-router-dom'; // Importar Outlet
 
@@ -39,10 +39,8 @@ function ThirdLayout() {
         <Outlet /> {/* Renderiza as rotas aninhadas */}
       </main>
 
-      {/* Rodapé */}
-      <footer className="footer">
-        <p>&copy; 2024 StoryTime. Todos os direitos reservados.</p>
-      </footer>
+
+    
     </div>
   );
 }

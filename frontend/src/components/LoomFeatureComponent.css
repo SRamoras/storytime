@@ -1,0 +1,177 @@
+
+.subtitle-section-container {
+margin: 0 auto;
+width: 85vw;
+}
+
+
+
+.storyhub-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box; /* Includes padding in the total width */
+}
+
+.storyhub-content {
+  background: #F4F4F4; /* Green background */
+  padding: 40px 40px; /* Balanced padding */
+  box-shadow: 0px 4px 134px 8px rgba(0, 0, 0, 0.14);
+  border: 4px solid #fff;
+  border-radius: 20px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center; 
+  width: 85vw;
+
+  box-sizing: border-box; /* Includes padding in the total width */
+}
+
+/* Image Container */
+.image-container {
+  flex: 1;
+  max-width: 50%;
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
+  align-items: center;
+  aspect-ratio: 1 / 1; /* Makes the container square */
+  overflow: hidden; /* Hides overflow to maintain the square shape */
+  border-radius: 15px; /* Rounds the corners */
+}
+
+.image-container img {
+  width: 100%; /* Ensures the image fills the container */
+  height: 100%; /* Ensures the image fills the container */
+  object-fit: cover; /* Scales the image to cover the container */
+  transition: transform 0.5s ease; /* Smooth transition for zoom effect */
+  border-radius: 15px; /* Rounds the image corners to match the container */
+}
+
+
+
+/* Text Container */
+.text-container {
+  flex: 1;
+  max-width: 50%;
+  color: #ffffff;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center; /* Vertically centers the text within the container */
+}
+
+.text-container h1 {
+  font-size: 60px;
+  margin-bottom: 1rem;
+  margin: 0;
+  line-height: 1.1; /* Melhor legibilidade */
+  font-weight: 532; /* Valor válido (700 em vez de 764) */
+  letter-spacing: normal;
+  font-optical-sizing: auto; /* Habilita o ajuste óptico automático */
+  font-variation-settings: "opsz" 85, "wonk" 0;  /* Define o tamanho óptico específico */
+  color: var(--title-color);
+}
+
+.text-container p {
+  font-size: 1.2rem;
+  margin: 0;
+  line-height: 1.4;
+  color: var(--sub-title-color);
+  font-family: "Inter", sans-serif;
+}
+
+.try-storyhub-button {
+  background: var(--title-color); /* Button background color */
+  color: #fff; /* Button text color */
+  border: none;
+  padding: 12px 24px; /* Adjusted padding */
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px; /* Font size */
+  transition: background 0.3s ease, color 0.3s ease; /* Smooth transition */
+  align-self: flex-start; /* Aligns the button to the left */
+}
+
+.try-storyhub-button:hover {
+  background: #333; /* Background color on hover */
+  color: #ffffff; /* Text color on hover */
+}
+
+/* Responsiveness */
+@media (max-width: 1200px) {
+  .storyhub-content {
+    padding: 40px 30px;
+  }
+
+  .text-container {
+    max-width: 45%;
+  }
+
+  .image-container img {
+    max-width: 250px; /* Adjust as needed */
+  }
+}
+
+@media (max-width: 992px) {
+  .text-container h1 {
+    font-size: 40px;
+  }
+
+  .text-container p {
+    font-size: 16px;
+  }
+
+  .text-container {
+    max-width: 50%;
+  }
+
+  .image-container img {
+    max-width: 200px; /* Adjust as needed */
+  }
+}
+
+@media (max-width: 768px) {
+  .storyhub-content {
+    flex-direction: column;
+    padding: 30px 20px;
+  }
+
+  .image-container,
+  .text-container {
+    max-width: 100%;
+    text-align: center; /* Centers text on smaller screens */
+  }
+
+  .text-container h1 {
+    font-size: 36px;
+  }
+
+  .text-container p {
+    font-size: 16px;
+  }
+
+  .image-container img {
+    max-width: 80%; /* Adjust for better centering */
+  }
+
+  .try-storyhub-button {
+    align-self: center; /* Centers the button */
+  }
+}
+
+@media (max-width: 480px) {
+  .text-container h1 {
+    font-size: 28px;
+  }
+
+  .text-container p {
+    font-size: 14px;
+  }
+
+  .try-storyhub-button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}

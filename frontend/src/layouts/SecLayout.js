@@ -102,7 +102,7 @@ function SecLayout() {
   return (
     <div className="layout">
       {/* Header */}
-      <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+      <header className={`header1 ${isScrolled ? 'scrolled' : ''}`}>
         <nav className="header-container">
           {/* LogoText à esquerda */}
           <div
@@ -237,12 +237,19 @@ function SecLayout() {
             )}
 
             {/* Botão Create Story (sem ícone) */}
-            <BlackButton
+            {/* <BlackButton
               text="Create Story"
               to="/create-story"
               onMouseEnter={() => toggleHeaderBackground(true)}
               onMouseLeave={() => toggleHeaderBackground(false)}
-            />
+            /> */}
+
+<Link to="/create-story"
+ onMouseEnter={() => toggleHeaderBackground(true)}
+ onMouseLeave={() => toggleHeaderBackground(false)}
+>
+<button className='first-button'>Start for free</button>
+                            </Link>
           </div>
         </nav>
       </header>

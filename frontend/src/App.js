@@ -33,7 +33,8 @@ function App() {
 
               <Route element={<SecLayout />}>
                   <Route path="/StorysPage" element={<StorysPage />} />
-                  <Route path="/profile/:username" element={<Profile />} />
+                  
+                  <Route path="/profile/:username" element={<Profile />}/>
                   <Route path="/create-story" element={<CreateStory />} />
                   <Route path="/story/:id" element={<Story />} /> 
               </Route>

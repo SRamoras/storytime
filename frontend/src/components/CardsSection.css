@@ -1,0 +1,140 @@
+.cards-section {
+    text-align: left;
+    margin: 0 auto;
+    width: 85vw;
+  }
+  
+  .subtitle-main-section {
+    text-align: left;
+    font-size: 2em; /* Ajuste conforme necessário */
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 20px;
+    min-height: 75vh;
+    grid-template-areas:
+      "image1 card2 card3 card4"
+      "card5 image2 image2 card6";
+  }
+  
+  .card, .image-item {
+    background-color: #F4F4F4;
+    border: #fff 3px solid;
+    box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    padding: 35px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribui espaço igualmente */
+    align-items: flex-start; /* Alinha conteúdo à esquerda */
+    color: #333; /* Cor de texto padrão */
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .card:hover, .image-item:hover {
+    box-shadow: 0px 6px 25px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.5rem; /* Ajuste conforme necessário */
+    margin-bottom: 15px;
+    min-height: 2em; /* Define uma altura mínima para o header */
+  }
+  
+  .card-date {
+    font-size: 0.9em;
+    color: #999; /* Cor para a data */
+  }
+  
+  .empty-date {
+    visibility: hidden; /* Oculta o conteúdo, mas mantém o espaço */
+  }
+  
+  .card-icon {
+    font-size: 1.5em;
+    margin-right: 10px;
+    justify-content: start;
+    text-align: left;
+    color: var(--base-color-unique); /* Cor para ícones */
+  }
+  
+  .card h3 {
+    font-size: 26px;
+    margin: 0;
+    line-height: 1.1;
+    font-weight: 600;
+
+    color: var(--title-color);
+
+  }
+  
+  .card p {
+    font-size: 20px;
+    margin: 0;
+    color: var(--sub-title-color);
+    font-family: "Inter", sans-serif;
+    flex-grow: 1;
+  }
+  
+  .card-date.empty-date {
+    /* Opcional: ajuste o tamanho ou outros estilos se necessário */
+  }
+  
+  .image-item {
+    background-color: transparent; /* Remove a cor de fundo para exibir a imagem */
+    border: none; /* Remove a borda para imagens */
+    padding: 0; /* Remove o padding */
+    height: 37vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+  
+  /* Design Responsivo */
+  
+  @media (max-width: 1024px) {
+    .cards-container {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-areas:
+        "image1 card2"
+        "card3 card4"
+        "card5 image2"
+        "card6 card7";
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .cards-container {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "image1"
+        "card2"
+        "card3"
+        "card4"
+        "card5"
+        "image2"
+        "card6";
+    }
+  
+    .subtitle-main-section {
+      font-size: 1.8em;
+    }
+  }
+  

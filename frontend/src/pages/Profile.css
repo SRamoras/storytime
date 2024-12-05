@@ -4,8 +4,6 @@
     display: flex;
     align-items: start;
     justify-content: space-between;
-
-    font-family: 'Poppins', sans-serif;
     font-weight: 500;
     background-color: #fff;
     min-height: 100vh;
@@ -65,15 +63,17 @@
 
 /* Estilos para o Componente UserInfo */
 .user-info {
+    flex-direction: column;
     align-items: center;
-  background-color: #fff;
+    background-color: #f4f4f4;
+    border: solid 5px #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.08);
     width: 100%;
     max-width: 300px;
-   position: relative;
-   bottom: 134px;
+    position: relative;
+    bottom: 134px;
 }
 
 .profile-image {
@@ -98,34 +98,43 @@
 
 /* Estilos para o Menu */
 .menu {
+    position: relative; /* Necessário para posicionar a barra deslizante */
     display: flex;
     justify-content: start;
-    margin-bottom: 20px;
-
-
+    gap: 30px;
 }
-
 .menu-item {
-    margin-right: 20px;
-    padding: 10px 20px;
+    position: relative; /* Para facilitar a referência */
+    padding-top: 20px;
+    padding-bottom: 20px;
     cursor: pointer;
     background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
+    transition: color 0.3s;
     font-weight: bold;
-    color: #333;
+    font-size: 25px;
+    line-height: 1.1;
+    font-weight: 532;
+    letter-spacing: normal;
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 85, "wonk" 0;
+    color: var(--title-color);
 }
 
 .menu-item:hover {
-    background-color: #000;
-    color: #fff;
 }
 
 .menu-item.active {
-    background-color: #000;
-    color: #fff;
-    border-color: #000;
+    color: #000; /* Cor diferente para o item ativo */
+}
+
+/* Barra Deslizante */
+.slider {
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    background-color: #0fad51;
+    transition: left 0.3s ease, width 0.3s ease;
+    border-radius: 2px 2px 0 0;
 }
 
 /* Estilos para o Conteúdo */
@@ -134,7 +143,6 @@
     background-color: #fff;
     padding-top: 50px;
     border-radius: 8px;
-
 }
 
 .menu-container{
@@ -143,10 +151,12 @@
     padding-left: 20px;
     padding-top: 20px;
 }
-
 .bio-text {
-    margin: 0 auto;
-    color: #333;
+    font-size: 1.2rem;
+    margin: 0;
+    line-height: 1.4;
+    color: var(--sub-title-color);
+    font-family: "Inter", sans-serif;
 }
 
 
@@ -155,16 +165,50 @@
     width: 100%;
     height: 1px;
     background-color: #ccc;
-    margin: 10px 0;
+}
+.div-line1{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
 }
 .user-name-container p {
-    margin-top: 10px;
-    margin-bottom: 0;
-    color: #000;
-}
-.subtitle-container-info{
+    color: var(--sub-title-color);
+    font-family: "Inter", sans-serif;
     font-size: 20px;
     margin: 0;
+    line-height: 1.5;
+}
+.user-name-container h1 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 35px;
+    margin-bottom: 1rem;
+    margin: 0;
+    line-height: 1.1;
+    font-weight: 532;
+    letter-spacing: normal;
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 85, "wonk" 0;
+    color: var(--title-color);
+}
+.bio-container{
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.subtitle-container-info{
+    font-size: 30px;
+    margin-bottom: 1rem;
+    margin: 0;
+    line-height: 1.1; /* Melhor legibilidade */
+    font-weight: 532; /* Valor válido (700 em vez de 764) */
+    letter-spacing: normal;
+    font-optical-sizing: auto; /* Habilita o ajuste óptico automático */
+    font-variation-settings: "opsz" 85, "wonk" 0;  /* Define o tamanho óptico específico */
+    color: var(--title-color);
 
 }
 .user-name-container {
@@ -176,14 +220,18 @@
     text-align: center; /* Garante que o texto dentro dos parágrafos esteja centralizado */
 }
 /* Estilos para o Formulário de Configurações */
+.settings-form-text{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .settings-form label {
     display: block;
-    margin-bottom: 15px;
     color: #333;
 }
 .container-info-medium{
     display: flex;
-
     align-items: center;
     justify-content: space-between;
     width: 100%;
@@ -192,7 +240,6 @@
 .settings-form textarea {
     width: 100%;
     padding: 8px 10px;
-    margin-top: 5px;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
@@ -202,19 +249,69 @@
     resize: vertical;
     height: 100px;
 }
-
-.settings-form button {
+/* Estilos específicos para o botão "Save text changes" */
+.save-text-button {
+    /* Defina a largura como automática para que o botão ajuste conforme o conteúdo */
+    width: auto;
+    
+    /* Defina um padding para melhorar a aparência */
     padding: 10px 20px;
-    background-color: #000;
-    border: none;
-    border-radius: 4px;
+    
+    /* Estilos de fundo e texto */
+    background-color: var(--title-color);
     color: #fff;
+    
+    /* Remova bordas padrão e adicione bordas arredondadas */
+    border: none;
+    border-radius: 5px;
+    
+    /* Cursor pointer para indicar interatividade */
     cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    
+    /* Tamanho da fonte */
+    font-size: 1rem;
+    
+    /* Transições para efeitos de hover e active */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    
+    /* Margem opcional para espaçamento */
+    margin-top: 10px;
+}
+.settings-form-text.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaçamento entre os elementos */
 }
 
+.save-text-button {
+    align-self: flex-start; /* Garante que o botão não cresça para ocupar a largura total */
+}
+
+/* Efeito de hover para o botão */
+.save-text-button:hover {
+    background-color: #333; /* Cor de fundo ao passar o mouse */
+}
+
+/* Efeito ao clicar no botão */
+.save-text-button:active {
+    transform: scale(0.95); /* Pequeno efeito de "pressão" */
+}
+
+.settings-form button {
+    background-color: var(--title-color);
+    border: 1px solid var(--title-color);
+    color: #fff;  
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    padding: 10px 15px 10px 15px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    width: auto;
+}
+.first-button:hover{
+    background-color: #333;
+}
 .settings-form button:hover {
     background-color: #252525;
 }
@@ -324,8 +421,23 @@
 .button-submit-img{
 margin-top: 20px;
 }
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-
+}
+.profile-content h2{
+    font-size: 30px;
+    margin-bottom: 1rem;
+    margin: 0;
+    line-height: 1.1;font-family: "Inter", sans-serif;
+    font-weight: 532;
+    letter-spacing: normal;
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 85, "wonk" 0;
+    color: var(--title-color);
+}
 
 
 .profile-content h2::after{ content: ''; /* Necessário para exibir o pseudo-elemento */

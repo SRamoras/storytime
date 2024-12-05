@@ -1,122 +1,108 @@
-/* Container principal */
-.review-cards-container {
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    height: 100vh; /* Ocupa toda a altura da viewport */
-    background-color: #f5f5f5; /* Adicione um fundo para contraste */
-    position: relative;
-  }
-  
-  /* Container total */
-  .div-total {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 2rem;
-    width: 100%;
-  }
-  .review-description{
- color: #333;
-  }
-  /* Cards alinhados no centro */
-  .review-cards {
+/* Reset básico para garantir consistência */
 
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-  }
-  
-  /* Alinhamento do título */
-  .review-title {
-    font-size: 60px;
-    font-weight: 700;
-    color: #000;text-align: left;
-    margin: 0;
-    
-  }
-  
-  /* Ajustes dos cards */
-  .review-card-wrapper {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .review-card {
-    width: 350px;
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .review-card.light {
-    background-color: #fff;
-    color: #333;
-  }
-  
-  .review-card.dark {
-    position: relative;
-    background-color: #fff;
-    color: #333; /* Alterado para preto para contraste */
-    padding: 10px; /* Espaço interno */
-    box-sizing: border-box; /* Garante que o padding não adicione largura/altura */
+.main-review-container{
+width: 85vw;
+}
+.grid-container {
+  display: grid;
+  margin-bottom: 15rem;
+  grid-template-rows: repeat(2, 50vh);
+  gap: 20px;
 }
 
-.review-card.dark::after {
-    content: "";
-    position: absolute;
-    top: -2px; /* Deslocamento da borda simulada */
-    left: -2px; /* Deslocamento da borda simulada */
-    right: -2px; /* Deslocamento da borda simulada */
-    bottom: -2px; /* Deslocamento da borda simulada */
-    z-index: -1;
-    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
-    border-radius: inherit; /* Mantém o mesmo raio da borda do elemento pai */
+/* Estilo base para todos os cards */
+.card {
+  background-color: #f4f4f4;
+  border-radius: 15px;
+  border: #fff solid 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribui espaço entre os elementos */
+  position: relative; /* Para posicionamento absoluto das estrelas */
+}
+.card p{
+  font-size: 1.2rem;
+  margin: 0;
+  line-height: 1.4;
+  color: var(--sub-title-color);
+  font-family: "Inter", sans-serif;
+  text-align: start;
+}
+/* Efeitos de hover e focus */
+.container-main-review-content{
+  display: flex;
+ flex-direction: column;
+ gap: 20px;
+
 }
 
-  .review-card:hover {
+/* Header do card: imagem e nome */
+.card-header-review {
+  display: flex;
+  align-items: center;
+}
 
-  }
-  
-  /* Avatar dos perfis */
-  .profile-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ff6f61;
-    color: #fff;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  
-  /* Texto e estrelas */
-  .review-content h3 {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-  
-  .review-content .stars {
-    font-size: 1rem;
-    color: #fbc02d;
-    margin: 5px 0;
-  }
-  
-  .review-content p {
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-  
-  /* Deslocamento sutil dos cards */
-  .review-card-wrapper.left {
-    transform: translateY(20px);
-  }
-  
-  .review-card-wrapper.right {
-    transform: translateX(50px); /* Move levemente para a direita */
-  }
-  
+/* Imagem de perfil */
+.profile-pic {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+/* Nome do usuário */
+.name {
+  font-size: 20px;
+  color: #333333;
+}
+
+/* Depoimento */
+.testimonial {
+  flex-grow: 1; /* Ocupa o espaço disponível */
+  font-size: 16px;
+  color: #555555;
+  margin: 10px 0;
+  text-align: center;
+}
+
+/* Estrelas posicionadas no canto inferior esquerdo */
+.stars {
+  display: flex;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 20px;
+  gap: 10px;
+  color: #FFD700; /* Cor dourada para as estrelas */
+}
+
+/* Mesclar os cards centrais */
+.card2 {
+  grid-row: 1 / span 2; /* Ocupa as duas linhas */
+  /* background-color: #82c49d;  */
+}
+
+/* Ajustar a posição dos cards */
+.card1 {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.card3 {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.card4 {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.card6 {
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+}

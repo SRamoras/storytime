@@ -2,30 +2,30 @@
 
 /* Container Principal do Story */
 .story-container2 {
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  background-color: #f4f4f4;
+  border: 5px solid #fff;
+  box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 15px;
   padding: 15px;
   transition: border 0.3s, transform 0.5s;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-bottom: 20px; /* Espaçamento entre os cards */
   max-height: 350px; /* Altura máxima do card */
   position: relative; /* Necessário para posicionar tooltips */
 }
 
-/* Efeito de Hover no Container */
-.story-container2:hover {
-  border: 1px solid #000;
-}
 
 .introduction-paragraf {
-  font-size: 1.3em;
-  color: #000000;
+  font-size: 30px;
+  margin-bottom: 1rem;
   margin: 0;
-  font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.1;
+  font-weight: 532;
+  letter-spacing: normal;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 85, "wonk" 0;
+  color: var(--title-color);
 }
 
 /* Link styling */
@@ -67,13 +67,30 @@
 }
 
 .text-container-info h3 {
+  font-size: 30px;
+  margin-bottom: 1rem;
   margin: 0;
-  font-size: 1.2em;
-  color: #333;
+  line-height: 1.1;
+  font-weight: 532;
+  letter-spacing: normal;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 85, "wonk" 0;
+  color: var(--title-color);
+  
+  /* Propriedades para quebra de palavras */
   word-wrap: break-word; /* Quebra palavras longas */
   word-break: break-word; /* Quebra palavras muito grandes */
   overflow-wrap: break-word; /* Suporte adicional para quebra */
   white-space: normal; /* Permite que o texto ocupe várias linhas */
+
+  /* Propriedades para limitar a duas linhas com reticências */
+  display: -webkit-box;             /* Define o elemento como um flex container de caixas flexíveis */
+  -webkit-line-clamp: 2;            /* Limita o texto a duas linhas */
+  -webkit-box-orient: vertical;     /* Orienta as caixas no eixo vertical */
+  overflow: hidden;                 /* Esconde o conteúdo que exceder o limite */
+  
+  /* Opcional: Para melhor compatibilidade e clareza */
+  text-overflow: ellipsis;          /* Adiciona reticências quando o texto é truncado */
 }
 
 /* Estilo para o Link da Categoria */
@@ -82,18 +99,19 @@
   font-size: 0.95em;
   border-radius: 15px;
   width: fit-content; /* Ajusta a largura ao conteúdo */
-  background-color: #000;
+  background-color: var(--title-color);
   padding: 2px 8px; /* Espaçamento interno */
   text-decoration: none; /* Remove o sublinhado */
   display: inline-block; /* Garante que as propriedades de padding funcionem corretamente */
   transition: background-color 0.3s, transform 0.3s; /* Transição suave para hover */
   cursor: pointer; /* Indica que é clicável */
+  font-family: "Inter", sans-serif;
 }
 
 /* Efeito de Hover para a Categoria */
 .category-text:hover {
   background-color: #333; /* Muda a cor de fundo no hover */
-  transform: scale(1.05); /* Aumenta ligeiramente o tamanho */
+  transform: scale(1.01); /* Aumenta ligeiramente o tamanho */
 }
 
 /* Responsividade para o Link da Categoria */
@@ -115,7 +133,8 @@
 }
 
 .story-content2 p {
-  color: #555;
+  color: var(--sub-title-color);
+  font-family: "Inter", sans-serif;
   font-size: 15px;
   margin: 0;
   line-height: 1.5;
@@ -236,7 +255,9 @@
 .save-icon-button:hover .tooltip,
 .delete-icon-button:hover .tooltip,
 .mark-read-button:hover .tooltip,
-.unmark-read-button:hover .tooltip {
+.unmark-read-button:hover .tooltip,
+.category-text:hover .tooltip,
+.author-info:hover .tooltip {
   visibility: visible;
   opacity: 1;
 }
@@ -245,6 +266,7 @@
 .author-info {
   display: flex;
   align-items: center;
+  font-family: "Inter", sans-serif;
   text-decoration: none; /* Remove o sublinhado */
   transition: transform 0.3s ease; /* Transição suave para o efeito de escala */
   cursor: pointer; /* Indica que o elemento é clicável */
@@ -252,7 +274,7 @@
 
 /* Opção 1: Escalar o contêiner inteiro no hover */
 .author-info:hover {
-  transform: scale(1.05); /* Aumenta 5% o tamanho */
+  transform: scale(1.01); /* Aumenta 5% o tamanho */
 }
 
 /* --- Ou --- */
@@ -271,7 +293,7 @@
 }
 
 .author-info:hover img {
-  transform: scale(1.1); /* Aumenta 10% o tamanho da imagem */
+  transform: scale(1.01); /* Aumenta 10% o tamanho da imagem */
 }
 
 /* Efeito de hover para o nome de usuário */

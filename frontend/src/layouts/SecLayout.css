@@ -4,10 +4,22 @@
   flex-direction: column;
   min-height: 100vh;
 }
+.header{
 
+
+  transition: background-color 0.3s ease;
+  color: white;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  align-items: center;
+  height: 9vh; /* Fixed height */
+  padding: 0;
+}
 /* --- Cabeçalho (Header) --- */
-.header {
-  background-color: transparent;
+.header1 {
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
   transition: background-color 0.3s ease;
   color: white;
   position: fixed;
@@ -18,13 +30,13 @@
   padding: 0;
 }
 
-.header.scrolled {
+.header1.scrolled {
   background-color: #fff;
   color: #333;
 }
 
 /* Classe para alterar o fundo do cabeçalho quando um nav-button está hover */
-.header.background-hover {
+.header1.background-hover {
   background-color: #fff; /* Fundo branco */
   color: #333; /* Cor do texto */
 }
@@ -69,9 +81,7 @@
 }
 
 /* Aumenta o tamanho do texto ao passar o mouse */
-.nav-button:hover {
-  transform: scale(1.1); /* Aumenta 10% o tamanho */
-}
+
 
 /* Menus com Dropdown */
 .topics-menu,
@@ -316,7 +326,6 @@
 /* Títulos das seções */
 .footer-section h3 {
   margin-bottom: 1rem;
-  font-family: 'Poppins', sans-serif;
   font-weight: 600;
   position: relative; /* Necessário para posicionar o pseudo-elemento */
   display: inline-block; /* Permite que a barra tenha largura ajustável */

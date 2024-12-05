@@ -5,7 +5,7 @@ import StoryCard from './StoryCard';
 
 const UserReadStories = React.memo(({ readStories, handleSaveStory, savedStoryIds, currentUser }) => (
     <div className="profile-content">
-        <h2>Histórias Lidas</h2>
+        <h2>Read Storys</h2>
         {readStories.length === 0 ? (
             <p>Nenhuma história lida.</p>
         ) : (

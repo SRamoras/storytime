@@ -1,7 +1,7 @@
 // src/pages/Profile.js
 
-import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import './Profile.css';
 import books from '../Assets/books.jpg';
@@ -9,10 +9,6 @@ import StoryCard from '../components/StoryCard';
 import UserReadStories from '../components/UserReadStories';
 
 // Subcomponentes definidos fora do componente principal
-// src/pages/Profile.js
-// src/pages/Profile.js
-
-// ... (outro código permanece o mesmo)
 
 // Componente UserInfo atualizado
 const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, defaultAvatar, isOwner, handleEdit, baseImageUrl }) => {
@@ -35,10 +31,10 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                 </div>
                 <div>
                     <div className='user-name-container'>
-                        <p><strong>{user.username}</strong><br /></p>
+                        <h1><strong>{user.username}</strong><br /></h1>
                         <p>{firstname} {lastname}</p>
                     </div>
-                    <div className='div-line'></div>
+                    <div className='div-line1'></div>
                     <div className='container-info-medium'>
                         <p>Published Stories:</p>
                         <p>{user.storyCount || 0}</p>
@@ -51,20 +47,21 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                         <p>Read Stories:</p>
                         <p>{user.readCount || 0}</p>
                     </div>
-                    <div className='div-line'></div>
-                    <p className='subtitle-container-info'>About Me</p>
-                    <p className='bio-text'>{bio || "no info"}</p>
+                    <div className='div-line1'></div>
+                    <div className='bio-container'>
+                        <p className='subtitle-container-info'>About Me</p>
+                        <p className='bio-text'>{bio || "no info"}</p>
+                    </div>
+
                     {/* Mostrar botão de edição se for o dono do perfil */}
-             
+                  
                 </div>
             </div>
         </div>
     );
 });
 
-// ... (continuação do código)
-
-
+// Componente UserSettings atualizado com limites de caracteres
 const UserSettings = React.memo(({ 
     firstname, 
     setFirstname, 
@@ -85,70 +82,135 @@ const UserSettings = React.memo(({
         ? (profileImage.startsWith('data:') ? profileImage : `${baseImageUrl}${profileImage}`) 
         : defaultAvatar;
 
+    // State to manage character counts
+    const [firstnameCount, setFirstnameCount] = useState(firstname.length);
+    const [lastnameCount, setLastnameCount] = useState(lastname.length);
+    const [bioCount, setBioCount] = useState(bio.length);
+
+    // Handlers to update character counts
+    const handleFirstnameChange = (e) => {
+        const value = e.target.value;
+        if (value.length <= 10) {
+            setFirstname(value);
+            setFirstnameCount(value.length);
+        }
+    };
+
+    const handleLastnameChange = (e) => {
+        const value = e.target.value;
+        if (value.length <= 10) {
+            setLastname(value);
+            setLastnameCount(value.length);
+        }
+    };
+
+    const handleBioChange = (e) => {
+        const value = e.target.value;
+        if (value.length <= 150) {
+            setBio(value);
+            setBioCount(value.length);
+        }
+    };
+
+    // Function to validate before updating profile
+    const validateAndUpdateProfile = () => {
+        if (firstname.length > 10) {
+            alert('O primeiro nome não pode exceder 10 caracteres.');
+            return;
+        }
+        if (lastname.length > 10) {
+            alert('O sobrenome não pode exceder 10 caracteres.');
+            return;
+        }
+        if (bio.length > 150) {
+            alert('A bio não pode exceder 150 caracteres.');
+            return;
+        }
+        handleUpdateProfile();
+    };
+
     return (
         <div className="profile-content">
             <h2>Update your Avatar</h2>
         
             <form className='settings-form' onSubmit={handleImageUpload}>
                <div className='intro-img-container-input'>
-            
-                {(imageFile || profileImage) && (
-                    <img 
-                        src={profileImageSrc} 
-                        alt="Pré-visualização" 
-                        width="100" 
-                        height="100" 
-                        style={{marginRight: '15px' }} 
+                    {(imageFile || profileImage) && (
+                        <img 
+                            src={profileImageSrc} 
+                            alt="Pré-visualização" 
+                            width="100" 
+                            height="100" 
+                            style={{marginRight: '15px' }} 
+                        />
+                    )}    
+                    <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleImageChange} 
                     />
-                )}    <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleImageChange} 
-                />
-</div>
+                </div>
                 <div className='button-submit-img'>
-                <button  type="submit">Save Image Changes</button></div>
+                    <button type="submit">Save Image Changes</button>
+                </div>
             </form>
             <br /><br />
            
             
-            <div className="settings-form">
-                <h2>Update the text on yout Profile</h2>
+            <div className="settings-form-text settings-form">
+                <h2>Update the text on your Profile</h2>
+                
                 <label>
                     Nome:
                     <input 
                         type="text" 
                         value={firstname} 
-                        onChange={(e) => setFirstname(e.target.value)} 
+                        onChange={handleFirstnameChange} 
                         placeholder="Nome"
+                        maxLength={10} // Enforce maximum of 10 characters
                     />
+                    <small className="char-count">{firstnameCount}/10</small>
                 </label>
+                
                 <label>
                     Sobrenome:
                     <input 
                         type="text" 
                         value={lastname} 
-                        onChange={(e) => setLastname(e.target.value)} 
+                        onChange={handleLastnameChange} 
                         placeholder="Sobrenome"
+                        maxLength={10} // Enforce maximum of 10 characters
                     />
+                    <small className="char-count">{lastnameCount}/10</small>
                 </label>
+                
                 <label>
                     Bio:
                     <textarea 
                         value={bio} 
-                        onChange={(e) => setBio(e.target.value)} 
+                        onChange={handleBioChange} 
                         placeholder="Bio"
+                        maxLength={150} // Enforce maximum of 150 characters
                     />
+                    <small className="char-count">{bioCount}/150</small>
                 </label>
-                <button type="button" onClick={handleUpdateProfile}>Save text changes</button>
+                
+                <button 
+                    type="button" 
+                    className="save-text-button" 
+                    onClick={validateAndUpdateProfile}
+                >
+                    Save text changes
+                </button>
             </div>
         </div>
     );
 });
 
+// Componente UserSavedStories
 const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStoryIds, currentUser, isOwner }) => (
     <div className="profile-content">
-        <h2>Saved Storys</h2>
+        <h2>Saved Stories</h2>
         {savedStories.length === 0 ? (
             <p>Nenhuma história salva.</p>
         ) : (
@@ -172,9 +234,10 @@ const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStory
     </div>
 ));
 
+// Componente UserStories
 const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds, currentUser, isOwner }) => (
     <div className="profile-content">
-            <h2>Saved Storys</h2>
+        <h2>Published Stories</h2>
         {stories.length === 0 ? (
             <p>Este usuário ainda não publicou histórias.</p>
         ) : (
@@ -198,9 +261,11 @@ const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds, curre
     </div>
 ));
 
+// Componente principal Profile
 const Profile = () => {
     const { username } = useParams();
     const location = useLocation();
+    const navigate = useNavigate();
     const [profileUser, setProfileUser] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [stories, setStories] = useState([]);
@@ -220,6 +285,16 @@ const Profile = () => {
     const baseImageUrl = process.env.REACT_APP_BASE_IMAGE_URL || 'http://localhost:5000/uploads/';
 
     const [isOwner, setIsOwner] = useState(null); // Inicializa como null
+
+    // Refs para os itens do menu
+    const menuRef = useRef(null);
+    const menuItemRefs = useRef({});
+
+    // Estados para a barra deslizante
+    const [sliderStyle, setSliderStyle] = useState({
+        left: 0,
+        width: 0
+    });
 
     // Função para buscar o usuário autenticado
     const fetchCurrentUser = async () => {
@@ -247,24 +322,20 @@ const Profile = () => {
     };
 
     // Função para buscar os dados do perfil baseado no username da URL
-   // Dentro da função fetchProfileUser em Profile.js
-
-// Função para buscar os dados do perfil baseado no username da URL
-const fetchProfileUser = async () => {
-    try {
-        const response = await api.get(`/auth/users/${username}`);
-        console.log('Dados do perfil recebidos:', response.data.user);
-        setProfileUser(response.data.user);
-        setBio(response.data.user.bio || "");
-        setFirstname(response.data.user.firstname || "");
-        setLastname(response.data.user.lastname || "");
-        setProfileImage(response.data.user.profile_image || "");
-    } catch (error) {
-        console.error('Erro ao buscar dados do perfil:', error);
-        alert('Erro ao buscar dados do perfil.');
-    }
-};
-
+    const fetchProfileUser = async () => {
+        try {
+            const response = await api.get(`/auth/users/${username}`);
+            console.log('Dados do perfil recebidos:', response.data.user);
+            setProfileUser(response.data.user);
+            setBio(response.data.user.bio || "");
+            setFirstname(response.data.user.firstname || "");
+            setLastname(response.data.user.lastname || "");
+            setProfileImage(response.data.user.profile_image || "");
+        } catch (error) {
+            console.error('Erro ao buscar dados do perfil:', error);
+            alert('Erro ao buscar dados do perfil.');
+        }
+    };
 
     // Função para buscar as histórias do usuário
     const fetchUserStories = async () => {
@@ -422,6 +493,7 @@ const fetchProfileUser = async () => {
         }
     };
 
+    // Função para atualizar o perfil
     const handleUpdateProfile = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -447,6 +519,7 @@ const fetchProfileUser = async () => {
         }
     };
 
+    // Função para fazer upload da imagem de perfil
     const handleImageUpload = async (e) => {
         e.preventDefault();
 
@@ -489,6 +562,7 @@ const fetchProfileUser = async () => {
         }
     };
 
+    // Função para lidar com a mudança na seleção de imagem
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -520,35 +594,35 @@ const fetchProfileUser = async () => {
     const handleEditProfile = () => {
         setContent('settings');
     };
-// Dentro do componente Profile em src/pages/Profile.js
 
-const handleUnmarkAsRead = async (storyId) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        alert('Você precisa estar logado para remover histórias lidas.');
-        return;
-    }
+    // Função para desmarcar uma história como lida
+    const handleUnmarkAsRead = async (storyId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Você precisa estar logado para remover histórias lidas.');
+            return;
+        }
 
-    if (!currentUser) {
-        alert('Erro ao obter o ID do usuário.');
-        return;
-    }
+        if (!currentUser) {
+            alert('Erro ao obter o ID do usuário.');
+            return;
+        }
 
-    try {
-        // Remover a história lida
-        await api.delete(`/auth/read_story/${storyId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        alert('História removida das lidas com sucesso!');
-        // Atualizar o estado local, removendo a história das lidas
-        setReadStories(readStories.filter(story => story.id !== storyId));
-    } catch (error) {
-        console.error('Erro ao remover a história lida:', error);
-        alert('Erro ao remover a história lida.');
-    }
-};
+        try {
+            // Remover a história lida
+            await api.delete(`/auth/read_story/${storyId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            alert('História removida das lidas com sucesso!');
+            // Atualizar o estado local, removendo a história das lidas
+            setReadStories(readStories.filter(story => story.id !== storyId));
+        } catch (error) {
+            console.error('Erro ao remover a história lida:', error);
+            alert('Erro ao remover a história lida.');
+        }
+    };
 
     // Função para renderizar o conteúdo com base no menu selecionado
     const renderContent = () => {
@@ -582,14 +656,14 @@ const handleUnmarkAsRead = async (storyId) => {
                             currentUser={currentUser}
                             isOwner={isOwner}
                         />;
-                        case 'read_stories':
-                            return <UserReadStories 
-                                        readStories={readStories} 
-                                        handleSaveStory={handleSaveStory} 
-                                        savedStoryIds={savedStoryIds}
-                                        handleUnmarkAsRead={handleUnmarkAsRead}
-                                        currentUser={currentUser} // Passa currentUser
-                                    />;
+            case 'read_stories':
+                return <UserReadStories 
+                            readStories={readStories} 
+                            handleSaveStory={handleSaveStory} 
+                            savedStoryIds={savedStoryIds}
+                            handleUnmarkAsRead={handleUnmarkAsRead}
+                            currentUser={currentUser} // Passa currentUser
+                        />;
             case 'stories':
                 return <UserStories 
                             stories={stories} 
@@ -602,6 +676,31 @@ const handleUnmarkAsRead = async (storyId) => {
                 return null;
         }
     };
+
+    // Função para atualizar a barra deslizante
+    const updateSlider = () => {
+        if (!menuRef.current) return;
+
+        const activeKey = content;
+
+        const activeItem = menuItemRefs.current[activeKey];
+        if (activeItem) {
+            const { offsetLeft, clientWidth } = activeItem;
+            setSliderStyle({
+                left: offsetLeft,
+                width: clientWidth
+            });
+        }
+    };
+
+    // useEffect para atualizar a barra deslizante quando o conteúdo mudar ou a janela for redimensionada
+    useEffect(() => {
+        updateSlider();
+        window.addEventListener('resize', updateSlider);
+        return () => {
+            window.removeEventListener('resize', updateSlider);
+        };
+    }, [content, profileUser]);
 
     if (loading || isOwner === null) {
         return <p>Carregando perfil...</p>;
@@ -631,33 +730,45 @@ const handleUnmarkAsRead = async (storyId) => {
                 </div> 
                 {/* Menu Atualizado */}
                 <div className='menu-container'>
-                    <div className="menu">
+                    <div className="menu" ref={menuRef}>
                         <div 
                             className={`menu-item ${content === 'stories' ? 'active' : ''}`} 
                             onClick={() => setContent('stories')}
+                            ref={el => menuItemRefs.current['stories'] = el}
                         >
                             Published Stories
                         </div>
                         <div 
                             className={`menu-item ${content === 'saved_stories' ? 'active' : ''}`} 
                             onClick={() => setContent('saved_stories')}
+                            ref={el => menuItemRefs.current['saved_stories'] = el}
                         >
-                            Saved Storys
+                            Saved Stories
                         </div>
                         <div 
                             className={`menu-item ${content === 'read_stories' ? 'active' : ''}`} 
                             onClick={() => setContent('read_stories')}
+                            ref={el => menuItemRefs.current['read_stories'] = el}
                         >
-                            Read Storys
+                            Read Stories
                         </div>
                         {isOwner && (
                             <div 
                                 className={`menu-item ${content === 'settings' ? 'active' : ''}`} 
                                 onClick={() => setContent('settings')}
+                                ref={el => menuItemRefs.current['settings'] = el}
                             >
                                 Settings
                             </div>
                         )}
+                        {/* Barra Deslizante */}
+                        <div 
+                            className="slider" 
+                            style={{
+                                left: sliderStyle.left,
+                                width: sliderStyle.width
+                            }}
+                        ></div>
                     </div>
                     <div className='div-line'></div>
                     {/* Conteúdo Condicional */}

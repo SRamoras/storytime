@@ -5,7 +5,7 @@ import api from '../services/api';
 import { useNavigate, Link } from 'react-router-dom';
 import './LoginPage.css'; // Using the same CSS file as the login page
 import BlackButton from '../components/BlackButton';
-import registerImage from '../Assets/login_foto.jpg'; // Ensure this image exists or use the same as login
+import registerImage from '../Assets/register_foto.jpg'; // Ensure this image exists or use the same as login
 
 // Importing icons from react-icons
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -123,7 +123,7 @@ const RegisterPage = () => {
                         onClick={toggleShowPassword}
                         aria-label={showPassword ? "Hide password" : "Show password"}
                     >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        {showPassword ? <FaEye /> : <FaEyeSlash />}
                     </button>
                 </div>
 
