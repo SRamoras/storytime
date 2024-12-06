@@ -7,12 +7,11 @@ import './Profile.css';
 import books from '../Assets/books.jpg';
 import StoryCard from '../components/StoryCard';
 import UserReadStories from '../components/UserReadStories';
+import { toast } from 'react-toastify';
 
-// Subcomponentes definidos fora do componente principal
+// Subcomponents
 
-// Componente UserInfo atualizado
 const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, defaultAvatar, isOwner, handleEdit, baseImageUrl }) => {
-    // Construir o caminho completo da imagem de perfil
     const profileImageSrc = profileImage 
         ? (profileImage.startsWith('data:') ? profileImage : `${baseImageUrl}${profileImage}`) 
         : defaultAvatar;
@@ -23,7 +22,7 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                 <div className="user-img">
                     <img 
                         src={profileImageSrc} 
-                        alt="Perfil" 
+                        alt="Profile" 
                         width="150" 
                         height="150" 
                         onError={(e) => { e.target.src = defaultAvatar; }}
@@ -50,18 +49,14 @@ const UserInfo = React.memo(({ user, firstname, lastname, bio, profileImage, def
                     <div className='div-line1'></div>
                     <div className='bio-container'>
                         <p className='subtitle-container-info'>About Me</p>
-                        <p className='bio-text'>{bio || "no info"}</p>
+                        <p className='bio-text'>{bio || "No information available."}</p>
                     </div>
-
-                    {/* Mostrar botão de edição se for o dono do perfil */}
-                  
                 </div>
             </div>
         </div>
     );
 });
 
-// Componente UserSettings atualizado com limites de caracteres
 const UserSettings = React.memo(({ 
     firstname, 
     setFirstname, 
@@ -77,17 +72,14 @@ const UserSettings = React.memo(({
     defaultAvatar,
     baseImageUrl
 }) => {
-    // Construir o caminho completo da imagem para pré-visualização
     const profileImageSrc = profileImage 
         ? (profileImage.startsWith('data:') ? profileImage : `${baseImageUrl}${profileImage}`) 
         : defaultAvatar;
 
-    // State to manage character counts
     const [firstnameCount, setFirstnameCount] = useState(firstname.length);
     const [lastnameCount, setLastnameCount] = useState(lastname.length);
     const [bioCount, setBioCount] = useState(bio.length);
 
-    // Handlers to update character counts
     const handleFirstnameChange = (e) => {
         const value = e.target.value;
         if (value.length <= 10) {
@@ -112,18 +104,17 @@ const UserSettings = React.memo(({
         }
     };
 
-    // Function to validate before updating profile
     const validateAndUpdateProfile = () => {
         if (firstname.length > 10) {
-            alert('O primeiro nome não pode exceder 10 caracteres.');
+            toast.error('First name cannot exceed 10 characters.');
             return;
         }
         if (lastname.length > 10) {
-            alert('O sobrenome não pode exceder 10 caracteres.');
+            toast.error('Last name cannot exceed 10 characters.');
             return;
         }
         if (bio.length > 150) {
-            alert('A bio não pode exceder 150 caracteres.');
+            toast.error('Bio cannot exceed 150 characters.');
             return;
         }
         handleUpdateProfile();
@@ -131,14 +122,14 @@ const UserSettings = React.memo(({
 
     return (
         <div className="profile-content">
-            <h2>Update your Avatar</h2>
+            <h2>Update Your Avatar</h2>
         
             <form className='settings-form' onSubmit={handleImageUpload}>
                <div className='intro-img-container-input'>
                     {(imageFile || profileImage) && (
                         <img 
                             src={profileImageSrc} 
-                            alt="Pré-visualização" 
+                            alt="Preview" 
                             width="100" 
                             height="100" 
                             style={{marginRight: '15px' }} 
@@ -156,30 +147,29 @@ const UserSettings = React.memo(({
             </form>
             <br /><br />
            
-            
             <div className="settings-form-text settings-form">
-                <h2>Update the text on your Profile</h2>
+                <h2>Update Your Profile Information</h2>
                 
                 <label>
-                    Nome:
+                    First Name:
                     <input 
                         type="text" 
                         value={firstname} 
                         onChange={handleFirstnameChange} 
-                        placeholder="Nome"
-                        maxLength={10} // Enforce maximum of 10 characters
+                        placeholder="First Name"
+                        maxLength={10}
                     />
                     <small className="char-count">{firstnameCount}/10</small>
                 </label>
                 
                 <label>
-                    Sobrenome:
+                    Last Name:
                     <input 
                         type="text" 
                         value={lastname} 
                         onChange={handleLastnameChange} 
-                        placeholder="Sobrenome"
-                        maxLength={10} // Enforce maximum of 10 characters
+                        placeholder="Last Name"
+                        maxLength={10}
                     />
                     <small className="char-count">{lastnameCount}/10</small>
                 </label>
@@ -190,7 +180,7 @@ const UserSettings = React.memo(({
                         value={bio} 
                         onChange={handleBioChange} 
                         placeholder="Bio"
-                        maxLength={150} // Enforce maximum of 150 characters
+                        maxLength={150}
                     />
                     <small className="char-count">{bioCount}/150</small>
                 </label>
@@ -200,69 +190,119 @@ const UserSettings = React.memo(({
                     className="save-text-button" 
                     onClick={validateAndUpdateProfile}
                 >
-                    Save text changes
+                    Save Text Changes
                 </button>
             </div>
         </div>
     );
 });
 
-// Componente UserSavedStories
-const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStoryIds, currentUser, isOwner }) => (
-    <div className="profile-content">
-        <h2>Saved Stories</h2>
-        {savedStories.length === 0 ? (
-            <p>Nenhuma história salva.</p>
-        ) : (
-            <div className="stories-grid-profile">
-                {savedStories.map(story => {
-                    const isSaved = savedStoryIds.includes(story.id);
-                    return (
-                        <StoryCard
-                            key={story.id}
-                            story={story}
-                            isSaved={isSaved}
-                            handleSaveStory={handleSaveStory}
-                            showSaveButton={true}
-                            currentUser={currentUser}
-                            isOwner={isOwner}
-                        />
-                    );
-                })}
-            </div>
-        )}
-    </div>
-));
+const UserSavedStories = React.memo(({ savedStories, handleSaveStory, savedStoryIds, currentUser, isOwner, searchTerm, handleSearchChange }) => {
+    const filteredStories = savedStories.filter(story =>
+        ((story.title || '').toLowerCase().includes(searchTerm.toLowerCase())) ||
+        ((story.description || '').toLowerCase().includes(searchTerm.toLowerCase()))
+    );
 
-// Componente UserStories
-const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds, currentUser, isOwner }) => (
-    <div className="profile-content">
-        <h2>Published Stories</h2>
-        {stories.length === 0 ? (
-            <p>Este usuário ainda não publicou histórias.</p>
-        ) : (
-            <div className="stories-grid-profile">
-                {stories.map(story => {
-                    const isSaved = savedStoryIds.includes(story.id);
-                    return (
-                        <StoryCard
-                            key={story.id}
-                            story={story}
-                            isSaved={isSaved}
-                            handleSaveStory={handleSaveStory}
-                            showSaveButton={true}
-                            currentUser={currentUser}
-                            isOwner={isOwner}
-                        />
-                    );
-                })}
-            </div>
-        )}
-    </div>
-));
+    return (
+        <div className="profile-content">
+            <div className="tab-header">
+                <h2>Saved Stories</h2>
+                <div className="search-bar-container">
+                    <input 
+                        type="text" 
+                        placeholder="Search saved stories..." 
+                        value={searchTerm} 
+                        onChange={handleSearchChange} 
+                        className="search-input"
+                    />
+                    <span className="search-icon material-symbols-outlined">
+                    search
+                    </span>
 
-// Componente principal Profile
+
+                </div>
+            </div>
+            {filteredStories.length === 0 ? (
+                searchTerm !== "" ? (
+                    <p>No stories found with that name.</p>
+                ) : (
+                    <p>No stories saved.</p>
+                )
+            ) : (
+                <div className="stories-grid-profile">
+                    {filteredStories.map(story => {
+                        const isSaved = savedStoryIds.includes(story.id);
+                        return (
+                            <StoryCard
+                                key={story.id}
+                                story={story}
+                                isSaved={isSaved}
+                                handleSaveStory={handleSaveStory}
+                                showSaveButton={true}
+                                currentUser={currentUser}
+                                isOwner={isOwner}
+                            />
+                        );
+                    })}
+                </div>
+            )}
+        </div>
+    );
+});
+
+const UserStories = React.memo(({ stories, handleSaveStory, savedStoryIds, currentUser, isOwner, searchTerm, handleSearchChange }) => {
+    const filteredStories = stories.filter(story =>
+        ((story.title || '').toLowerCase().includes(searchTerm.toLowerCase())) ||
+        ((story.description || '').toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    return (
+        <div className="profile-content">
+            <div className="tab-header">
+                <h2>Published Stories</h2>
+                <div className="search-bar-container">
+                    <input 
+                        type="text" 
+                        placeholder="Search published stories..." 
+                        value={searchTerm} 
+                        onChange={handleSearchChange} 
+                        className="search-input"
+                    />
+                   <span className="search-icon material-symbols-outlined">
+                    search
+                    </span>
+                </div>
+            </div>
+            {filteredStories.length === 0 ? (
+                searchTerm !== "" ? (
+                    <p>No stories found with that name.</p>
+                ) : (
+                    <p>This user has not yet published stories.</p>
+                )
+            ) : (
+                <div className="stories-grid-profile">
+                    {filteredStories.map(story => {
+                        const isSaved = savedStoryIds.includes(story.id);
+                        return (
+                            <StoryCard
+                                key={story.id}
+                                story={story}
+                                isSaved={isSaved}
+                                handleSaveStory={handleSaveStory}
+                                showSaveButton={true}
+                                currentUser={currentUser}
+                                isOwner={isOwner}
+                            />
+                        );
+                    })}
+                </div>
+            )}
+        </div>
+    );
+});
+
 const Profile = () => {
+    const [searchTerm, setSearchTerm] = useState("");
     const { username } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
@@ -278,31 +318,27 @@ const Profile = () => {
     const [lastname, setLastname] = useState("");
     const [profileImage, setProfileImage] = useState("");
     const [imageFile, setImageFile] = useState(null);
-
     const [loading, setLoading] = useState(true);
-
     const defaultAvatar = "https://www.gravatar.com/avatar/?d=mp&f=y";
     const baseImageUrl = process.env.REACT_APP_BASE_IMAGE_URL || 'http://localhost:5000/uploads/';
-
-    const [isOwner, setIsOwner] = useState(null); // Inicializa como null
-
-    // Refs para os itens do menu
+    const [isOwner, setIsOwner] = useState(null);
     const menuRef = useRef(null);
     const menuItemRefs = useRef({});
-
-    // Estados para a barra deslizante
     const [sliderStyle, setSliderStyle] = useState({
         left: 0,
         width: 0
     });
 
-    // Função para buscar o usuário autenticado
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
     const fetchCurrentUser = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
-            console.log('Nenhum token encontrado');
+            console.log('No token found');
             setLoading(false);
-            setIsOwner(false); // Não é o dono do perfil
+            setIsOwner(false);
             return;
         }
 
@@ -312,32 +348,30 @@ const Profile = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log('Dados do usuário autenticado:', response.data);
+            console.log('Authenticated user data:', response.data);
             setCurrentUser(response.data);
         } catch (error) {
-            console.error('Erro ao buscar dados do usuário autenticado:', error);
+            console.error('Error fetching authenticated user data:', error);
         } finally {
             setLoading(false);
         }
     };
 
-    // Função para buscar os dados do perfil baseado no username da URL
     const fetchProfileUser = async () => {
         try {
             const response = await api.get(`/auth/users/${username}`);
-            console.log('Dados do perfil recebidos:', response.data.user);
+            console.log('Profile data received:', response.data.user);
             setProfileUser(response.data.user);
             setBio(response.data.user.bio || "");
             setFirstname(response.data.user.firstname || "");
             setLastname(response.data.user.lastname || "");
             setProfileImage(response.data.user.profile_image || "");
         } catch (error) {
-            console.error('Erro ao buscar dados do perfil:', error);
-            alert('Erro ao buscar dados do perfil.');
+            console.error('Error fetching profile data:', error);
+            toast.error('Error fetching profile data.');
         }
     };
 
-    // Função para buscar as histórias do usuário
     const fetchUserStories = async () => {
         try {
             let response;
@@ -348,14 +382,13 @@ const Profile = () => {
             }
             setStories(response.data);
         } catch (error) {
-            console.error('Erro ao carregar histórias:', error);
-            alert('Falha ao carregar histórias.');
+            console.error('Error loading stories:', error);
+            toast.error('Failed to load stories.');
         } finally {
             setLoading(false);
         }
     };
 
-    // Função para buscar as histórias salvas pelo usuário do perfil
     const fetchProfileUserSavedStories = async () => {
         if (!profileUser) return;
 
@@ -363,29 +396,27 @@ const Profile = () => {
             const response = await api.get(`/auth/saved_stories/${profileUser.id}`);
             setSavedStories(response.data);
         } catch (error) {
-            console.error('Erro ao carregar histórias salvas do usuário do perfil:', error);
-            alert('Falha ao carregar histórias salvas do usuário do perfil.');
+            console.error('Error loading profile user saved stories:', error);
+            toast.error('Failed to load profile user saved stories.');
         }
     };
 
-    // Função para buscar as histórias lidas pelo usuário do perfil
     const fetchProfileUserReadStories = async () => {
         if (!profileUser) return;
 
         try {
             const response = await api.get(`/auth/read_stories/${profileUser.id}`);
             setReadStories(response.data);
-            console.log('Histórias lidas obtidas:', response.data);
+            console.log('Read stories obtained:', response.data);
         } catch (error) {
-            console.error('Erro ao carregar histórias lidas do usuário do perfil:', error);
-            alert('Falha ao carregar histórias lidas do usuário do perfil.');
+            console.error('Error loading profile user read stories:', error);
+            toast.error('Failed to load profile user read stories.');
         }
     };
 
-    // Função para buscar os IDs das histórias salvas pelo usuário autenticado
     const fetchCurrentUserSavedStoryIds = async () => {
         if (!currentUser) {
-            console.log('Usuário não autenticado.');
+            console.log('Unauthenticated user.');
             return;
         }
 
@@ -394,12 +425,11 @@ const Profile = () => {
             const ids = response.data.map(story => story.id);
             setSavedStoryIds(ids);
         } catch (error) {
-            console.error('Erro ao carregar IDs de histórias salvas do usuário atual:', error);
-            alert('Falha ao carregar IDs de histórias salvas do usuário atual.');
+            console.error('Error loading current user saved story IDs:', error);
+            toast.error('Failed to load current user saved story IDs.');
         }
     };
 
-    // useEffect para buscar perfil e usuário atual quando o username mudar
     useEffect(() => {
         const initialize = async () => {
             setLoading(true);
@@ -409,7 +439,6 @@ const Profile = () => {
         initialize();
     }, [username]);
 
-    // useEffect para determinar se o usuário atual é o dono do perfil
     useEffect(() => {
         if (currentUser && profileUser) {
             const owner = String(currentUser.id) === String(profileUser.id);
@@ -419,7 +448,6 @@ const Profile = () => {
         }
     }, [currentUser, profileUser]);
 
-    // useEffect para buscar histórias quando profileUser e currentUser forem definidos
     useEffect(() => {
         if (profileUser) {
             fetchUserStories();
@@ -432,7 +460,6 @@ const Profile = () => {
         }
     }, [profileUser, currentUser]);
 
-    // useEffect para definir a aba ativa com base no parâmetro de consulta 'tab'
     useEffect(() => {
         if (profileUser) {
             const params = new URLSearchParams(location.search);
@@ -449,16 +476,15 @@ const Profile = () => {
         }
     }, [profileUser, location.search, isOwner]);
 
-    // Função para salvar ou remover a história
     const handleSaveStory = async (storyId) => {
         const token = localStorage.getItem('token');
         if (!token) {
-            alert('Você precisa estar logado para salvar histórias.');
+            toast.error('You need to be logged in to save stories.');
             return;
         }
 
         if (!currentUser) {
-            alert('Erro ao obter o ID do usuário.');
+            toast.error('Error obtaining user ID.');
             return;
         }
 
@@ -466,71 +492,64 @@ const Profile = () => {
             const isSaved = savedStoryIds.includes(storyId);
 
             if (isSaved) {
-                // Remover a história salva
                 await api.delete(`/auth/save_story/${storyId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                alert('História removida com sucesso!');
-                // Atualizar o estado local
+                toast.success('Story removed successfully!');
                 setSavedStoryIds(savedStoryIds.filter(id => id !== storyId));
             } else {
-                // Salvar a história
                 await api.post('/auth/save_story', { storyId }, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                alert('História salva com sucesso!');
-                // Atualizar o estado local
+                toast.success('Story saved successfully!');
                 setSavedStoryIds([...savedStoryIds, storyId]);
             }
         } catch (error) {
-            console.error('Erro ao salvar/remover a história:', error);
-            alert('Erro ao salvar/remover a história.');
+            console.error('Error saving/removing story:', error);
+            toast.error('Error saving/removing story.');
         }
     };
 
-    // Função para atualizar o perfil
     const handleUpdateProfile = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
-            console.log('Nenhum token encontrado para atualizar o perfil.');
+            console.log('No token found to update profile.');
             return;
         }
 
         try {
-            // Atualizar outros campos do perfil
             const response = await api.put('/auth/update-profile', { bio, firstname, lastname }, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
             if (response.data.token) {
-                localStorage.setItem('token', response.data.token); // Atualiza o token no localStorage
-                await fetchProfileUser(); // Recarrega o perfil com os novos dados
+                localStorage.setItem('token', response.data.token);
+                await fetchProfileUser();
             }
 
-            alert('Perfil atualizado com sucesso!');
+            toast.success('Profile updated successfully!');
         } catch (error) {
-            console.error('Erro ao atualizar o perfil:', error);
-            alert('Falha ao atualizar o perfil.');
+            console.error('Error updating profile:', error);
+            toast.error('Failed to update profile.');
         }
     };
 
-    // Função para fazer upload da imagem de perfil
     const handleImageUpload = async (e) => {
         e.preventDefault();
 
         if (!imageFile) {
-            alert('Por favor, selecione uma imagem para upload.');
+            toast.error('Please select an image to upload.');
             return;
         }
 
         const token = localStorage.getItem('token');
         if (!token) {
-            alert('Nenhum token encontrado para fazer upload da imagem.');
+            toast.error('No token found to upload the image.');
             return;
         }
 
@@ -546,42 +565,40 @@ const Profile = () => {
             });
 
             if (response.data.token) {
-                localStorage.setItem('token', response.data.token); // Atualiza o token no localStorage
-                await fetchProfileUser(); // Recarrega o perfil para mostrar a nova imagem
-                alert('Imagem de perfil atualizada com sucesso!');
+                localStorage.setItem('token', response.data.token);
+                await fetchProfileUser();
+                toast.success('Profile image updated successfully!');
                 setImageFile(null);
             } else {
-                // Caso o backend não retorne um novo token, ainda assim atualizar o perfil
                 await fetchProfileUser();
-                alert('Imagem de perfil atualizada com sucesso!');
+                toast.success('Profile image updated successfully!');
                 setImageFile(null);
             }
         } catch (error) {
-            console.error('Erro ao fazer upload da imagem de perfil:', error);
-            alert('Falha ao fazer upload da imagem de perfil.');
+            console.error('Error uploading profile image:', error);
+            toast.error('Failed to upload profile image.');
         }
     };
 
-    // Função para lidar com a mudança na seleção de imagem
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
             if (!allowedTypes.includes(file.type)) {
-                alert('Apenas arquivos de imagem são permitidos (jpeg, jpg, png, gif).');
+                toast.error('Only image files are allowed (jpeg, jpg, png, gif).');
                 return;
             }
 
             const maxSize = 2 * 1024 * 1024; // 2MB
             if (file.size > maxSize) {
-                alert('A imagem deve ter no máximo 2MB.');
+                toast.error('The image must be a maximum of 2MB.');
                 return;
             }
 
             setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProfileImage(reader.result); // Data URL para pré-visualização
+                setProfileImage(reader.result);
             };
             reader.readAsDataURL(file);
         } else {
@@ -590,49 +607,44 @@ const Profile = () => {
         }
     };
 
-    // Função para lidar com o clique no botão de editar perfil
     const handleEditProfile = () => {
         setContent('settings');
     };
 
-    // Função para desmarcar uma história como lida
     const handleUnmarkAsRead = async (storyId) => {
         const token = localStorage.getItem('token');
         if (!token) {
-            alert('Você precisa estar logado para remover histórias lidas.');
+            toast.error('You need to be logged in to remove read stories.');
             return;
         }
 
         if (!currentUser) {
-            alert('Erro ao obter o ID do usuário.');
+            toast.error('Error getting user ID.');
             return;
         }
 
         try {
-            // Remover a história lida
             await api.delete(`/auth/read_story/${storyId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            alert('História removida das lidas com sucesso!');
-            // Atualizar o estado local, removendo a história das lidas
+            toast.success('Story successfully removed from read!');
             setReadStories(readStories.filter(story => story.id !== storyId));
         } catch (error) {
-            console.error('Erro ao remover a história lida:', error);
-            alert('Erro ao remover a história lida.');
+            console.error('Error removing read story:', error);
+            toast.error('Error removing read story.');
         }
     };
 
-    // Função para renderizar o conteúdo com base no menu selecionado
     const renderContent = () => {
         if (!profileUser) {
-            return <p>Carregando perfil...</p>;
+            return <p>Loading profile...</p>;
         }
 
         switch(content) {
             case 'settings':
-                if (!isOwner) return null; // Apenas o dono pode ver as configurações
+                if (!isOwner) return null;
                 return <UserSettings 
                             firstname={firstname} 
                             setFirstname={setFirstname} 
@@ -655,6 +667,8 @@ const Profile = () => {
                             savedStoryIds={savedStoryIds}
                             currentUser={currentUser}
                             isOwner={isOwner}
+                            searchTerm={searchTerm}
+                            handleSearchChange={handleSearchChange}
                         />;
             case 'read_stories':
                 return <UserReadStories 
@@ -662,7 +676,9 @@ const Profile = () => {
                             handleSaveStory={handleSaveStory} 
                             savedStoryIds={savedStoryIds}
                             handleUnmarkAsRead={handleUnmarkAsRead}
-                            currentUser={currentUser} // Passa currentUser
+                            currentUser={currentUser}
+                            searchTerm={searchTerm}
+                            handleSearchChange={handleSearchChange}
                         />;
             case 'stories':
                 return <UserStories 
@@ -671,18 +687,17 @@ const Profile = () => {
                             savedStoryIds={savedStoryIds}
                             currentUser={currentUser}
                             isOwner={isOwner}
+                            searchTerm={searchTerm}
+                            handleSearchChange={handleSearchChange}
                         />;
             default:
                 return null;
         }
     };
 
-    // Função para atualizar a barra deslizante
     const updateSlider = () => {
         if (!menuRef.current) return;
-
         const activeKey = content;
-
         const activeItem = menuItemRefs.current[activeKey];
         if (activeItem) {
             const { offsetLeft, clientWidth } = activeItem;
@@ -693,7 +708,6 @@ const Profile = () => {
         }
     };
 
-    // useEffect para atualizar a barra deslizante quando o conteúdo mudar ou a janela for redimensionada
     useEffect(() => {
         updateSlider();
         window.addEventListener('resize', updateSlider);
@@ -703,7 +717,7 @@ const Profile = () => {
     }, [content, profileUser]);
 
     if (loading || isOwner === null) {
-        return <p>Carregando perfil...</p>;
+        return <p>Loading profile...</p>;
     }
 
     return (
@@ -712,7 +726,6 @@ const Profile = () => {
                 <img src={books} alt="Banner" />
             </div>
             <div className="container-profile">
-                {/* Exibição Permanente do UserInfo */}
                 <div className='container-info-user'>
                     {profileUser && (
                         <UserInfo 
@@ -728,7 +741,6 @@ const Profile = () => {
                         />
                     )}
                 </div> 
-                {/* Menu Atualizado */}
                 <div className='menu-container'>
                     <div className="menu" ref={menuRef}>
                         <div 
@@ -761,7 +773,6 @@ const Profile = () => {
                                 Settings
                             </div>
                         )}
-                        {/* Barra Deslizante */}
                         <div 
                             className="slider" 
                             style={{
@@ -771,7 +782,6 @@ const Profile = () => {
                         ></div>
                     </div>
                     <div className='div-line'></div>
-                    {/* Conteúdo Condicional */}
                     <div className="profile">
                         {renderContent()}
                     </div>

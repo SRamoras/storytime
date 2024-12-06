@@ -3,26 +3,24 @@
 import React, { useEffect, useState } from 'react';
 import './SecLayout.css';
 import LogoText from '../components/LogoText';
-import BlackButton from '../components/BlackButton';
 import { Outlet, useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
+import { toast } from 'react-toastify'; // Importar toast
 
 function SecLayout() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [username, setUsername] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [categories, setCategories] = useState([]); // Estado para armazenar categorias
-  const navigate = useNavigate(); // Para redirecionar após logout
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    // Adicionar evento de scroll
     window.addEventListener('scroll', handleScroll);
 
-    // Limpar evento ao desmontar o componente
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -64,7 +62,7 @@ function SecLayout() {
           },
         });
         setCategories(response.data.categories);
-        console.log('Categorias obtidas:', response.data.categories); // Debug
+        console.log('Categorias obtidas:', response.data.categories);
       } catch (error) {
         console.error('Erro ao buscar categorias:', error);
       }
@@ -74,22 +72,42 @@ function SecLayout() {
     fetchCategories();
   }, []);
 
-  // Adicionar useEffect para depuração do estado categories
   useEffect(() => {
     console.log('Estado "categories" atualizado:', categories);
   }, [categories]);
 
   // Função para lidar com o logout
   const handleLogout = () => {
+    // Remove o token do localStorage
     localStorage.removeItem('token');
+    
+    // Remove o header Authorization da instância Axios
+    delete api.defaults.headers.common['Authorization'];
+    
+    // Atualiza os estados de autenticação
     setIsAuthenticated(false);
     setUsername('');
-    navigate('/login'); // Redireciona para a página de login
+    
+    // Exibir notificação de logout
+    toast.info('Logout realizado com sucesso!', {
+      position: "top-right",
+      autoClose: 1500, // Fecha a notificação após 1.5 segundos
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
+
+    // Redireciona para a página de login após o delay da notificação
+    setTimeout(() => {
+      navigate('/login');
+    }, 1500); // Deve corresponder ao `autoClose` do toast
   };
 
   // Função para adicionar/remover classe ao header
   const toggleHeaderBackground = (add) => {
-    const header = document.querySelector('.header');
+    const header = document.querySelector('.header1');
     if (header) {
       if (add) {
         header.classList.add('background-hover');
@@ -170,7 +188,7 @@ function SecLayout() {
             </div>
 
             {/* Botão About Us */}
-            <div
+            {/* <div
               className="topics-menu"
               onMouseEnter={() => toggleHeaderBackground(true)}
               onMouseLeave={() => toggleHeaderBackground(false)}
@@ -184,7 +202,7 @@ function SecLayout() {
                 <span className="material-symbols-outlined nav-icon">info</span>
                 About Us
               </Link>
-            </div>
+            </div> */}
 
             {/* Menu de Perfil com dropdown */}
             {isAuthenticated && username && (
@@ -236,20 +254,13 @@ function SecLayout() {
               </div>
             )}
 
-            {/* Botão Create Story (sem ícone) */}
-            {/* <BlackButton
-              text="Create Story"
-              to="/create-story"
-              onMouseEnter={() => toggleHeaderBackground(true)}
-              onMouseLeave={() => toggleHeaderBackground(false)}
-            /> */}
-
-<Link to="/create-story"
- onMouseEnter={() => toggleHeaderBackground(true)}
- onMouseLeave={() => toggleHeaderBackground(false)}
->
-<button className='first-button'>Start for free</button>
-                            </Link>
+            {/* Botão Create Story */}
+            <Link to="/create-story"
+             onMouseEnter={() => toggleHeaderBackground(true)}
+             onMouseLeave={() => toggleHeaderBackground(false)}
+            >
+              <button className='first-button'>Create Storys</button>
+            </Link>
           </div>
         </nav>
       </header>
@@ -262,44 +273,47 @@ function SecLayout() {
       {/* Rodapé (Footer) */}
       <footer className="footer">
         <div className="footer-container">
-          {/* Seção 1: StoryHub */}
+          {/* Seção 1: Genre Links */}
           <div className="footer-section">
             <h3>Genre Links</h3>
             <ul>
-            {categories.length > 0 ? (
-                  categories.map((category) => (
-                    
-                    <Link
-                      key={category.id}
-                      to={`/StorysPage?category=${encodeURIComponent(category.name)}`}
-                      className="footer-link"
-                    >
-                      {category.name}
-                    </Link>
-                  ))
-                ) : (
-                  <p>Nenhuma categoria disponível</p>
-                )}
+              {categories.length > 0 ? (
+                categories.map((category) => (
+                  <Link
+                    key={category.id}
+                    to={`/StorysPage?category=${encodeURIComponent(category.name)}`}
+                    className="footer-link"
+                  >
+                    {category.name}
+                  </Link>
+                ))
+              ) : (
+                <p>Nenhuma categoria disponível</p>
+              )}
             </ul>
           </div>
 
-          {/* Seção 2: Links */}
+          {/* Seção 2: General Links */}
           <div className="footer-section">
             <h3>General Links</h3>
             <ul>
               <li><Link to='/StorysPage' className="footer-link">Home</Link></li>
               <li><Link to='/StorysPage' className="footer-link">Topics</Link></li>
-              <li><Link to='/StorysPage' className="footer-link">About Us</Link></li>
+              {/* <li><Link to='/StorysPage' className="footer-link">About Us</Link></li> */}
             </ul>
           </div>
 
-          {/* Seção 3: Perfil */}
+          {/* Seção 3: Profile Links */}
           <div className="footer-section">
             <h3>Profile Links</h3>
             <ul>
               <li><Link to={`/Profile/${username}`} className="footer-link">Profile</Link></li>
-              <li><Link   to={`/Profile/${username}?tab=settings`} className="footer-link">Settings</Link></li>
-              <li><Link to='/login' className="footer-link">Logout</Link></li>
+              <li><Link to={`/Profile/${username}?tab=settings`} className="footer-link">Settings</Link></li>
+              <li>
+                <button className="footer-link logout-button" onClick={handleLogout}>
+                  Logout
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -307,22 +321,21 @@ function SecLayout() {
           <div className="footer-section socials">
             <h3>Redes Sociais</h3>
             <div className="social-icons">
-  {/* Instagram */}
-  <a href="https://www.instagram.com/_____s1lva_____/" className="social-link instagram" aria-label="Instagram">
-    <i className="fa fa-instagram social-icon"></i>
-  </a>
+              {/* Instagram */}
+              <a href="https://www.instagram.com/_____s1lva_____/" className="social-link instagram" aria-label="Instagram">
+                <i className="fa fa-instagram social-icon"></i>
+              </a>
 
-  {/* GitHub */}
-  <a href="https://github.com/SRamoras" className="social-link github" aria-label="GitHub">
-    <i className="fa fa-github social-icon"></i>
-  </a>
+              {/* GitHub */}
+              <a href="https://github.com/SRamoras" className="social-link github" aria-label="GitHub">
+                <i className="fa fa-github social-icon"></i>
+              </a>
 
-  {/* LinkedIn */}
-  <a href="https://www.linkedin.com/in/diogo-silva-94068613b/" className="social-link linkedin" aria-label="LinkedIn">
-    <i className="fa fa-linkedin social-icon"></i>
-  </a>
-</div>
-
+              {/* LinkedIn */}
+              <a href="https://www.linkedin.com/in/diogo-silva-94068613b/" className="social-link linkedin" aria-label="LinkedIn">
+                <i className="fa fa-linkedin social-icon"></i>
+              </a>
+            </div>
           </div>
         </div>
       </footer>

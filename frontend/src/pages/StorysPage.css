@@ -4,16 +4,29 @@
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    font-family: 'Poppins', sans-serif;
     margin-top: 160px;
 }
 
 .home-page h1 {
+    font-size: 60px;
+    margin-bottom: 1rem;
     text-align: center;
-margin: 0;
-font-weight: 400;
-    color: #000;
-    font-size: 45px;
+    margin: 0;
+    line-height: 1.1;
+    font-weight: 532;
+    letter-spacing: normal;
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 85, "wonk" 0;
+    color: var(--title-color);
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .home-page h6 {
@@ -24,8 +37,10 @@ font-weight: 400;
     justify-content: center;
     margin: 0 auto;
     margin-bottom: 100px;
-    color: #000;
-    font-weight: 300;
+    color: var(--sub-title-color);
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
 }
 
 

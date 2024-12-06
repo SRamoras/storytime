@@ -4,7 +4,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPageMain'; // Ajuste o caminho conforme a estrutura de pastas
 
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import RegisterPage from './pages/RegisterPage';
 import StorysPage from './pages/StorysPage';
 import HomePage from './pages/HomePagee';
@@ -39,6 +40,7 @@ function App() {
                   <Route path="/story/:id" element={<Story />} /> 
               </Route>
           </Routes>
+          <ToastContainer />
       </Router>
   );
 }

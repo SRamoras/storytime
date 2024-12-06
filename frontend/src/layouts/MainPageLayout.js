@@ -66,7 +66,9 @@ function MainPageLayout() {
             <HashLink smooth to="/#reviews" className="nav-button">
               Reviews
             </HashLink>
-            <BlackButton text="Start Now" to="/login" />
+            <Link to="/login">
+                                <button className='first-button'>Start Now</button>
+                            </Link>
           </div>
         </nav>
       </header>

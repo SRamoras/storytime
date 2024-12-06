@@ -341,7 +341,13 @@
   margin-top: 5px; /* Espaçamento entre o título e a barra */
   border-radius: 2px; /* Bordas arredondadas para suavizar a barra */
 }
-
+.logout-button {
+border: none;
+background-color: #fff;
+font-size: 16px;
+padding: 0;
+cursor: pointer;
+}
 /* Listas de links */
 .footer-section ul {
   list-style-type: none;

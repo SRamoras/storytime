@@ -1,6 +1,5 @@
 /* src/pages/LoginPage.css */
 
-
 .login-container {
     display: flex;
     align-items: center;
@@ -18,7 +17,6 @@
     border-radius: 8px;
     margin: 0 auto; 
     max-width: 350px;
-
 }
 
 .right-image {
@@ -53,7 +51,6 @@
     margin-top: 10px;
     margin-bottom: 30px;
     color: #555;
-
 }
 
 .input-group {
@@ -133,7 +130,7 @@
 }
 
 .register-link a {
-    color: #007BFF;
+    color: var(--title-color);
     text-decoration: none;
 }
 
@@ -141,6 +138,28 @@
     text-decoration: underline;
 }
 
+/* Estilos Adicionais para o Link com Ícone de Seta */
+.register-link-with-arrow {
+    display: inline-flex;
+    align-items: center;
+    color: var(--title-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: bold;
+}
+
+.register-link-with-arrow .arrow-icon {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.register-link-with-arrow:hover {
+    color: var(--title-color);
+}
+
+.register-link-with-arrow:hover .arrow-icon {
+    transform: translateX(5px);
+}
 
 @media (max-width: 768px) {
     .login-container {

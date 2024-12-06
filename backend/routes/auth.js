@@ -192,12 +192,6 @@ router.post('/stories', authenticateToken, upload.single('img'), async (req, res
 
 
 
-
-
-
-
-
-
 router.post('/read_story', authenticateToken, async (req, res) => {
     const { storyId } = req.body;
     const userId = req.user.id;
@@ -222,7 +216,7 @@ router.post('/read_story', authenticateToken, async (req, res) => {
             [userId, storyId, datavased]
         );
 
-        res.status(201).json({ message: 'História marcada como lida com sucesso!', readStory: insertResult.rows[0] });
+        res.status(201).json({ message: 'Story marked as read successfully!', readStory: insertResult.rows[0] });
     } catch (error) {
         console.error('Erro ao marcar história como lida:', error);
         res.status(500).json({ error: 'Erro interno ao marcar história como lida.' });
@@ -256,10 +250,10 @@ router.delete('/read_story/:storyId', authenticateToken, async (req, res) => {
             [userId, storyId]
         );
 
-        res.status(200).json({ message: 'História desmarcada como lida com sucesso!' });
+        res.status(200).json({ message: 'Unmarked story how to handle successfully!' });
     } catch (error) {
         console.error('Erro ao desmarcar história como lida:', error);
-        res.status(500).json({ error: 'Erro interno ao desmarcar história como lida.' });
+        res.status(500).json({ error: 'Internal error when unmarking story as read.' });
     }
 });
 

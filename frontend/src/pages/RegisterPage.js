@@ -3,145 +3,230 @@
 import React, { useState } from 'react';
 import api from '../services/api';
 import { useNavigate, Link } from 'react-router-dom';
-import './LoginPage.css'; // Using the same CSS file as the login page
-import BlackButton from '../components/BlackButton';
-import registerImage from '../Assets/register_foto.jpg'; // Ensure this image exists or use the same as login
+import './LoginPage.css'; // Usando o mesmo arquivo CSS da página de login
+import registerImage from '../Assets/register_foto.jpg'; // Certifique-se de que esta imagem existe ou use a mesma da página de login
 
-// Importing icons from react-icons
-import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+// Importando ícones do react-icons
+import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight } from 'react-icons/fa';
+
+// Importando o toast do react-toastify
+import { toast } from 'react-toastify';
 
 const RegisterPage = () => {
-    const [formData, setFormData] = useState({
-        username: '',
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: '',
-    });
+  const [formData, setFormData] = useState({
+    username: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+  });
 
-    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-    const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); // Estado para alternar a visibilidade da senha
+  const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
+  const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await api.post('/auth/register', formData);
-            alert('User registered successfully!');
-            navigate('/login'); // Redirect to login page after successful registration
-        } catch (error) {
-            console.error('Error registering user:', error);
-            alert('Error registering user. Please check your data and try again.');
-        }
-    };
+  // Função para validar o formato do email
+  const isValidEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
 
-    // Function to toggle password visibility
-    const toggleShowPassword = () => {
-        setShowPassword(prevState => !prevState);
-    };
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (isLoading) return; // Previne múltiplas submissões
 
-    return (
-        <div className="login-container"> {/* Reusing the same container class */}
-            <form className="login-form register-form" onSubmit={handleRegister}> {/* Adding a specific class if needed */}
-                <h1>Register</h1>
-                <p>Create your account</p>
-                
-                {/* Username Field with Icon */}
-                <div className="input-group">
-                    <FaUser className="input-icon" />
-                    <input
-                        className="input-field"
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+    // Validação dos campos no frontend
+    const { username, firstname, lastname, email, password } = formData;
 
-                {/* First Name Field with Icon */}
-                <div className="input-group">
-                    <FaUser className="input-icon" />
-                    <input
-                        className="input-field"
-                        type="text"
-                        name="firstname"
-                        placeholder="First Name"
-                        value={formData.firstname}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+    if (!username || !firstname || !lastname || !email || !password) {
+      toast.error('Por favor, preencha todos os campos.', {
+        position: "top-right",
+        autoClose: 3000, // 3 segundos
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
 
-                {/* Last Name Field with Icon */}
-                <div className="input-group">
-                    <FaUser className="input-icon" />
-                    <input
-                        className="input-field"
-                        type="text"
-                        name="lastname"
-                        placeholder="Last Name"
-                        value={formData.lastname}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+    if (!isValidEmail(email)) {
+      toast.error('Por favor, insira um email válido.', {
+        position: "top-right",
+        autoClose: 3000, // 3 segundos
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
 
-                {/* Email Field with Icon */}
-                <div className="input-group">
-                    <FaEnvelope className="input-icon" />
-                    <input
-                        className="input-field"
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+    setIsLoading(true);
+    console.log('handleRegister foi chamado'); // Para depuração
 
-                {/* Password Field with Icon and Toggle Button */}
-                <div className="input-group">
-                    <FaLock className="input-icon" />
-                    <input
-                        className="input-field"
-                        type={showPassword ? "text" : "password"}
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                    <button
-                        type="button"
-                        className="password-toggle-button"
-                        onClick={toggleShowPassword}
-                        aria-label={showPassword ? "Hide password" : "Show password"}
-                    >
-                        {showPassword ? <FaEye /> : <FaEyeSlash />}
-                    </button>
-                </div>
+    try {
+      const response = await api.post('/auth/register', formData);
+      console.log('Resposta do servidor:', response.data); // Para depuração
 
-                {/* Register Button */}
-                <BlackButton type="submit" text="Register" />
+      // Exibir notificação de sucesso
+      toast.success('Usuário registrado com sucesso!', {
+        position: "top-right",
+        autoClose: 1500, // 1.5 segundos
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      });
 
-                {/* Link to Login */}
-                <div className="register-link">
-                    <p>Already have an account? <Link to="/login">Login here</Link></p>
-                </div>
-            </form>
+      // Navegar para a página de login após exibir o toast
+      setTimeout(() => {
+        navigate('/login');
+        setIsLoading(false);
+      }, 1500);
 
-            {/* Right Side Image */}
-            <div className="right-image">
-                <img src={registerImage} alt="Decorative right side" /> {/* Ensure this image exists */}
-            </div>
+    } catch (error) {
+      console.error('Erro ao registrar o usuário:', error);
+
+      // Determinar a mensagem de erro com base na resposta do servidor
+      let errorMessage = 'Erro ao registrar o usuário. Por favor, verifique seus dados e tente novamente.';
+      if (error.response && error.response.data && error.response.data.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      // Exibir notificação de erro
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 3000, // 3 segundos
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      setIsLoading(false);
+    }
+  };
+
+  // Função para alternar a visibilidade da senha
+  const toggleShowPassword = () => {
+    setShowPassword(prevState => !prevState);
+  };
+
+  return (
+    <div className="login-container">
+      <form className="login-form register-form" onSubmit={handleRegister}>
+        <h1>Register</h1>
+        <p>Create your account</p>
+        
+        {/* Campo de Username com Ícone */}
+        <div className="input-group">
+          <FaUser className="input-icon" />
+          <input
+            className="input-field"
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={formData.username}
+            onChange={handleChange}
+            // Removendo o atributo 'required' para evitar a validação nativa do navegador
+          />
         </div>
-    );
+
+        {/* Campo de First Name com Ícone */}
+        <div className="input-group">
+          <FaUser className="input-icon" />
+          <input
+            className="input-field"
+            type="text"
+            name="firstname"
+            placeholder="First Name"
+            value={formData.firstname}
+            onChange={handleChange}
+            // Removendo o atributo 'required'
+          />
+        </div>
+
+        {/* Campo de Last Name com Ícone */}
+        <div className="input-group">
+          <FaUser className="input-icon" />
+          <input
+            className="input-field"
+            type="text"
+            name="lastname"
+            placeholder="Last Name"
+            value={formData.lastname}
+            onChange={handleChange}
+            // Removendo o atributo 'required'
+          />
+        </div>
+
+        {/* Campo de Email com Ícone */}
+        <div className="input-group">
+          <FaEnvelope className="input-icon" />
+          <input
+            className="input-field"
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            // Removendo o atributo 'required'
+          />
+        </div>
+
+        {/* Campo de Password com Ícone e Botão de Alternância */}
+        <div className="input-group">
+          <FaLock className="input-icon" />
+          <input
+            className="input-field"
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            // Removendo o atributo 'required'
+          />
+          <button
+            type="button"
+            className="password-toggle-button"
+            onClick={toggleShowPassword}
+            aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+          >
+            {showPassword ? <FaEye /> : <FaEyeSlash />}
+          </button>
+        </div>
+
+        {/* Botão de Registro */}
+        <button type="submit" className="first-button" disabled={isLoading}>
+          {isLoading ? 'Registrando...' : 'Register'}
+        </button>
+
+        {/* Link para Login com Ícone de Seta */}
+        <div className="register-link">
+          <p>Already have an account?{' '}
+            <Link to="/login" className="register-link-with-arrow">
+              Login here <FaArrowRight className="arrow-icon" />
+            </Link>
+          </p>
+        </div>
+      </form>
+
+      {/* Imagem Lado Direito */}
+      <div className="right-image">
+        <img src={registerImage} alt="Decorative right side" /> {/* Certifique-se de que esta imagem existe */}
+      </div>
+    </div>
+  );
 };
 
 export default RegisterPage;

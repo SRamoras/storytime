@@ -8,12 +8,12 @@ import { AuthContext } from '../contexts/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const CreateStory = ({ closeModal }) => { 
+const CreateStory = ({ closeModal }) => {
     const { currentUser, token } = useContext(AuthContext);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [category_id, setCategoryId] = useState(''); // Alterado para category_id
-    const [categories, setCategories] = useState([]); // Estado para armazenar categorias
+    const [category_id, setCategoryId] = useState('');
+    const [categories, setCategories] = useState([]);
     const [loadingCategories, setLoadingCategories] = useState(true);
     const [errorCategories, setErrorCategories] = useState(null);
     const [imageFile, setImageFile] = useState(null);
@@ -21,19 +21,9 @@ const CreateStory = ({ closeModal }) => {
     const [uploading, setUploading] = useState(false);
     const navigate = useNavigate();
 
-    // Define maximum characters
     const MAX_TITLE_LENGTH = 100;
     const MAX_CONTENT_LENGTH = 5000;
 
-    // Function to determine character count class
-    const getCharCountClass = (currentLength, maxLength) => {
-        if (currentLength > maxLength * 0.8) { // If more than 80% of maxLength
-            return 'char-count warning';
-        }
-        return 'char-count';
-    };
-
-    // Função para buscar categorias do backend
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -43,11 +33,10 @@ const CreateStory = ({ closeModal }) => {
                     }
                 });
                 setCategories(response.data.categories);
-                console.log('Categorias obtidas:', response.data.categories);
             } catch (error) {
-                console.error('Erro ao buscar categorias:', error);
-                setErrorCategories('Erro ao carregar categorias.');
-                toast.error('Erro ao carregar categorias.');
+                console.error('Failed to fetch categories:', error);
+                setErrorCategories('Failed to load categories.');
+                toast.error('Failed to load categories.');
             } finally {
                 setLoadingCategories(false);
             }
@@ -55,11 +44,6 @@ const CreateStory = ({ closeModal }) => {
 
         fetchCategories();
     }, [token]);
-
-    // Adicionar useEffect para depuração do estado categories
-    useEffect(() => {
-        console.log('Estado "categories" atualizado:', categories);
-    }, [categories]);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -99,15 +83,9 @@ const CreateStory = ({ closeModal }) => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
-        formData.append('category_id', Number(category_id)); // Convertido para número
+        formData.append('category_id', Number(category_id)); 
         if (imageFile) {
             formData.append('img', imageFile);
-        }
-
-        // Adicionar log para verificar os dados enviados
-        console.log('FormData entries:');
-        for (let pair of formData.entries()) {
-            console.log(pair[0]+ ': ' + pair[1]);
         }
 
         try {
@@ -115,7 +93,7 @@ const CreateStory = ({ closeModal }) => {
             const response = await api.post('/auth/stories', formData, {
                 headers: { 
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}` // Inclui o token
+                    'Authorization': `Bearer ${token}` 
                 }
             });
 
@@ -140,7 +118,7 @@ const CreateStory = ({ closeModal }) => {
     };
 
     if (!currentUser) {
-        return <p>Loading...</p>; // Ou redirecione para o login
+        return <p>Loading...</p>;
     }
 
     return (
@@ -157,10 +135,10 @@ const CreateStory = ({ closeModal }) => {
                             value={title} 
                             onChange={(e) => setTitle(e.target.value)} 
                             placeholder="Story Title"
-                            maxLength={MAX_TITLE_LENGTH} // Define maxLength
+                            maxLength={MAX_TITLE_LENGTH}
                             required
                         />
-                        <small className={getCharCountClass(title.length, MAX_TITLE_LENGTH)}>
+                        <small className="char-count">
                             {title.length}/{MAX_TITLE_LENGTH}
                         </small>
                     </label>
@@ -171,17 +149,17 @@ const CreateStory = ({ closeModal }) => {
                             value={content} 
                             onChange={(e) => setContent(e.target.value)} 
                             placeholder="Story Content"
-                            maxLength={MAX_CONTENT_LENGTH} // Define maxLength
+                            maxLength={MAX_CONTENT_LENGTH}
                             required
                         />
-                        <small className={getCharCountClass(content.length, MAX_CONTENT_LENGTH)}>
+                        <small className="char-count">
                             {content.length}/{MAX_CONTENT_LENGTH}
                         </small>
                     </label>
                     <label htmlFor="story-category">
                         Category:
                         {loadingCategories ? (
-                            <p>Carregando categorias...</p>
+                            <p>Loading categories...</p>
                         ) : errorCategories ? (
                             <p className="error-message">{errorCategories}</p>
                         ) : (
@@ -190,7 +168,6 @@ const CreateStory = ({ closeModal }) => {
                                 value={category_id} 
                                 onChange={(e) => {
                                     setCategoryId(e.target.value);
-                                    console.log('Selected category_id:', e.target.value);
                                 }} 
                                 required
                             >
@@ -212,11 +189,7 @@ const CreateStory = ({ closeModal }) => {
                             onChange={handleImageChange} 
                         />
                     </label>
-                    {previewImage && (
-                        <div className="image-preview">
-                            <img src={previewImage} alt="Preview" />
-                        </div>
-                    )}
+
                     <button type="submit" disabled={uploading}>
                         {uploading ? 'Creating...' : 'Create Story'}
                     </button>
@@ -241,7 +214,6 @@ const CreateStory = ({ closeModal }) => {
             </div>
         </div>
     );
-
 };
 
 export default CreateStory;

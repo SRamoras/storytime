@@ -427,6 +427,9 @@ margin-top: 20px;
     gap: 20px;
 
 }
+
+
+
 .profile-content h2{
     font-size: 30px;
     margin-bottom: 1rem;
@@ -504,4 +507,69 @@ margin-top: 20px;
 
 
 
+
+
+
+
+/* Add the following styles to src/pages/Profile.css */
+/* Add the following styles to src/pages/Profile.css */
+
+/* Styles for the tab header containing the h2 and search bar */
+.tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+
+.search-bar-container {
+    position: relative;
+    width: 300px;
+}
+
+.search-bar-container input {
+    width: 100%;
+    padding: 9px 35px 8px 0px;
+    border: none;
+    font-size: 18px;
+    border-bottom: #0fad51 solid 3px;
+
+}
+.search-bar-container input:focus{
+    border: none;
+    border-bottom: #0fad51 solid 3px;
+    outline: none;
+}
+.search-bar-container input::placeholder {
+    color: var(--title-color);
+    font-size: 18px;
+}
+.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 20px;
+    color: var(--title-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .tab-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-bar-container {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .tab-header input {
+        width: 100%;
+    }
+}
 
