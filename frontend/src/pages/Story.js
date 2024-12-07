@@ -40,7 +40,7 @@ const Story = () => {
     }
 
     // Use a variável de ambiente para a URL base
-    const baseImageUrl = process.env.REACT_APP_BASE_IMAGE_URL || 'http://localhost:5000/uploads/';
+    const baseImageUrl = process.env.REACT_APP_BASE_IMAGE_URL || 'https://sramoras.github.io/storytime/uploads/';
     const imgSrc = story.img ? `${baseImageUrl}${story.img}` : '';
 
     // Construir o caminho completo da imagem de perfil do autor, se aplicável
