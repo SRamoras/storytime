@@ -40,51 +40,50 @@ const Story = () => {
     }
 
     // Use a variável de ambiente para a URL base
-    const baseImageUrl = process.env.REACT_APP_BASE_IMAGE_URL || 'https://sramoras.github.io/storytime/uploads/';
+    const baseImageUrl = process.env.REACT_APP_BASE_IMAGE_URL || 'https://storytime-backend-f240.onrender.com/uploads/';
     const imgSrc = story.img ? `${baseImageUrl}${story.img}` : '';
 
     // Construir o caminho completo da imagem de perfil do autor, se aplicável
     const profileImageSrc = story.profile_image ? `${baseImageUrl}${story.profile_image}` : 'https://www.gravatar.com/avatar/?d=mp&f=y';
 
     return (
-        <div>  {story.img && (
-                        <div className="story-image-container-story-page">
-                            <img 
-                                src={imgSrc} 
-                                alt={story.title} 
-                                onError={(e) => { e.target.src = `${baseImageUrl}default-image.jpg`; }} // Imagem de fallback
-                                loading="lazy"
-                            />
-                        </div>
-                    )}
-        <div className="story-page">
-             
-            <div className='main-container-story'>
-                <div className='intro-container'>
-                    <div className='intro-container-main-text'>
-                        <h1>{story.title}</h1>    
-                        <p>
-                            <Link 
-                                to={`/StorysPage?category=${encodeURIComponent(story.category)}`} 
-                                className='category-link'
-                            >
-                                {story.category}
-                            </Link>
-                        </p>
-                        <small>
-                            Made by:{' '}
-                            <Link to={`/profile/${story.username}`} className='author-link'>
-                                {story.username}
-                            </Link>
-                        </small>    
-                    </div> 
-
-                 
+        <div>
+            {story.img && (
+                <div className="story-image-container-story-page">
+                    <img 
+                        src={imgSrc} 
+                        alt={story.title} 
+                        onError={(e) => { e.target.src = `${baseImageUrl}default-image.jpg`; }} // Imagem de fallback
+                        loading="lazy"
+                    />
                 </div>
-                <p className="story-content">{story.content}</p>
+            )}
+            <div className="story-page">
+                <div className='main-container-story'>
+                    <div className='intro-container'>
+                        <div className='intro-container-main-text'>
+                            <h1>{story.title}</h1>    
+                            <p>
+                                <Link 
+                                    to={`/StorysPage?category=${encodeURIComponent(story.category)}`} 
+                                    className='category-link'
+                                >
+                                    {story.category}
+                                </Link>
+                            </p>
+                            <small>
+                                Made by:{' '}
+                                <Link to={`/profile/${story.username}`} className='author-link'>
+                                    {story.username}
+                                </Link>
+                            </small>    
+                        </div> 
+                    </div>
+                    <p className="story-content">{story.content}</p>
+                </div>
             </div>
-        </div></div>
+        </div>
     );
-};
+};  
 
 export default Story;
