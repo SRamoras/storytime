@@ -2,8 +2,8 @@
 
 import React from 'react';
 import './CardsSection.css';
-import storytellingImage1 from '../Assets/ler4.png'; // Certifique-se de que o caminho está correto
-import storytellingImage2 from '../Assets/ler3.png'; // Certifique-se de que o caminho está correto
+import storytellingImage1 from '../assets/ler4.png'; // Certifique-se de que o caminho está correto
+import storytellingImage2 from '../assets/ler3.png'; // Certifique-se de que o caminho está correto
 
 // Importando ícones do react-icons
 import { FaBook, FaUsers, FaPalette, FaBell, FaPen, FaShareAlt } from 'react-icons/fa';

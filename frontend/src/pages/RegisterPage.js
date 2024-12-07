@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import api from '../services/api';
 import { useNavigate, Link } from 'react-router-dom';
 import './LoginPage.css'; // Usando o mesmo arquivo CSS da página de login
-import registerImage from '../Assets/register_foto.jpg'; // Certifique-se de que esta imagem existe ou use a mesma da página de login
+import registerImage from '../assets/register_foto.jpg'; // Certifique-se de que esta imagem existe ou use a mesma da página de login
 
 // Importando ícones do react-icons
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight } from 'react-icons/fa';

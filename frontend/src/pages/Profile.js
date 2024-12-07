@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import './Profile.css';
-import books from '../Assets/books.jpg';
+import books from '../assets/books.jpg';
 import StoryCard from '../components/StoryCard';
 import UserReadStories from '../components/UserReadStories';
 import { toast } from 'react-toastify';

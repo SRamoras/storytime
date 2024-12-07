@@ -1,11 +1,11 @@
 import React from 'react';
 import './ReviewCard.css';
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import perfil1 from '../Assets/person1.jpg';
-import perfil2 from '../Assets/person2.jpg';
-import perfil3 from '../Assets/person3.jpg';
-import perfil4 from '../Assets/person4.jpg';
-import perfil6 from '../Assets/person5.jpg';
+import perfil1 from '../assets/person1.jpg';
+import perfil2 from '../assets/person2.jpg';
+import perfil3 from '../assets/person3.jpg';
+import perfil4 from '../assets/person4.jpg';
+import perfil6 from '../assets/person5.jpg';
 
 const reviews = [
   {

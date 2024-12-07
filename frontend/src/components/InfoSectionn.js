@@ -1,6 +1,6 @@
 import React from 'react';
 import './InfoSection.css';
-import YourImage from '../Assets/ler.png'; // Ensure the path is correct
+import YourImage from '../assets/ler.png'; // Ensure the path is correct
 
 const InfoSection = ({ id }) => {
   return (

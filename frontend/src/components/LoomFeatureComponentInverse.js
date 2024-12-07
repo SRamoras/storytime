@@ -1,7 +1,7 @@
 import React from 'react';
 import './LoomFeatureComponent.css';
 import { Link } from 'react-router-dom';  
-import ler2 from '../Assets/ler5.png'; // Update this if you have a more relevant image
+import ler2 from '../assets/ler5.png'; // Update this if you have a more relevant image
 
 const StoryHubFeatureComponent = ({ id }) => {
   return (

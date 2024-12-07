@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { useNavigate, Link } from 'react-router-dom';
 import './LoginPage.css';
-import loginImage from '../Assets/login_foto.jpg';
+import loginImage from '../assets/login_foto.jpg';
 import jwt_decode from 'jwt-decode'; // Importação Padrão
 
 // Importando ícones do react-icons

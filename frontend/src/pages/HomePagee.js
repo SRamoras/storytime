@@ -8,7 +8,7 @@ import InfoSection from '../components/InfoSectionn';
 import WalletComponent from '../components/WalletComponent';
 import TabletComponent from '../components/TabletComponent';
 import ReviewCard from '../components/ReviewCard';
-import HomeImg from '../Assets/Home.png';
+import HomeImg from '../assets/Home.png';
 import LoomFeatureComponent from '../components/LoomFeatureComponent';
 import CardsSection from '../components/CardsSection';
 import LoomFeatureComponentInverse from '../components/LoomFeatureComponentInverse';
