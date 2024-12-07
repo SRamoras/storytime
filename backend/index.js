@@ -11,7 +11,7 @@ const app = express();
 
 // Configuração detalhada do CORS
 app.use(cors({
-    origin: 'https://sramoras.github.io/StoryTime', // URL do seu frontend no GitHub Pages
+    origin: 'https://sramoras.github.io/storytime', // URL do seu frontend no GitHub Pages
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     optionsSuccessStatus: 204
