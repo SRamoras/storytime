@@ -26,7 +26,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "serve": "serve -s build", 
+    "preview": "serve -s build"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +55,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "gh-pages": "^6.2.0"
+    "gh-pages": "^6.2.0",
+    "serve": "^14.2.4"
   }
 }

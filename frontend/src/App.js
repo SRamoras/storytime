@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPageMain';
 import RegisterPage from './pages/RegisterPage';
 import StorysPage from './pages/StorysPage';
@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-      <Router basename="/storytime"> {/* Certifique-se de substituir "/StoryTime" pelo nome do seu repositório */}
+      <Router>
           <Routes>
               <Route element={<MainPageLayout />}>
                   <Route path="/" element={<HomePage />} />
