@@ -96,9 +96,9 @@ function MainPageLayout() {
           <div className="footer-section">
             <h3>General Links</h3>
             <ul>
-              <li><HashLink smooth to="/StorysPage" className="footer-link">Home</HashLink></li>
-              <li><HashLink smooth to="/StorysPage" className="footer-link">Topics</HashLink></li>
-              <li><HashLink smooth to="/StorysPage" className="footer-link">About Us</HashLink></li>
+              <li><HashLink smooth to="/Login" className="footer-link">Home</HashLink></li>
+              <li><HashLink smooth to="/Login" className="footer-link">Topics</HashLink></li>
+              {/* <li><HashLink smooth to="/StorysPage" className="footer-link">About Us</HashLink></li> */}
             </ul>
           </div>
 
