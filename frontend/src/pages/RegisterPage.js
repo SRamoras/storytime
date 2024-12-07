@@ -34,6 +34,12 @@ const RegisterPage = () => {
     return /\S+@\S+\.\S+/.test(email);
   };
 
+  // Função para validar a senha
+  const isValidPassword = (password) => {
+    const passwordRegex = /^(?=.*[A-Z]).{6,}$/;
+    return passwordRegex.test(password);
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     if (isLoading) return; // Previne múltiplas submissões
@@ -58,6 +64,19 @@ const RegisterPage = () => {
       toast.error('Por favor, insira um email válido.', {
         position: "top-right",
         autoClose: 3000, // 3 segundos
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      toast.error('A senha deve ter pelo menos 6 caracteres e incluir pelo menos uma letra maiúscula.', {
+        position: "top-right",
+        autoClose: 5000, // 5 segundos
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
