@@ -1,14 +1,12 @@
+<!-- frontend/public/404.html -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+  <head>
+    <meta http-equiv="refresh" content="0; url=./index.html" />
     <script>
-        // Redireciona para o index.html enquanto preserva o caminho original como hash
-        var path = window.location.pathname + window.location.search + window.location.hash;
-        window.location.replace('/storytime/index.html#' + path);
+      // Fallback para navegadores que não suportam a meta tag
+      window.location.href = './index.html';
     </script>
-</head>
-<body>
-</body>
+  </head>
+  <body></body>
 </html>
