@@ -8,6 +8,7 @@
     background-color: #fff;
     min-height: 100vh;
     width: 85vw;
+    margin-bottom: 50px;
 }
 
 
@@ -40,7 +41,7 @@
     position: absolute;
     width: 100%;
     height: 15%;
-    background: linear-gradient(to top, transparent, #fff 100%); /* Degradê da esquerda para a direita */
+  
 }
 
 .img-container-top {
@@ -107,11 +108,12 @@
     position: relative; /* Para facilitar a referência */
     padding-top: 20px;
     padding-bottom: 20px;
+    font-family: "Inter", sans-serif;
     cursor: pointer;
     background-color: #fff;
     transition: color 0.3s;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 21px;
     line-height: 1.1;
     font-weight: 532;
     letter-spacing: normal;
@@ -434,7 +436,7 @@ margin-top: 20px;
     font-size: 30px;
     margin-bottom: 1rem;
     margin: 0;
-    line-height: 1.1;font-family: "Inter", sans-serif;
+    line-height: 1.1;
     font-weight: 532;
     letter-spacing: normal;
     font-optical-sizing: auto;
@@ -525,26 +527,36 @@ margin-top: 20px;
 
 
 .search-bar-container {
+    width: 25vw;    
     position: relative;
-    width: 300px;
+    overflow: hidden;
 }
 
 .search-bar-container input {
-    width: 100%;
-    padding: 9px 35px 8px 0px;
-    border: none;
-    font-size: 18px;
-    border-bottom: #0fad51 solid 3px;
+    width: 100%;  
+    border: none; 
+    padding: 12px 0px 12px 40px; /* Added left padding for SVG icon */
+    font-size: 0.9em;
+    transition: border-color 0.3s;
 
 }
-.search-bar-container input:focus{
-    border: none;
-    border-bottom: #0fad51 solid 3px;
-    outline: none;
+.search-bar-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background-color: black;
+    transition: background-color 0.3s ease;
 }
+
 .search-bar-container input::placeholder {
-    color: var(--title-color);
-    font-size: 18px;
+    color: var(--sub-title-color);
+    text-align: start;
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    line-height: 1.5;
 }
 .search-icon {
     position: absolute;
@@ -555,7 +567,13 @@ margin-top: 20px;
     font-size: 20px;
     color: var(--title-color);
 }
-
+.search-bar-container:focus-within::after {
+    background-color: #0fad51;
+}
+.search-bar-container input:focus {
+    outline: none;
+    /* Removed border-bottom as per instruction */
+}
 /* Responsive adjustments */
 @media (max-width: 600px) {
     .tab-header {

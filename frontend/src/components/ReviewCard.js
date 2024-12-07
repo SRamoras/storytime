@@ -1,17 +1,16 @@
 import React from 'react';
 import './ReviewCard.css';
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import perfil1 from '../Assets/ler5.png';
-import perfil2 from '../Assets/ler5.png';
-import perfil3 from '../Assets/ler5.png';
-import perfil4 from '../Assets/ler5.png';
-import perfil5 from '../Assets/ler5.png';
-import perfil6 from '../Assets/ler5.png';
+import perfil1 from '../Assets/person1.jpg';
+import perfil2 from '../Assets/person2.jpg';
+import perfil3 from '../Assets/person3.jpg';
+import perfil4 from '../Assets/person4.jpg';
+import perfil6 from '../Assets/person5.jpg';
 
 const reviews = [
   {
     id: 1,
-    image: perfil1,
+    image: perfil4,
     name: 'John Smith',
     testimonial: 'Excellent service and customer support! From the moment I placed my order, the team was responsive and ensured that all my questions were answered promptly. The product quality exceeded my expectations, and the delivery was swift and secure. I will definitely be returning for future purchases.',
     rating: 5,
@@ -33,7 +32,7 @@ const reviews = [
   {
     id: 3,
     image: perfil3,
-    name: 'Michael Brown',
+    name: 'Sophie Brown',
     testimonial: 'Loved the shopping experience! The website is user-friendly, and the checkout process was seamless. My order arrived on time, and the packaging was impeccable. I appreciate the variety of products available and the competitive pricing. Will definitely recommend to friends and family.',
     rating: 4,
     isMerged: false,
@@ -41,7 +40,7 @@ const reviews = [
   },
   {
     id: 4,
-    image: perfil4,
+    image: perfil1,
     name: 'Sarah Davis',
     testimonial: 'I recommend it to all my friends. The customer service team went above and beyond to ensure my satisfaction. The products are of high quality and exactly as described. The entire purchasing process was smooth and hassle-free. I am extremely pleased with my experience and will continue to support this company.',
     rating: 5,
@@ -51,7 +50,7 @@ const reviews = [
   {
     id: 6,
     image: perfil6,
-    name: 'David Wilson',
+    name: 'Kate Wilson',
     testimonial: 'Impeccable and very attentive service. The team was proactive in keeping me informed about my order status and promptly addressed any issues that arose. The products arrived in perfect condition and have been performing exceptionally well. I am thoroughly satisfied and look forward to future transactions.',
     rating: 4,
     isMerged: false,

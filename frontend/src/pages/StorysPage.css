@@ -1,16 +1,23 @@
-/* pages/HomePage.css */
+/* src/pages/StorysPage.css */
 
 .home-page {
     padding: 20px;
-    max-width: 1200px;
     margin: 0 auto;
     margin-top: 160px;
 }
 
-.home-page h1 {
+.title-text-container {
+    display: flex;
+    flex-direction: column;
+    width: 85vw;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    gap: 20px;
+}
+
+.title-text-container h1 {
     font-size: 60px;
     margin-bottom: 1rem;
-    text-align: center;
     margin: 0;
     line-height: 1.1;
     font-weight: 532;
@@ -29,113 +36,151 @@
     text-overflow: ellipsis;
 }
 
-.home-page h6 {
-    text-align: center;
-    margin-bottom: 30px;
+.title-text-container h6 {
+    text-align: start;
     font-size: 15px;
     width: 70%;
-    justify-content: center;
-    margin: 0 auto;
-    margin-bottom: 100px;
     color: var(--sub-title-color);
     font-family: "Inter", sans-serif;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.home-page h1:after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: #0fad51;
+    margin-top: 5px;
+    border-radius: 2px;
+}
+
+/* Search Bar Aligned to the Right */
+.search-bar-container-storys-page {
+    display: flex;
+    width: 85vw;
+    margin: 0 auto;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    width: 25vw;    
+    position: relative;
+    overflow: hidden;
+}
+
+.search-bar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background-color: black;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar:focus-within::after {
+    background-color: #0fad51;
+}
+
+.search-bar input::placeholder {
+    color: var(--sub-title-color);
+    text-align: start;
     font-size: 15px;
+    font-family: "Inter", sans-serif;
     line-height: 1.5;
 }
 
-
-/* Container para Filtros, Ordenação e Pesquisa */
-.filters-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    gap: 10px;
-}
-
-/* Filtros por Categoria */
-.category-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.filter-button {
-    padding: 8px 16px;
-    background-color: #e0e0e0;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 0.9em;
-}
-
-.filter-button:hover {
-    background-color: #d5d5d5;
-}
-
-.filter-button.active {
-    background-color: #000;
-    color: #ffffff;
-}
-
-/* Botões de Ordenação */
-.sort-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.sort-button {
-    padding: 8px 16px;
-    background-color: #e0e0e0;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 0.9em;
-}
-
-.sort-button:hover {
-    background-color: #d5d5d5;
-}
-
-.sort-button.active {
-    background-color: #000;
-    color: #ffffff;
-}
-
-/* Barra de Pesquisa */
-.search-bar {
-    flex-grow: 1;
-    max-width: 300px;
-}
-
 .search-bar input {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
+    width: 100%;  
+    border: none; 
+    padding: 12px 0px 12px 40px; /* Added left padding for SVG icon */
     font-size: 0.9em;
     transition: border-color 0.3s;
 }
 
 .search-bar input:focus {
     outline: none;
-    border-color: #000;
+    /* Removed border-bottom as per instruction */
 }
 
-/* Grid de Histórias */
+/* Container for Filters, Sorting, and Search */
+.main-container-storys-page {
+    display: flex;
+    flex-direction: row;
+    width: 85vw;
+    margin: 0 auto;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.filters-container {
+    width: 250px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 5px solid #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.filter-buttons-grid,
+.sort-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-filters h3,
+.sort-buttons h3 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.filter-button,
+.sort-button {
+    padding: 8px 16px;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 0.9em;
+    text-align: left;
+}
+
+.filter-button:hover,
+.sort-button:hover {
+    background-color: #d5d5d5;
+}
+
+.filter-button.active,
+.sort-button.active {
+    background-color: var(--title-color);
+    color: #ffffff;
+}
+
+/* Section for Stories */
+.stories-section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 .stories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 30px; /* Aumente o espaçamento entre os cards */
-    padding: 20px; /* Adicione um espaçamento ao redor do grid */
-    background-color: #fff; /* Adicione um fundo ao grid (opcional) */
-    border-radius: 10px; /* Deixe os cantos do grid arredondados (opcional) */
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 30px;
+    background-color: #fff;
+    border-radius: 10px;
 }
 
-/* Spinner */
 .spinner-container {
     display: flex;
     flex-direction: column;
@@ -158,7 +203,6 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Mensagem de Erro */
 .error-message {
     color: red;
     text-align: center;
@@ -166,7 +210,6 @@
     margin-top: 20px;
 }
 
-/* Mensagem de Nenhuma História Encontrada */
 .no-results {
     text-align: center;
     color: #555;
@@ -174,34 +217,6 @@
     margin-top: 20px;
 }
 
-/* Responsividade para Telas Maiores */
-@media (min-width: 900px) {
-    .stories-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-/* Responsividade para Telas Menores */
-@media (max-width: 768px) {
-    .filters-container {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .sort-buttons {
-        justify-content: flex-start;
-    }
-
-    .search-bar {
-        max-width: 100%;
-    }
-
-
-    .story-image img {
-        width: 80px;
-        height: 80px;
-    }
-}
 .pagination {
     display: flex;
     justify-content: center;
@@ -211,13 +226,18 @@
 }
 
 .pagination-button {
-    padding: 8px 16px;
-    background-color: #000;
+    width: 40px;
+    height: 40px;
+    background-color: var(--title-color);
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .pagination-button:disabled {
@@ -227,4 +247,88 @@
 
 .pagination-button:hover:not(:disabled) {
     background-color: #444;
+}
+
+.pagination-button.active-page {
+    background-color: #555;
+}
+
+/* Responsiveness for Larger Screens */
+@media (min-width: 1200px) {
+    .home-page {
+        padding: 40px;
+    }
+
+    .filters-container {
+        width: 300px;
+    }
+}
+
+/* Responsiveness for Smaller Screens */
+@media (max-width: 1024px) {
+    .main-container-storys-page {
+        flex-direction: column;
+    }
+
+    .filters-container {
+        width: 100%;
+    }
+
+    .stories-section {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .title-text-container h1 {
+        font-size: 36px;
+    }
+
+    .filters-container {
+        padding: 15px;
+    }
+
+    .filter-button,
+    .sort-button {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+
+    .stories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-text-container h1 {
+        font-size: 28px;
+    }
+
+    .filters-container {
+        padding: 10px;
+    }
+
+    .stories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .pagination-button {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8em;
+    }
+
+    /* Adjustment for the search bar */
+    .search-bar-container-storys-page {
+        width: 85vw;
+        padding: 0 10px;
+    }
+
+    .search-bar input {
+        max-width: 100%;
+    }
 }

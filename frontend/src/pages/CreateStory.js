@@ -199,15 +199,16 @@ const CreateStory = ({ closeModal }) => {
                 <h2>Live Preview</h2>
                 <div className="story-preview">
                     <div className="intro-container-replaca">
-                        <div>   
-                            <h3>{title || 'Story Title'}</h3>
-                            <p><strong>Category:</strong> {categories.find(cat => cat.id.toString() === category_id)?.name || 'Select a category'}</p>
-                        </div>  
-                        {previewImage && (
+                    {previewImage && (
                             <div className="story-image-container">
                                 <img src={previewImage} alt="Story Preview" />
                             </div>
                         )}
+               
+                            <h3>{title || 'Story Title'}</h3>
+                           
+                            <p2>{categories.find(cat => cat.id.toString() === category_id)?.name || 'Select a category'}</p2>
+                  
                     </div>
                     <p className="story-content">{content || 'Story content will appear here...'}</p>
                 </div>

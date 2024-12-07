@@ -1,76 +1,83 @@
 /* Story.css */
 
 .story-page {
-    width: 80%;
+    width: 85vw;
     margin: 0 auto;
     padding: 30px;
-    background: linear-gradient(135deg, #ffffff, #f9f9f9);
     border-radius: 16px;
 
-    font-family: 'Roboto', sans-serif;
+
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.story-page:hover {
-    transform: translateY(-5px);
 
-}
 .intro-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-start; /* Alinha itens no topo */
+    gap: 20px; /* Espaço entre a imagem e o texto */
     margin-bottom: 15px;
+    flex-wrap: wrap; /* Permite que os itens quebrem para uma nova linha em telas menores */
 }
 
-.main-container-story {
-
-    margin-top: 130px;
-}
-.story-page h1 {
-    font-size: 2.5em;
-    color: #333333;
-    margin-bottom: 25px;
-    text-align: center;
-    font-weight: 700;
-    margin-top: 20px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 10px;
-}
-
-.story-image-container {
-    text-align: center;
-    margin-bottom: 25px;
-    width: 40%;
-}
-
-.story-image-container img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    border: 4px solid #eeeeee;
+.story-image-container-story-page  {
+    min-width: 200px; /* Garante um tamanho mínimo para a imagem */
+    height: 600px; /* Ajusta a altura automaticamente */
+    overflow: hidden;
+  
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.story-image-container img:hover {
-   
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+.story-image-container-story-page img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    display: block;
+}
+
+.intro-container-main-text {
+    flex: 1 1 45%; /* Ocupa o restante do espaço */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.story-page:hover {
+    transform: translateY(-5px);
+}
+
+.story-page h1 {
+    font-size: 60px;
+    margin-bottom: 1rem;
+    margin: 0;
+    line-height: 1.1;
+    font-weight: 532;
+    letter-spacing: normal;
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 85, "wonk" 0;
+    color: var(--title-color);
+
+
+
+
 }
 
 .story-content {
     font-size: 1.2em;
     line-height: 1.8;
     color: #000;
-    margin-bottom: 30px;
     text-align: justify;
     text-indent: 2em;
+    word-wrap: break-word; /* Garante que as palavras quebrem corretamente */
 }
 
 .story-page p {
-    margin: 10px 0;
-    color: #444444;
+    color: var(--sub-title-color);
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.5;
 }
 
 .story-page strong {
@@ -80,12 +87,18 @@
 
 .story-page small {
     display: block;
-    margin-top: 20px;
-    color: #000;
-    font-size: 0.9em;
+    margin: 0;
+    ;
+    border-bottom: 2px solid #e0e0e0;
     text-align: start;
-    font-style: italic;
+    color: var(--sub-title-color);
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.5;   
+    padding-bottom: 10px;
 }
+
 .category-link {
     color: #fff; /* Cor do texto */
     font-size: 1.2em;
@@ -98,11 +111,17 @@
     transition: background-color 0.3s, transform 0.3s; /* Transição suave para hover */
     cursor: pointer; /* Indica que é clicável */
 }
+
+.category-link:hover {
+    background-color: #0fad51;
+}
+
 .author-link {
-    color: #3498db;
+    color: #0fad51;
     text-decoration: none;
     font-weight: 600;
 }
+
 /* Adicione animação de entrada */
 .story-page {
     opacity: 0;
@@ -138,5 +157,40 @@
 
     .story-page small {
         font-size: 0.85em;
+    }
+
+    .intro-container {
+        flex-direction: column;
+        align-items: center; /* Centraliza os itens */
+    }
+
+    .intro-container-main-text {
+        align-items: center;
+        text-align: center; /* Opcional: centraliza o texto em telas menores */
+    }
+
+    .story-image-container-story-page  {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    .story-content {
+        text-align: justify; /* Mantém o alinhamento justificado */
+    }
+}
+
+@media (max-width: 480px) {
+    .story-page {
+        width: 95vw;
+        padding: 15px;
+    }
+
+    .story-page h1 {
+        font-size: 1.8em;
+    }
+
+    .story-content {
+        font-size: 0.95em;
+        text-indent: 0.5em;
     }
 }

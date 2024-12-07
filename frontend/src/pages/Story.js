@@ -47,13 +47,23 @@ const Story = () => {
     const profileImageSrc = story.profile_image ? `${baseImageUrl}${story.profile_image}` : 'https://www.gravatar.com/avatar/?d=mp&f=y';
 
     return (
+        <div>  {story.img && (
+                        <div className="story-image-container-story-page">
+                            <img 
+                                src={imgSrc} 
+                                alt={story.title} 
+                                onError={(e) => { e.target.src = `${baseImageUrl}default-image.jpg`; }} // Imagem de fallback
+                                loading="lazy"
+                            />
+                        </div>
+                    )}
         <div className="story-page">
+             
             <div className='main-container-story'>
                 <div className='intro-container'>
-                    <div>
+                    <div className='intro-container-main-text'>
                         <h1>{story.title}</h1>    
                         <p>
-                          
                             <Link 
                                 to={`/StorysPage?category=${encodeURIComponent(story.category)}`} 
                                 className='category-link'
@@ -67,22 +77,13 @@ const Story = () => {
                                 {story.username}
                             </Link>
                         </small>    
-                    </div>   
+                    </div> 
 
-                    {story.img && (
-                        <div className="story-image-container">
-                            <img 
-                                src={imgSrc} 
-                                alt={story.title} 
-                                onError={(e) => { e.target.src = `${baseImageUrl}default-image.jpg`; }} // Imagem de fallback
-                                loading="lazy"
-                            />
-                        </div>
-                    )}
+                 
                 </div>
                 <p className="story-content">{story.content}</p>
             </div>
-        </div>
+        </div></div>
     );
 };
 
