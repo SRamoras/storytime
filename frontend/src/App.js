@@ -1,11 +1,7 @@
+// src/App.js
 import React from 'react';
-
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/LoginPageMain'; // Ajuste o caminho conforme a estrutura de pastas
-
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import LoginPage from './pages/LoginPageMain';
 import RegisterPage from './pages/RegisterPage';
 import StorysPage from './pages/StorysPage';
 import HomePage from './pages/HomePagee';
@@ -15,10 +11,14 @@ import ThirdLayout from './layouts/ThirdLayout';
 import Profile from './pages/Profile';
 import CreateStory from './pages/CreateStory';
 import Story from './pages/Story';
+import NotFound from './pages/NotFound'; // Importação da página 404
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-      <Router>
+      <Router basename="/storytime"> {/* Certifique-se de substituir "/StoryTime" pelo nome do seu repositório */}
           <Routes>
               <Route element={<MainPageLayout />}>
                   <Route path="/" element={<HomePage />} />
@@ -39,11 +39,13 @@ function App() {
                   <Route path="/create-story" element={<CreateStory />} />
                   <Route path="/story/:id" element={<Story />} /> 
               </Route>
+
+              {/* Rota para páginas não encontradas */}
+              <Route path="*" element={<NotFound />} />
           </Routes>
           <ToastContainer />
       </Router>
   );
 }
-
 
 export default App;
