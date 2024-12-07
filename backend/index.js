@@ -1,3 +1,5 @@
+// backend/index.js
+
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -9,7 +11,7 @@ const app = express();
 
 // Configuração detalhada do CORS
 app.use(cors({
-    origin: 'http://localhost:3000', // Substitua pela origem do seu frontend
+    origin: 'https://sramoras.github.io/StoryTime', // URL do seu frontend no GitHub Pages
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     optionsSuccessStatus: 204
@@ -29,7 +31,7 @@ app.get('/', (req, res) => {
 const authRoutes = require('./routes/auth'); // Importa as rotas de autenticação
 app.use('/api/auth', authRoutes);
 
-// Porta do servidor
+// Porta do servidor (usando a variável de ambiente)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 

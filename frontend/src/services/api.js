@@ -1,9 +1,9 @@
-// src/services/api.js
+// frontend/src/services/api.js
 import axios from 'axios';
 
 // Cria uma instância do Axios com a baseURL configurada
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api' // Substitua pelo endpoint correto do seu back-end
+    baseURL: process.env.REACT_APP_API_URL || 'https://storytime-backend-f240.onrender.com/api' // URL de produção
 });
 
 // Interceptor de requisição para adicionar o token de autenticação em todas as requisições
