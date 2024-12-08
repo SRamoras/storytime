@@ -27,7 +27,7 @@ const HomePage = () => {
                             <Link to="/login">
                                 <button className='first-button'>Start for free</button>
                             </Link>
-                            <Link to="/about">
+                            <Link to="/login">
                                 <button className='second-button'>About us</button>
                             </Link>
                         </div>
