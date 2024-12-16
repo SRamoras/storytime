@@ -1,6 +1,6 @@
 # 📚 Storytime
 
-![Storytime Banner](./frontend/Assets/banner.png)
+![Storytime Banner](./frontend/src/Assets/banner.png)
 
 ## 📖 About Storytime
 
