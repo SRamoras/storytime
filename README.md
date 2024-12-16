@@ -34,13 +34,21 @@
 
 The **Storytime** project was developed over a period of **2 weeks**, from design conception to implementation and final testing.
 
-## 🌐 Deployment
+## 🌐 Live Demo
 
-- **Frontend:** Hosted on [GitHub Pages](https://github.com/your-username/storytime) and [Vercel](https://vercel.com/).
-- **Backend:** Hosted on [Render](https://render.com/).
-- **Database:** Managed on [Supabase](https://supabase.com/).
+- **Website:** [Storytime Live](https://your-live-site.com)
 
-## 📦 Installation
+## 🎨 Design
+
+The application’s design was created using **Figma**, enabling an intuitive and attractive interface for users. [View the Figma Prototype](https://www.figma.com/file/your-prototype-link).
+
+## 🧪 Testing
+
+Automated tests ensure the reliability and stability of the platform. [Learn more about the testing process](#).
+
+## 📦 Installation (Optional)
+
+*For those interested in exploring or contributing to the codebase.*
 
 ### 🛠️ Prerequisites
 
@@ -128,13 +136,41 @@ The **Storytime** project was developed over a period of **2 weeks**, from desig
 
     Open your browser and go to [http://localhost:3000](http://localhost:3000) to see Storytime in action!
 
-## 🎨 Design
+## 🤝 Contributing
 
-The application’s design was created using **Figma**, enabling an intuitive and attractive interface for users. [View the Figma Prototype](https://www.figma.com/file/your-prototype-link).
+Contributions are welcome! Feel free to open issues or submit pull requests to improve this project.
 
-## 🧪 Testing
+1. **Fork the Project**
+2. **Create Your Feature Branch**
 
-To run automated tests, navigate to the `frontend` or `backend` directories and execute:
+    ```bash
+    git checkout -b feature/your-feature
+    ```
 
-```bash
-npm test
+3. **Commit Your Changes**
+
+    ```bash
+    git commit -m "Add some feature"
+    ```
+
+4. **Push to the Branch**
+
+    ```bash
+    git push origin feature/your-feature
+    ```
+
+5. **Open a Pull Request**
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+## 📫 Contact
+
+For more information, feel free to reach out:
+
+- **Email:** your-email@example.com
+- **LinkedIn:** [Your LinkedIn Profile](https://www.linkedin.com/in/your-profile)
+- **GitHub:** [your-username](https://github.com/your-username)
+
+---
