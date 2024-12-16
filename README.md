@@ -169,12 +169,20 @@ const authenticateToken = (req, res, next) => {
 };
 ```
 module.exports = authenticateToken;
-📄 License
-This project is licensed under the MIT License.
+5. **Access the Application**
 
-📫 Contact
+    Open your browser and go to [http://localhost:3000](http://localhost:3000) to see Storytime in action!
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+## 📫 Contact
+
 For more information, feel free to reach out:
 
-Email: your-email@example.com
-LinkedIn: Your LinkedIn Profile
-GitHub: your-username
+- **Email:** your-email@example.com
+- **LinkedIn:** [Your LinkedIn Profile](https://www.linkedin.com/in/your-profile)
+- **GitHub:** [your-username](https://github.com/your-username)
+
+---
