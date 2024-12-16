@@ -1,6 +1,6 @@
 # 📚 Storytime
 
-![Storytime Banner](./assets/banner.png)
+![Storytime Banner](./frontend/Assets/banner.png)
 
 ## 📖 About Storytime
 
@@ -35,11 +35,11 @@ The **Storytime** project was developed over a period of **2 weeks**, from desig
 
 ## 🌐 Live Demo
 
-- **Website:** [Storytime Live](https://your-live-site.com)
+- **Website:** [Storytime Live]((https://sramoras.github.io/storytime/))
 
 ## 🎨 Design
 
-The application’s design was created using **Figma**, enabling an intuitive and attractive interface for users. [View the Figma Prototype](https://www.figma.com/file/your-prototype-link).
+The application’s design was created using **Figma**, enabling an intuitive and attractive interface for users. [View the Figma Prototype](https://www.figma.com/).
 
 ## 🧪 Testing
 
