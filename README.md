@@ -39,7 +39,7 @@ The **Storytime** project was developed over a period of **2 weeks**, from desig
 
 ## 🎨 Design
 
-The application’s design was created using **Figma**, enabling an intuitive and attractive interface for users. [View the Figma Prototype](https://www.figma.com/).
+The application’s design was created using **Figma**, enabling an intuitive and attractive interface for users.
 
 ## 🧪 Testing
 
