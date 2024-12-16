@@ -35,7 +35,7 @@ The **Storytime** project was developed over a period of **2 weeks**, from desig
 
 ## 🌐 Live Demo
 
-- **Website:** [Storytime Live]((https://sramoras.github.io/storytime/))
+- **Website:** [Storytime Live](https://sramoras.github.io/storytime/)
 
 ## 🎨 Design
 
@@ -59,7 +59,7 @@ Automated tests ensure the reliability and stability of the platform. [Learn mor
 1. **Clone the Repository**
 
     ```bash
-    git clone https://github.com/your-username/storytime.git
+    git clone https://github.com/SRamoras/storytime.git
     ```
 
 2. **Navigate to the Project Directory**
@@ -181,8 +181,7 @@ This project is licensed under the [MIT License](./LICENSE).
 
 For more information, feel free to reach out:
 
-- **Email:** your-email@example.com
-- **LinkedIn:** [Your LinkedIn Profile](https://www.linkedin.com/in/your-profile)
-- **GitHub:** [your-username](https://github.com/your-username)
+- **LinkedIn:** [Your LinkedIn Profile](https://www.linkedin.com/in/diogo-silva-94068613b/)
+- **GitHub:** [SRamoras](https://github.com/SRamoras)
 
 ---
