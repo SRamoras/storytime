@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-
+.env
 # testing
 /coverage
 
@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 
-# Arquivos de ambiente
-.env
+
+
