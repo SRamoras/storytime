@@ -181,7 +181,7 @@ This project is licensed under the [MIT License](./LICENSE).
 
 For more information, feel free to reach out:
 
-- **LinkedIn:** [Your LinkedIn Profile](https://www.linkedin.com/in/diogo-silva-94068613b/)
+- **LinkedIn:** [Diogo Silva](https://www.linkedin.com/in/diogo-silva-94068613b/)
 - **GitHub:** [SRamoras](https://github.com/SRamoras)
 
 ---
