@@ -123,7 +123,9 @@ Automated tests ensure the reliability and stability of the platform. [Learn mor
         Create a `.env.local` file in the `frontend` directory and add the following:
 
         ```env
-        NEXT_PUBLIC_API_URL=http://localhost:5000/api
+        REACT_APP_API_URL=https://storytime-backend-f240.onrender.com/api
+        PUBLIC_URL=https://sramoras.github.io/storytime/
+        REACT_APP_BASE_IMAGE_URL=https://storytime-backend-f240.onrender.com/uploads/
         ```
 
     - **Start the Frontend Server**
@@ -136,41 +138,35 @@ Automated tests ensure the reliability and stability of the platform. [Learn mor
 
     Open your browser and go to [http://localhost:3000](http://localhost:3000) to see Storytime in action!
 
-## 🤝 Contributing
+## 🔒 Authentication
 
-Contributions are welcome! Feel free to open issues or submit pull requests to improve this project.
+**Storytime** uses **JWT (JSON Web Tokens)** for secure user authentication. Below is an overview of the authentication process:
 
-1. **Fork the Project**
-2. **Create Your Feature Branch**
+```javascript
+// backend/authenticateToken.js
 
-    ```bash
-    git checkout -b feature/your-feature
-    ```
+const jwt = require('jsonwebtoken');
 
-3. **Commit Your Changes**
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.header('Authorization');
+    console.log('Authorization Header:', authHeader);
 
-    ```bash
-    git commit -m "Add some feature"
-    ```
+    if (!authHeader) {
+        return res.status(401).json({ error: 'Access denied. Token not provided.' });
+    }
 
-4. **Push to the Branch**
+    const token = authHeader.split(' ')[1];
+    console.log('Token:', token);
 
-    ```bash
-    git push origin feature/your-feature
-    ```
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('Token Decoded:', decoded);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        console.error('Error verifying token:', error);
+        res.status(403).json({ error: 'Invalid token.' });
+    }
+};
 
-5. **Open a Pull Request**
-
-## 📄 License
-
-This project is licensed under the [MIT License](./LICENSE).
-
-## 📫 Contact
-
-For more information, feel free to reach out:
-
-- **Email:** your-email@example.com
-- **LinkedIn:** [Your LinkedIn Profile](https://www.linkedin.com/in/your-profile)
-- **GitHub:** [your-username](https://github.com/your-username)
-
----
+module.exports = authenticateToken;
