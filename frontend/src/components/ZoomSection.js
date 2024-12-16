@@ -3,7 +3,7 @@ import "./ZoomSection.css";
 
 const ZoomSection = () => {
   const sectionRef = useRef(null);
-  const [width, setWidth] = useState(50); // Largura inicial em %
+  const [width, setWidth] = useState(50); 
 
   useEffect(() => {
     const handleScroll = () => {
@@ -11,14 +11,14 @@ const ZoomSection = () => {
         const rect = sectionRef.current.getBoundingClientRect();
         const windowHeight = window.innerHeight;
 
-        // Calcula o progresso do scroll enquanto a div está na tela
+        
         const scrollProgress = Math.min(
           1,
           Math.max(0, 1 - rect.top / (windowHeight / 2))
         );
 
-        // A largura vai de 50% a 100% conforme o progresso do scroll
-        const newWidth = 20 + scrollProgress * 80; // 50% a 100%
+        
+        const newWidth = 20 + scrollProgress * 80; 
         setWidth(newWidth);
       }
     };
@@ -34,7 +34,7 @@ const ZoomSection = () => {
       ref={sectionRef}
       className="dynamic-expand-section"
       style={{
-        width: `${width}vw`, // Define a largura dinamicamente
+        width: `${width}vw`, 
       }}
     >
       <div className="dynamic-expand-content">

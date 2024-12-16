@@ -1,4 +1,4 @@
-/* Tablet container */
+
 .tablet-container {
     display: flex;
     justify-content: space-between;
@@ -10,7 +10,7 @@
     margin: 0 auto;
 }
 
-/* Coluna da esquerda */
+
 .tablet-left {
     flex: 1;
     text-align: left;
@@ -30,7 +30,7 @@
     margin: 0;
 }
 
-/* Coluna da direita */
+
 .tablet-right {
     flex: 1.5;
 
@@ -41,7 +41,7 @@
     text-align: right;
 }
 
-/* Features */
+
 .tablet-feature {
     background: linear-gradient(135deg, rgba(238, 174, 202, 1) 0%, rgba(238, 174, 202, 1) 28%, rgba(148, 187, 233, 1) 100%);
     -webkit-background-clip: text;
@@ -49,7 +49,7 @@
     -webkit-text-fill-color: transparent;
     margin-bottom: 20px;
     position: relative;
-    display: inline-block; /* Alinha o pseudo-elemento ao tamanho do texto */
+    display: inline-block;
     font-weight: bold;
     margin-top: 0;
     margin-left: 0;
@@ -62,14 +62,14 @@
     transform: translateY(-5px);
 }
 
-/* Subline gradient animation */
+
 .gradient-text::after {
     content: "";
     position: absolute;
-    bottom: -6px; /* Ajusta a distância do texto */
+    bottom: -6px;
     left: 0;
-    width: 100%; /* Agora ocupa apenas a largura do texto */
-    height: 6px; /* Altura do sublinhado */
+    width: 100%;
+    height: 6px;
     background: linear-gradient(135deg, rgba(238, 174, 202, 1) 0%, rgba(238, 174, 202, 1) 28%, rgba(148, 187, 233, 1) 100%);
     transform: scaleX(0);
     transform-origin: right;

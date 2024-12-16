@@ -1,6 +1,6 @@
-/* CreateStory.css */
 
-/* 1. Apply box-sizing globally */
+
+
 
 input,
 textarea,
@@ -42,7 +42,7 @@ button {
 }
 
 .create-story-form {
-  width: 100%; /* Ensures the form takes up full width of the form-section */
+  width: 100%;
 }
 
 .create-story-form label {
@@ -56,7 +56,7 @@ button {
 .create-story-form textarea,
 .create-story-form select,
 .create-story-form input[type="file"] {
-  width: 100%;               /* Ensures inputs take up full width of the container */
+  width: 100%;              
   padding: 12px 15px;
   margin-top: 8px;
   border: 1px solid #ccc;
@@ -160,8 +160,8 @@ margin-top: 28px;
 }
 
 .story-image-container {
-  min-width: 100px; /* Garante um tamanho mínimo para a imagem */
-  height: 300px; /* Ajusta a altura automaticamente */
+  min-width: 100px;
+  height: 300px;
   width: 100%;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -177,13 +177,13 @@ margin-top: 28px;
 }
 
 .story-content {
-  white-space: pre-wrap;      /* Preserves line breaks and spaces */
-  word-wrap: break-word;      /* Allows breaking of long words */
-  word-break: break-word;     /* Ensures words break to prevent overflow */
+  white-space: pre-wrap;     
+  word-wrap: break-word;     
+  word-break: break-word;    
   font-size: 1.1em;
   color: var(--sub-title-color);
   line-height: 1.6;
-  max-width: 100%;            /* Prevents content from exceeding container width */
+  max-width: 100%;           
 }
 
 @media (max-width: 768px) {
@@ -194,7 +194,7 @@ margin-top: 28px;
   .form-section,
   .preview-section {
     width: 100%;
-    max-width: none;           /* Removes maximum width on small screens */
+    max-width: none;          
   }
 
   .create-story-container {
@@ -209,6 +209,6 @@ margin-top: 28px;
 
   .story-image-container {
     flex: none;
-    width: 80%;                /* Reduces image width on small screens */
+    width: 80%;               
   }
 }

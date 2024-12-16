@@ -26,7 +26,7 @@ const reviews = [
 
     
     rating: 5,
-    isMerged: true, // Este card será mesclado
+    isMerged: true, 
     date: 'March 22, 2024',
   },
   {
@@ -59,14 +59,14 @@ const reviews = [
 ];
 
 const ReviewCard = ({ id }) => {
-  // Função para renderizar as estrelas com base na avaliação
+  
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
-        stars.push(<FaStar key={i} color="#FFD700" />); // Estrela preenchida
+        stars.push(<FaStar key={i} color="#FFD700" />); 
       } else {
-        stars.push(<FaRegStar key={i} color="#FFD700" />); // Estrela vazia
+        stars.push(<FaRegStar key={i} color="#FFD700" />); 
       }
     }
     return stars;

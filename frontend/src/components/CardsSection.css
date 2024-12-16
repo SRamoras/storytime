@@ -31,9 +31,9 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Distribui espaço igualmente */
-    align-items: flex-start; /* Alinha conteúdo à esquerda */
-    color: #333; /* Cor de texto padrão */
+    justify-content: space-between;
+    align-items: flex-start;
+    color: #333;
     transition: transform 0.3s, box-shadow 0.3s;
   }
   
@@ -43,18 +43,18 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    gap: 0.5rem; /* Ajuste conforme necessário */
+    gap: 0.5rem;
     margin-bottom: 15px;
-    min-height: 2em; /* Define uma altura mínima para o header */
+    min-height: 2em;
   }
   
   .card-date {
     font-size: 0.9em;
-    color: #999; /* Cor para a data */
+    color: #999;
   }
   
   .empty-date {
-    visibility: hidden; /* Oculta o conteúdo, mas mantém o espaço */
+    visibility: hidden;
   }
   
   .card-icon {
@@ -62,7 +62,7 @@
     margin-right: 10px;
     justify-content: start;
     text-align: left;
-    color: var(--base-color-unique); /* Cor para ícones */
+    color: var(--base-color-unique);
   }
   
   .card h3 {
@@ -84,13 +84,13 @@
   }
   
   .card-date.empty-date {
-    /* Opcional: ajuste o tamanho ou outros estilos se necessário */
+   
   }
   
   .image-item {
-    background-color: transparent; /* Remove a cor de fundo para exibir a imagem */
-    border: none; /* Remove a borda para imagens */
-    padding: 0; /* Remove o padding */
+    background-color: transparent;
+    border: none;
+    padding: 0;
     height: 37vh;
     display: flex;
     justify-content: center;
@@ -104,7 +104,7 @@
     border-radius: 15px;
   }
   
-  /* Design Responsivo */
+ 
   
   @media (max-width: 1024px) {
     .cards-container {

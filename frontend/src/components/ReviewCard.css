@@ -1,4 +1,4 @@
-/* Reset básico para garantir consistência */
+
 
 .main-review-container{
 width: 85vw;
@@ -10,7 +10,7 @@ width: 85vw;
   gap: 20px;
 }
 
-/* Estilo base para todos os cards */
+
 .card {
   background-color: #f4f4f4;
   border-radius: 15px;
@@ -20,8 +20,8 @@ width: 85vw;
   transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distribui espaço entre os elementos */
-  position: relative; /* Para posicionamento absoluto das estrelas */
+  justify-content: space-between;
+  position: relative;
 }
 .card p{
   font-size: 1.2rem;
@@ -31,7 +31,7 @@ width: 85vw;
   font-family: "Inter", sans-serif;
   text-align: start;
 }
-/* Efeitos de hover e focus */
+
 .container-main-review-content{
   display: flex;
  flex-direction: column;
@@ -39,13 +39,13 @@ width: 85vw;
 
 }
 
-/* Header do card: imagem e nome */
+
 .card-header-review {
   display: flex;
   align-items: center;
 }
 
-/* Imagem de perfil */
+
 .profile-pic {
   width: 60px;
   height: 60px;
@@ -54,22 +54,22 @@ width: 85vw;
   margin-right: 15px;
 }
 
-/* Nome do usuário */
+
 .name {
   font-size: 20px;
   color: #333333;
 }
 
-/* Depoimento */
+
 .testimonial {
-  flex-grow: 1; /* Ocupa o espaço disponível */
+  flex-grow: 1;
   font-size: 16px;
   color: #555555;
   margin: 10px 0;
   text-align: center;
 }
 
-/* Estrelas posicionadas no canto inferior esquerdo */
+
 .stars {
   display: flex;
   position: absolute;
@@ -77,16 +77,16 @@ width: 85vw;
   left: 20px;
   font-size: 20px;
   gap: 10px;
-  color: #FFD700; /* Cor dourada para as estrelas */
+  color: #FFD700;
 }
 
-/* Mesclar os cards centrais */
+
 .card2 {
-  grid-row: 1 / span 2; /* Ocupa as duas linhas */
-  /* background-color: #82c49d;  */
+  grid-row: 1 / span 2;
+ 
 }
 
-/* Ajustar a posição dos cards */
+
 .card1 {
   grid-column: 1 / 2;
   grid-row: 1 / 2;

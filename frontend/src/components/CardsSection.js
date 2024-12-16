@@ -1,15 +1,15 @@
-// src/components/CardsSection.js
+
 
 import React from 'react';
 import './CardsSection.css';
-import storytellingImage1 from '../assets/ler4.png'; // Certifique-se de que o caminho está correto
-import storytellingImage2 from '../assets/ler3.png'; // Certifique-se de que o caminho está correto
+import storytellingImage1 from '../assets/ler4.png'; 
+import storytellingImage2 from '../assets/ler3.png'; 
 
-// Importando ícones do react-icons
+
 import { FaBook, FaUsers, FaPalette, FaBell, FaPen, FaShareAlt } from 'react-icons/fa';
 
 const items = [
-  // Substitua o primeiro card por uma imagem no canto superior esquerdo
+  
   { 
     id: 1, 
     type: 'image', 
@@ -58,7 +58,7 @@ const items = [
     icon: <FaPen />,
     area: 'card6' 
   },
-  // Adicione outra imagem no centro inferior
+  
   { 
     id: 7, 
     type: 'image', 
@@ -97,7 +97,7 @@ const CardsSection = ({ id }) => (
               date={item.date}
               icon={item.icon}
               area={item.area}
-              id={`card-${item.id}`} // Adiciona um id único a cada card
+              id={`card-${item.id}`} 
             />
           );
         } else if (item.type === 'image') {

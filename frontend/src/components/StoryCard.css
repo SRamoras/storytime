@@ -1,6 +1,6 @@
-/* src/components/StoryCard.css */
 
-/* Container Principal do Story */
+
+
 .story-container2 {
   background-color: #f4f4f4;
   border: 5px solid #fff;
@@ -11,11 +11,11 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  max-height: 350px; /* Altura máxima do card */
-  position: relative; /* Necessário para posicionar tooltips */
+  max-height: 350px;
+  position: relative;
 }
 .story-container2:hover{
-  /* box-shadow: 0px 6px 60px 8px rgba(0, 0, 0, 0.2); */
+ 
 }
 
 .introduction-paragraf {
@@ -30,7 +30,7 @@
   color: var(--title-color);
 }
 
-/* Link styling */
+
 .story-container-link {
   text-decoration: none;
   color: inherit;
@@ -39,7 +39,7 @@
   height: 100%;
 }
 
-/* Container da Imagem */
+
 .story-image {
   flex: 0 0 100px;
   margin-right: 15px;
@@ -54,7 +54,7 @@
   border-radius: 6px;
 }
 
-/* Container do Conteúdo da História */
+
 .intro-container {
   display: flex;
   width: 100%;
@@ -79,44 +79,44 @@
   font-variation-settings: "opsz" 85, "wonk" 0;
   color: var(--title-color);
   
-  /* Propriedades para quebra de palavras */
-  word-wrap: break-word; /* Quebra palavras longas */
-  word-break: break-word; /* Quebra palavras muito grandes */
-  overflow-wrap: break-word; /* Suporte adicional para quebra */
-  white-space: normal; /* Permite que o texto ocupe várias linhas */
+ 
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 
-  /* Propriedades para limitar a duas linhas com reticências */
-  display: -webkit-box;             /* Define o elemento como um flex container de caixas flexíveis */
-  -webkit-line-clamp: 2;            /* Limita o texto a duas linhas */
-  -webkit-box-orient: vertical;     /* Orienta as caixas no eixo vertical */
-  overflow: hidden;                 /* Esconde o conteúdo que exceder o limite */
+ 
+  display: -webkit-box;            
+  -webkit-line-clamp: 2;           
+  -webkit-box-orient: vertical;    
+  overflow: hidden;                
   
-  /* Opcional: Para melhor compatibilidade e clareza */
-  text-overflow: ellipsis;          /* Adiciona reticências quando o texto é truncado */
+ 
+  text-overflow: ellipsis;         
 }
 
-/* Estilo para o Link da Categoria */
+
 .category-text {
-  color: #fff; /* Cor do texto */
+  color: #fff;
   font-size: 0.95em;
   border-radius: 15px;
-  width: fit-content; /* Ajusta a largura ao conteúdo */
+  width: fit-content;
   background-color: var(--title-color);
-  padding: 2px 8px; /* Espaçamento interno */
-  text-decoration: none; /* Remove o sublinhado */
-  display: inline-block; /* Garante que as propriedades de padding funcionem corretamente */
-  transition: background-color 0.3s, transform 0.3s; /* Transição suave para hover */
-  cursor: pointer; /* Indica que é clicável */
+  padding: 2px 8px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer;
   font-family: "Inter", sans-serif;
 }
 
-/* Efeito de Hover para a Categoria */
+
 .category-text:hover {
-  background-color: #333; /* Muda a cor de fundo no hover */
-  transform: scale(1.01); /* Aumenta ligeiramente o tamanho */
+  background-color: #333;
+  transform: scale(1.01);
 }
 
-/* Responsividade para o Link da Categoria */
+
 @media (max-width: 600px) {
   .category-text {
     font-size: 1em;
@@ -124,10 +124,10 @@
   }
 }
 
-/* Estilo do conteúdo da história */
+
 .story-content2 {
   margin-top: 10px;
-  /* Limitar a 3 linhas */
+ 
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -142,14 +142,14 @@
   line-height: 1.5;
 }
 
-/* Container para os botões de ação */
+
 .action-buttons {
   display: flex;
   align-items: center;
-  gap: 10px; /* Espaço entre os botões */
+  gap: 10px;
 }
 
-/* Botões de Ação: Salvar, Marcar como Lida, Desmarcar, Apagar */
+
 .save-icon-button,
 .delete-icon-button,
 .mark-read-button,
@@ -164,15 +164,15 @@
   align-items: center;
 }
 
-/* Ícones de Marcar e Desmarcar como Lida, Salvar e Apagar */
+
 .mark-read-icon,
 .unmark-read-icon,
 .save-icon,
 .delete-icon {
   font-family: 'Material Symbols Outlined';
   font-size: 24px;
-  color: #000; /* Preto por padrão */
-  transition: transform 0.3s, color 0.3s; /* Transições suaves para transform e color */
+  color: #000;
+  transition: transform 0.3s, color 0.3s;
   font-variation-settings:
     'FILL' 0,
     'wght' 400,
@@ -181,48 +181,48 @@
 }
 
 .mark-read-icon {
-  /* Cor será definida no hover */
+ 
 }
 
 .unmark-read-icon {
-  /* Cor será definida no hover */
+ 
 }
 
 .save-icon {
-  /* Cor será definida no hover */
+ 
 }
 
 .delete-icon {
-  /* Cor será definida no hover */
+ 
 }
 
-/* Hover Effects for Each Icon */
 
-/* Botão Marcar como Lida */
+
+
 .mark-read-button:hover .mark-read-icon {
-  color: #28a745; /* Verde para marcar como lida */
-  transform: scale(1.1); /* Aumenta ligeiramente o tamanho */
+  color: #28a745;
+  transform: scale(1.1);
 }
 
-/* Botão Desmarcar como Lida */
+
 .unmark-read-button:hover .unmark-read-icon {
-  color: #dc3545; /* Vermelho para desmarcar como lida */
+  color: #dc3545;
   transform: scale(1.1);
 }
 
-/* Botão Salvar História */
+
 .save-icon-button:hover .save-icon {
-  color: #007bff; /* Azul para salvar */
+  color: #007bff;
   transform: scale(1.1);
 }
 
-/* Botão Apagar História */
+
 .delete-icon-button:hover .delete-icon {
-  color: #ff0000; /* Vermelho para apagar */
+  color: #ff0000;
   transform: scale(1.1);
 }
 
-/* Tooltip */
+
 .tooltip {
   visibility: hidden;
   background-color: rgba(0, 0, 0, 0.8);
@@ -232,7 +232,7 @@
   padding: 5px 8px;
   position: absolute;
   z-index: 1;
-  bottom: 125%; /* Posiciona acima do botão */
+  bottom: 125%;
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
@@ -241,11 +241,11 @@
   white-space: nowrap;
 }
 
-/* Seta do Tooltip */
+
 .tooltip::after {
   content: '';
   position: absolute;
-  top: 100%; /* Na parte inferior do tooltip */
+  top: 100%;
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
@@ -253,7 +253,7 @@
   border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
 }
 
-/* Mostrar o tooltip no hover */
+
 .save-icon-button:hover .tooltip,
 .delete-icon-button:hover .tooltip,
 .mark-read-button:hover .tooltip,
@@ -264,46 +264,46 @@
   opacity: 1;
 }
 
-/* Estilo para o contêiner de informações do autor */
+
 .author-info {
   display: flex;
   align-items: center;
   font-family: "Inter", sans-serif;
-  text-decoration: none; /* Remove o sublinhado */
-  transition: transform 0.3s ease; /* Transição suave para o efeito de escala */
-  cursor: pointer; /* Indica que o elemento é clicável */
+  text-decoration: none;
+  transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
-/* Opção 1: Escalar o contêiner inteiro no hover */
+
 .author-info:hover {
-  transform: scale(1.01); /* Aumenta 5% o tamanho */
+  transform: scale(1.01);
 }
 
-/* --- Ou --- */
 
-/* Opção 2: Escalar a imagem e o texto separadamente */
 
-/* Remover sublinhado do texto dentro do Link */
+
+
+
 .author-info .username-text {
   text-decoration: none;
-  transition: transform 0.3s ease; /* Transição suave para o efeito de escala */
+  transition: transform 0.3s ease;
 }
 
-/* Efeito de hover para a imagem de perfil */
+
 .author-info img {
-  transition: transform 0.3s ease; /* Transição suave para o efeito de escala */
+  transition: transform 0.3s ease;
 }
 
 .author-info:hover img {
-  transform: scale(1.01); /* Aumenta 10% o tamanho da imagem */
+  transform: scale(1.01);
 }
 
-/* Efeito de hover para o nome de usuário */
+
 .author-info:hover .username-text {
-  transform: scale(1.05); /* Aumenta 5% o tamanho do texto */
+  transform: scale(1.05);
 }
 
-/* Estilo para a imagem de perfil do autor */
+
 .author-profile-image {
   width: 30px;
   height: 30px;
@@ -313,10 +313,10 @@
   border: #000 solid 1px;
 }
 
-/* Estilo para o nome de usuário */
+
 .username-text {
   font-size: 14px;
-  max-width: 100px; /* Defina a largura máxima conforme necessário */
+  max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -324,13 +324,13 @@
   text-decoration: none;
 }
 
-/* Estilo para o nome de usuário no hover */
+
 .username-text:hover {
   overflow: visible;
   white-space: normal;
 }
 
-/* Alinhamento dos Botões na Tela */
+
 .bottom-story-container {
   display: flex;
   justify-content: space-between;
@@ -338,11 +338,11 @@
   margin-top: 10px;
 }
 
-/* Responsividade para Telas Menores */
+
 @media (max-width: 600px) {
   .story-container2 {
     max-width: 90%;
-    margin: 0 auto; /* Centraliza o card na tela */
+    margin: 0 auto;
   }
 
   .intro-container {

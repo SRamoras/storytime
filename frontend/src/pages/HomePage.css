@@ -1,46 +1,16 @@
 body, html{
     overflow-x: hidden;
 }
-/* Remove background styles from .Intro-container */
+
 .Intro-container {
-    /* display: flex;
-    align-items: center;
-    justify-content: space-around;
-    gap: 20rem;
-    padding: 0; 
-    width: 100%;
-    height: 100vh;*/
+   
     box-sizing: border-box;
 
-    /* Remove background and height properties  */
+   
 }
 
-/* New styles for .background-container */
-.background-container {
-    /* display: flex;
-    flex-direction: column; 
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
 
-    background-image: 
-        radial-gradient(circle at 0% 0%, rgba(172, 131, 222, 1) 0%, rgba(134, 168, 231, 1) 2%, transparent 24%),
-        radial-gradient(circle at 70% 30%, 
-        rgba(172, 131, 222, 1) 0%,     
-        rgba(172, 131, 222, 1) 2%,      
-        rgba(134, 168, 231, 1) 10%,   
-        transparent 30%                
-    );
-    background-size: 150% 150%;
-    background-repeat: no-repeat;
 
-    */
-}
-
-/* Ensure that child components take full width */
-.homepage-container-main{
-    
-}
 .Intro-container img{
     width: 100vw;
     height: 100vh;
@@ -52,7 +22,7 @@ body, html{
     transition: transform 0.3s ease;
 }
 
-/* Seção de texto */
+
 .text-section {
     position: absolute;
 
@@ -63,24 +33,24 @@ body, html{
     top: 30vh; 
 }
 .subtitle-main-section::after{
-    content: ''; /* Necessário para exibir o pseudo-elemento */
-    display: block; /* Transforma o pseudo-elemento em um bloco para controlar a largura e altura */
-    width: 50px; /* Largura da barra - ajuste conforme necessário */
-    height: 3px; /* Altura da barra */
-    background-color: var(--base-color-unique); /* Cor da barra - ajuste conforme necessário */
-    margin-top: 5px; /* Espaçamento entre o título e a barra */
-    border-radius: 2px; /* Bordas arredondadas para suavizar a barra */}
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: var(--base-color-unique);
+    margin-top: 5px;
+    border-radius: 2px;}
 
     
 
     .subtitle-main-section{   
         font-size: 40px;
         margin-bottom: 30px;
-        line-height: 1.1; /* Melhor legibilidade */
-        font-weight: 532; /* Valor válido (700 em vez de 764) */
+        line-height: 1.1;
+        font-weight: 532;
         letter-spacing: normal;
-        font-optical-sizing: auto; /* Habilita o ajuste óptico automático */
-        font-variation-settings: "opsz" 85, "wonk" 0;  /* Define o tamanho óptico específico */
+        font-optical-sizing: auto;
+        font-variation-settings: "opsz" 85, "wonk" 0; 
         color: var(--title-color);}
 
 
@@ -89,11 +59,11 @@ body, html{
     font-size: 60px;
     margin-bottom: 1rem;
     margin: 0;
-    line-height: 1.1; /* Melhor legibilidade */
-    font-weight: 532; /* Valor válido (700 em vez de 764) */
+    line-height: 1.1;
+    font-weight: 532;
     letter-spacing: normal;
-    font-optical-sizing: auto; /* Habilita o ajuste óptico automático */
-    font-variation-settings: "opsz" 85, "wonk" 0;  /* Define o tamanho óptico específico */
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 85, "wonk" 0; 
     color: var(--title-color);
 }
 
@@ -150,7 +120,7 @@ color: #fff;
     color: #fff;
     background-color: var(--title-color);
 }
-/* Botão */
+
 .get-started-btn {
     background-color: var(--title-color);
     color: white;
@@ -175,32 +145,32 @@ color: #fff;
     display: inline-block;
 
     width: 100vw ;/* Tamanho desejado da imagem */
-    height: 100vw; /* Tamanho desejado da imagem */
-    overflow: hidden; /* Garante que a imagem não ultrapasse os limites do contêiner */
+    height: 100vw;
+    overflow: hidden;
     
   
 }
 
 .image-background {
     position: absolute;
-    top: 10px; /* Deslocamento vertical */
-    left: 10px; /* Deslocamento horizontal */
-    width: calc(100% - 20px); /* Ajusta o tamanho com base no deslocamento */
-    height: calc(100% - 20px); /* Ajusta o tamanho com base no deslocamento */
+    top: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
     background-color: var(--sub-title-color);
-    border-radius: 10px; /* Igual ao da imagem */
-    z-index: 0; /* Fica atrás da imagem */
+    border-radius: 10px;
+    z-index: 0;
 }
 
-/* Imagem principal */
+
 .story-image {
     width: 100%;
     height: 100%;
-    border-radius: 10px; /* Borda arredondada */
-    position: relative; /* Para garantir o empilhamento correto */
-    z-index: 1; /* Garante que a imagem fique na frente do fundo */
-    object-fit: cover; /* Garante que a imagem preencha o contêiner sem distorção */
-    transition: transform 0.3s ease; /* Suavidade no zoom */
+    border-radius: 10px;
+    position: relative;
+    z-index: 1;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 .explorer-section{
     background-color: #f8f9fa;

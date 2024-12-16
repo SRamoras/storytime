@@ -1,11 +1,11 @@
-/* DynamicExpandSection.css */
+
 .dynamic-expand-section {
-    background-color: #000; /* Fundo preto */
+    background-color: #000;
     color: #fff;
-    height: 60vh; /* Altura fixa */
-    margin: 2rem auto; /* Espaço ao redor */
+    height: 60vh;
+    margin: 2rem auto;
     border-radius: 10px;
-    transition: width 0.3s ease; /* Suavidade ao mudar largura */
+    transition: width 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;

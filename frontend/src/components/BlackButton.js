@@ -1,16 +1,16 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Hook para navegação
+import { useNavigate } from 'react-router-dom'; 
 import './BlackButton.css';
 
 const BlackButton = ({ text, to, onClick }) => {
-    const navigate = useNavigate(); // Inicializa a função de navegação
+    const navigate = useNavigate(); 
 
     const handleClick = () => {
         if (to) {
-            navigate(to); // Navega para o caminho especificado
+            navigate(to); 
         }
         if (onClick) {
-            onClick(); // Executa a ação personalizada, se existir
+            onClick(); 
         }
     };
 

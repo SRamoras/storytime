@@ -1,22 +1,22 @@
-// routes/auth.js
+
 
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const pool = require('../db'); // Assegure-se de que o caminho está correto
+const pool = require('../db'); 
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Middleware de autenticação
+
 const authenticateToken = require('../middleware/authMiddleware');
 
-// Configuração do armazenamento para Multer
+
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         const uploadDir = path.join(__dirname, '..', 'uploads');
-        // Certifique-se de que a pasta existe
+        
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
         }
@@ -24,11 +24,11 @@ const storage = multer.diskStorage({
     },
     filename: function(req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname)); // Adiciona extensão do arquivo
+        cb(null, uniqueSuffix + path.extname(file.originalname)); 
     }
 });
 
-// Filtro para aceitar apenas imagens
+
 const fileFilter = (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
@@ -41,16 +41,16 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-// Limite de tamanho do arquivo (5MB)
+
 const upload = multer({ 
     storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+    limits: { fileSize: 5 * 1024 * 1024 }, 
     fileFilter: fileFilter
 });
 
-// ============================
-// Rotas de Autenticação
-// ============================
+
+
+
 
 /**
  * Rota de Registro de Usuário
@@ -61,11 +61,11 @@ router.post('/register', async (req, res) => {
     console.log('Recebendo requisição de registro:', { username, email });
 
     try {
-        // Gera o hash da senha
+        
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log('Senha hash gerada.');
 
-        // Insere o usuário no banco de dados
+        
         const result = await pool.query(
             'INSERT INTO users (username, firstname, lastname, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email, created_at',
             [username, firstname, lastname, email, hashedPassword]
@@ -79,8 +79,8 @@ router.post('/register', async (req, res) => {
     } catch (error) {
         console.error('Erro ao registrar o usuário:', error);
 
-        // Verifica se o erro é devido a violação de constraints (e.g., username ou email duplicados)
-        if (error.code === '23505') { // Código de erro para violação de unique constraint no PostgreSQL
+        
+        if (error.code === '23505') { 
             const field = error.constraint.includes('username') ? 'username' : 'email';
             return res.status(400).json({ error: `O ${field} já está em uso.` });
         }
@@ -96,7 +96,7 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        // Busca o usuário no banco de dados
+        
         const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
         if (result.rows.length === 0) {
             return res.status(401).json({ error: 'Usuário não encontrado.' });
@@ -108,7 +108,7 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Senha incorreta.' });
         }
 
-        // Gera o token JWT
+        
         const token = jwt.sign({
             id: user.id,
             username: user.username,
@@ -133,9 +133,9 @@ router.get('/protected-route', authenticateToken, (req, res) => {
     res.json({ message: 'Acesso permitido!', user: req.user });
 });
 
-// ============================
-// Rotas de Histórias
-// ============================
+
+
+
 
 /**
  * Rota POST para Criar uma Nova História
@@ -145,18 +145,18 @@ router.post('/stories', authenticateToken, upload.single('img'), async (req, res
     console.log('POST /stories foi chamado');
 
     const { id: authUserId } = req.user;
-    const { title, content, category_id } = req.body; // Alterado para category_id
+    const { title, content, category_id } = req.body; 
     const image = req.file ? req.file.filename : null;
 
-    // Log dos dados recebidos
+    
     console.log('Dados recebidos:', { title, content, category_id, image });
 
-    // Validação dos campos obrigatórios
+    
     if (!title || !content || !category_id) {
         return res.status(400).json({ error: 'Title, content, and category_id são obrigatórios.' });
     }
 
-    // Converter category_id para número
+    
     const parsedCategoryId = parseInt(category_id, 10);
 
     if (isNaN(parsedCategoryId)) {
@@ -164,7 +164,7 @@ router.post('/stories', authenticateToken, upload.single('img'), async (req, res
     }
 
     try {
-        // Verificar se o category_id existe na tabela categories
+        
         const categoryCheck = await pool.query(
             'SELECT id FROM categories WHERE id = $1',
             [parsedCategoryId]
@@ -174,7 +174,7 @@ router.post('/stories', authenticateToken, upload.single('img'), async (req, res
             return res.status(400).json({ error: 'category_id inválido. Categoria não existe.' });
         }
 
-        // Inserir a nova história no banco de dados usando category_id
+        
         const result = await pool.query(
             `INSERT INTO stories (user_id, title, content, category_id, img, created_at) 
              VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *`,
@@ -200,7 +200,7 @@ router.post('/read_story', authenticateToken, async (req, res) => {
     console.log('Recebendo requisição para marcar história como lida:', { userId, storyId });
 
     try {
-        // Verificar se a história já foi marcada como lida pelo usuário
+        
         const checkResult = await pool.query(
             'SELECT * FROM readstories WHERE userid = $1 AND storyid = $2',
             [userId, storyId]
@@ -210,7 +210,7 @@ router.post('/read_story', authenticateToken, async (req, res) => {
             return res.status(400).json({ error: 'História já marcada como lida.' });
         }
 
-        // Inserir na tabela readstories
+        
         const insertResult = await pool.query(
             'INSERT INTO readstories (userid, storyid, datavased) VALUES ($1, $2, $3) RETURNING *',
             [userId, storyId, datavased]
@@ -234,7 +234,7 @@ router.delete('/read_story/:storyId', authenticateToken, async (req, res) => {
     console.log(`Recebendo requisição para desmarcar história como lida: UserID=${userId}, StoryID=${storyId}`);
 
     try {
-        // Verificar se a história está marcada como lida
+        
         const checkResult = await pool.query(
             'SELECT * FROM readstories WHERE userid = $1 AND storyid = $2',
             [userId, storyId]
@@ -244,7 +244,7 @@ router.delete('/read_story/:storyId', authenticateToken, async (req, res) => {
             return res.status(400).json({ error: 'História não está marcada como lida.' });
         }
 
-        // Remover a marcação de lida
+        
         await pool.query(
             'DELETE FROM readstories WHERE userid = $1 AND storyid = $2',
             [userId, storyId]
@@ -267,9 +267,9 @@ router.delete('/read_story/:storyId', authenticateToken, async (req, res) => {
  */
 
 
-// Rota GET para Obter Todas as Histórias Lidas de um Usuário
-// Endpoint: /auth/read_stories/:userId
-// Rota GET para Obter Todas as Histórias Lidas de um Usuário
+
+
+
 router.get('/read_stories/:userId', authenticateToken, async (req, res) => {
     const { userId } = req.params;
 
@@ -334,7 +334,7 @@ router.get('/stories/:username', async (req, res) => {
     const { username } = req.params;
 
     try {
-        // Primeiro, obtenha o ID do usuário com base no username
+        
         const userResult = await pool.query(
             'SELECT id FROM users WHERE username = $1',
             [username]
@@ -346,7 +346,7 @@ router.get('/stories/:username', async (req, res) => {
 
         const userId = userResult.rows[0].id;
 
-        // Agora, obtenha as histórias desse usuário com username e profile_image
+        
         const storiesResult = await pool.query(
             `SELECT stories.*, users.username, users.profile_image, categories.name AS category
              FROM stories
@@ -377,7 +377,7 @@ router.delete('/stories/:id', authenticateToken, async (req, res) => {
     console.log(`DELETE /stories/${storyId} chamado por usuário ID: ${authUserId}`);
 
     try {
-        // Verificar se a história existe e pertence ao usuário
+        
         const storyCheck = await pool.query(
             'SELECT * FROM stories WHERE id = $1',
             [storyId]
@@ -393,43 +393,43 @@ router.delete('/stories/:id', authenticateToken, async (req, res) => {
             return res.status(403).json({ error: 'Acesso negado. Você não pode apagar esta história.' });
         }
 
-        // Iniciar uma transação para garantir a atomicidade
+        
         await pool.query('BEGIN');
 
         try {
-            // Remover as referências na tabela storiessaved
+            
             await pool.query(
                 'DELETE FROM storiessaved WHERE storyid = $1',
                 [storyId]
             );
             console.log(`Referências na tabela storiessaved para história ID: ${storyId} foram removidas.`);
 
-            // Remover a imagem associada, se existir
+            
             if (story.img) {
                 const imagePath = path.join(__dirname, '..', 'uploads', story.img);
                 fs.unlink(imagePath, (err) => {
                     if (err) {
                         console.error(`Erro ao apagar a imagem: ${imagePath}`, err);
-                        // Não retornamos erro aqui para não bloquear a deleção da história
+                        
                     } else {
                         console.log(`Imagem apagada: ${imagePath}`);
                     }
                 });
             }
 
-            // Apagar a história do banco de dados
+            
             await pool.query(
                 'DELETE FROM stories WHERE id = $1',
                 [storyId]
             );
 
-            // Confirmar a transação
+            
             await pool.query('COMMIT');
 
             console.log(`História ID: ${storyId} apagada por usuário ID: ${authUserId}`);
             res.status(200).json({ message: 'História apagada com sucesso!' });
         } catch (error) {
-            // Reverter a transação em caso de erro
+            
             await pool.query('ROLLBACK');
             throw error;
         }
@@ -464,9 +464,9 @@ router.get('/stories/id/:id', authenticateToken, async (req, res) => {
     }
 });
 
-// ============================
-// Rotas de Salvar e Remover Histórias Salvas
-// ============================
+
+
+
 
 /**
  * Rota POST para Salvar uma História
@@ -482,7 +482,7 @@ router.post('/save_story', authenticateToken, async (req, res) => {
     console.log('Dados recebidos:', { userId, storyId });
 
     try {
-        // Verificar se a história já foi salva pelo usuário
+        
         const checkResult = await pool.query(
             'SELECT * FROM storiessaved WHERE userid = $1 AND storyid = $2',
             [userId, storyId]
@@ -494,7 +494,7 @@ router.post('/save_story', authenticateToken, async (req, res) => {
             return res.status(400).json({ error: 'História já salva.' });
         }
 
-        // Inserir na tabela StoriesSaved
+        
         await pool.query(
             'INSERT INTO storiessaved (userid, storyid, datasaved) VALUES ($1, $2, $3)',
             [userId, storyId, dataSaved]
@@ -519,7 +519,7 @@ router.delete('/save_story/:storyId', authenticateToken, async (req, res) => {
     console.log('Dados recebidos:', { userId, storyId });
 
     try {
-        // Verificar se a história está salva pelo usuário
+        
         const checkResult = await pool.query(
             'SELECT * FROM storiessaved WHERE userid = $1 AND storyid = $2',
             [userId, storyId]
@@ -531,7 +531,7 @@ router.delete('/save_story/:storyId', authenticateToken, async (req, res) => {
             return res.status(400).json({ error: 'História não está salva.' });
         }
 
-        // Remover a história salva
+        
         await pool.query(
             'DELETE FROM storiessaved WHERE userid = $1 AND storyid = $2',
             [userId, storyId]
@@ -569,9 +569,9 @@ router.get('/saved_stories/:userId', authenticateToken, async (req, res) => {
     }
 });
 
-// ============================
-// Rotas de Perfil de Usuário
-// ============================
+
+
+
 
 /**
  * Rota GET para Retornar Informações do Usuário Autenticado
@@ -579,7 +579,7 @@ router.get('/saved_stories/:userId', authenticateToken, async (req, res) => {
  */
 router.get('/me', authenticateToken, async (req, res) => {
     try {
-        // Retorna apenas o que for necessário
+        
         const { id, username, email, firstname, lastname, bio, profile_image } = req.user;
         res.status(200).json({
             id,
@@ -600,16 +600,16 @@ router.get('/me', authenticateToken, async (req, res) => {
  * Rota GET para Obter Informações do Usuário por Username
  * Endpoint: /auth/users/:username
  */
-// routes/auth.js
-// routes/auth.js
 
-// ... (outro código permanece o mesmo)
+
+
+
 
 router.get('/users/:username', async (req, res) => {
     const { username } = req.params;
 
     try {
-        // Busca os dados do usuário
+        
         const userResult = await pool.query(
             'SELECT id, username, firstname, lastname, email, bio, profile_image FROM users WHERE username = $1',
             [username]
@@ -622,28 +622,28 @@ router.get('/users/:username', async (req, res) => {
         const user = userResult.rows[0];
         const userId = user.id;
 
-        // Obter o contador de histórias publicadas
+        
         const storyCountResult = await pool.query(
             'SELECT COUNT(*) FROM stories WHERE user_id = $1',
             [userId]
         );
         const storyCount = parseInt(storyCountResult.rows[0].count);
 
-        // Obter o contador de histórias salvas
+        
         const savedCountResult = await pool.query(
             'SELECT COUNT(*) FROM storiessaved WHERE userid = $1',
             [userId]
         );
         const savedCount = parseInt(savedCountResult.rows[0].count);
 
-        // Obter o contador de histórias lidas
+        
         const readCountResult = await pool.query(
             'SELECT COUNT(*) FROM readstories WHERE userid = $1',
             [userId]
         );
         const readCount = parseInt(readCountResult.rows[0].count);
 
-        // Adicionar os contadores ao objeto do usuário
+        
         user.storyCount = storyCount;
         user.savedCount = savedCount;
         user.readCount = readCount;
@@ -655,7 +655,7 @@ router.get('/users/:username', async (req, res) => {
     }
 });
 
-// ... (continuação do código)
+
 
 
 /**
@@ -664,7 +664,7 @@ router.get('/users/:username', async (req, res) => {
  */
 router.put('/update-profile', authenticateToken, async (req, res) => {
     const { bio, firstname, lastname } = req.body;
-    const userId = req.user.id;  // Certifique-se que req.user.id está disponível e correto
+    const userId = req.user.id;  
 
     try {
         const updateResult = await pool.query(
@@ -675,7 +675,7 @@ router.put('/update-profile', authenticateToken, async (req, res) => {
         if (updateResult.rows.length > 0) {
             const updatedUser = updateResult.rows[0];
 
-            // Recria o token com as informações atualizadas
+            
             const newToken = jwt.sign({
                 id: updatedUser.id,
                 username: updatedUser.username,
@@ -705,12 +705,12 @@ router.post('/upload-profile-image', authenticateToken, upload.single('profileIm
         return res.status(400).json({ error: 'Nenhum arquivo enviado.' });
     }
 
-    const imageFilename = req.file.filename; // Apenas o nome do arquivo
+    const imageFilename = req.file.filename; 
 
     try {
-        const userId = req.user.id; // Certifique-se de que o ID do usuário está sendo extraído corretamente do token
+        const userId = req.user.id; 
 
-        // Atualiza o nome da imagem no banco de dados usando pool.query
+        
         const updateResult = await pool.query(
             'UPDATE users SET profile_image = $1 WHERE id = $2 RETURNING *',
             [imageFilename, userId]
@@ -719,7 +719,7 @@ router.post('/upload-profile-image', authenticateToken, upload.single('profileIm
         if (updateResult.rows.length > 0) {
             const updatedUser = updateResult.rows[0];
 
-            // Recria o token com as informações atualizadas
+            
             const newToken = jwt.sign({
                 id: updatedUser.id,
                 username: updatedUser.username,
@@ -727,13 +727,13 @@ router.post('/upload-profile-image', authenticateToken, upload.single('profileIm
                 firstname: updatedUser.firstname,
                 lastname: updatedUser.lastname,
                 bio: updatedUser.bio,
-                profile_image: updatedUser.profile_image // Agora é apenas o nome do arquivo
+                profile_image: updatedUser.profile_image 
             }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
             res.status(200).json({ 
                 message: 'Imagem de perfil atualizada com sucesso!', 
                 token: newToken, 
-                imageName: imageFilename // Retorna apenas o nome da imagem
+                imageName: imageFilename 
             });
         } else {
             res.status(404).json({ message: 'Usuário não encontrado.' });
@@ -744,9 +744,9 @@ router.post('/upload-profile-image', authenticateToken, upload.single('profileIm
     }
 });
 
-// ============================
-// Rota GET para Obter Categorias
-// ============================
+
+
+
 
 /**
  * Rota GET para Obter Categorias
@@ -756,7 +756,7 @@ router.get('/categories', authenticateToken, async (req, res) => {
     console.log('GET /categories foi chamado.');
     try {
         const result = await pool.query('SELECT id, name FROM categories ORDER BY name ASC');
-        const categories = result.rows; // Array de objetos { id, name }
+        const categories = result.rows; 
         console.log('Categorias obtidas:', categories);
         res.status(200).json({ categories });
     } catch (error) {
@@ -765,9 +765,9 @@ router.get('/categories', authenticateToken, async (req, res) => {
     }
 });
 
-// ============================
-// Rotas de Teste
-// ============================
+
+
+
 
 /**
  * Rota de Teste para Verificar o Funcionamento das Rotas
@@ -777,8 +777,8 @@ router.get('/test', (req, res) => {
     res.json({ message: 'Rota de teste funciona!' });
 });
 
-// ============================
-// Exportação do Router
-// ============================
+
+
+
 
 module.exports = router;

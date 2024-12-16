@@ -1,15 +1,15 @@
-// src/pages/RegisterPage.js
+
 
 import React, { useState } from 'react';
 import api from '../services/api';
 import { useNavigate, Link } from 'react-router-dom';
-import './LoginPage.css'; // Usando o mesmo arquivo CSS da página de login
-import registerImage from '../assets/register_foto.jpg'; // Certifique-se de que esta imagem existe ou use a mesma da página de login
+import './LoginPage.css'; 
+import registerImage from '../assets/register_foto.jpg'; 
 
-// Importando ícones do react-icons
+
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaArrowRight } from 'react-icons/fa';
 
-// Importando o toast do react-toastify
+
 import { toast } from 'react-toastify';
 
 const RegisterPage = () => {
@@ -21,20 +21,20 @@ const RegisterPage = () => {
     password: '',
   });
 
-  const [showPassword, setShowPassword] = useState(false); // Estado para alternar a visibilidade da senha
-  const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
+  const [showPassword, setShowPassword] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false); 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Função para validar o formato do email
+  
   const isValidEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
   };
 
-  // Função para validar a senha
+  
   const isValidPassword = (password) => {
     const passwordRegex = /^(?=.*[A-Z]).{6,}$/;
     return passwordRegex.test(password);
@@ -42,15 +42,15 @@ const RegisterPage = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    if (isLoading) return; // Previne múltiplas submissões
+    if (isLoading) return; 
 
-    // Validação dos campos no frontend
+    
     const { username, firstname, lastname, email, password } = formData;
 
     if (!username || !firstname || !lastname || !email || !password) {
       toast.error('Por favor, preencha todos os campos.', {
         position: "top-right",
-        autoClose: 3000, // 3 segundos
+        autoClose: 3000, 
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -63,7 +63,7 @@ const RegisterPage = () => {
     if (!isValidEmail(email)) {
       toast.error('Por favor, insira um email válido.', {
         position: "top-right",
-        autoClose: 3000, // 3 segundos
+        autoClose: 3000, 
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -76,7 +76,7 @@ const RegisterPage = () => {
     if (!isValidPassword(password)) {
       toast.error('A senha deve ter pelo menos 6 caracteres e incluir pelo menos uma letra maiúscula.', {
         position: "top-right",
-        autoClose: 5000, // 5 segundos
+        autoClose: 5000, 
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -87,16 +87,16 @@ const RegisterPage = () => {
     }
 
     setIsLoading(true);
-    console.log('handleRegister foi chamado'); // Para depuração
+    console.log('handleRegister foi chamado'); 
 
     try {
       const response = await api.post('/auth/register', formData);
-      console.log('Resposta do servidor:', response.data); // Para depuração
+      console.log('Resposta do servidor:', response.data); 
 
-      // Exibir notificação de sucesso
+      
       toast.success('Usuário registrado com sucesso!', {
         position: "top-right",
-        autoClose: 1500, // 1.5 segundos
+        autoClose: 1500, 
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
@@ -104,7 +104,7 @@ const RegisterPage = () => {
         progress: undefined,
       });
 
-      // Navegar para a página de login após exibir o toast
+      
       setTimeout(() => {
         navigate('/login');
         setIsLoading(false);
@@ -113,7 +113,7 @@ const RegisterPage = () => {
     } catch (error) {
       console.error('Erro ao registrar o usuário:', error);
 
-      // Determinar a mensagem de erro com base na resposta do servidor
+      
       let errorMessage = 'Erro ao registrar o usuário. Por favor, verifique seus dados e tente novamente.';
       if (error.response && error.response.data && error.response.data.error) {
         errorMessage = error.response.data.error;
@@ -121,10 +121,10 @@ const RegisterPage = () => {
         errorMessage = error.message;
       }
 
-      // Exibir notificação de erro
+      
       toast.error(errorMessage, {
         position: "top-right",
-        autoClose: 3000, // 3 segundos
+        autoClose: 3000, 
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -136,7 +136,7 @@ const RegisterPage = () => {
     }
   };
 
-  // Função para alternar a visibilidade da senha
+  
   const toggleShowPassword = () => {
     setShowPassword(prevState => !prevState);
   };
@@ -157,7 +157,7 @@ const RegisterPage = () => {
             placeholder="Username"
             value={formData.username}
             onChange={handleChange}
-            // Removendo o atributo 'required' para evitar a validação nativa do navegador
+            
           />
         </div>
 
@@ -171,7 +171,7 @@ const RegisterPage = () => {
             placeholder="First Name"
             value={formData.firstname}
             onChange={handleChange}
-            // Removendo o atributo 'required'
+            
           />
         </div>
 
@@ -185,7 +185,7 @@ const RegisterPage = () => {
             placeholder="Last Name"
             value={formData.lastname}
             onChange={handleChange}
-            // Removendo o atributo 'required'
+            
           />
         </div>
 
@@ -199,7 +199,7 @@ const RegisterPage = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            // Removendo o atributo 'required'
+            
           />
         </div>
 
@@ -213,7 +213,7 @@ const RegisterPage = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            // Removendo o atributo 'required'
+            
           />
           <button
             type="button"

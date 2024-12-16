@@ -1,13 +1,13 @@
-// src/components/CardComponent.js
+
 
 import React from 'react';
 
 const CardComponent = ({ data }) => {
     if (!data) {
-        return null; // Não renderiza se não houver dados
+        return null; 
     }
 
-    const { firstname, lastname, email, /* outros campos */ } = data;
+    const { firstname, lastname, email, } = data;
 
     return (
         <div className="card">

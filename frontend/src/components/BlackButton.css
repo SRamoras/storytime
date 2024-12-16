@@ -1,20 +1,20 @@
 .black-button {
-    background-color: #000; /* Cor preta */
-    color: #fff; /* Cor branca do texto */
+    background-color: #000;
+    color: #fff;
     border: none;
     border-radius: 12px;
     padding: 12px 37px;
     font-size: 16px;
-    font-family: 'Poppins', sans-serif; /* Adiciona a fonte Poppins */
+    font-family: 'Poppins', sans-serif;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 
 }
 
 .black-button:hover {
-    background-color: #0c0c0c; /* Cinza escuro ao passar o mouse */
+    background-color: #0c0c0c;
 }
 
 .black-button:active {
-    transform: scale(0.95); /* Efeito de clique */
+    transform: scale(0.95);
 }

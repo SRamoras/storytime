@@ -1,13 +1,13 @@
 .features-section {
-    background-color: #fff; /* Fundo claro e moderno */
+    background-color: #fff;
     padding: 4rem 2rem;
-    max-width: 86%; /* Define um limite para a largura máxima */
+    max-width: 86%;
 
     margin: 0 auto;
 margin-bottom: 150px;
     border-radius: 12px;
-     /* Bordas arredondadas para suavizar o design */
- /* Sombra leve */
+    
+
 }
 
 .features-header {
@@ -21,16 +21,16 @@ margin-bottom: 150px;
     text-align: center;
     margin-bottom: 1rem;
     font-weight: 700;  
-    color: #000000; /* Texto preto suave */
+    color: #000000;
 }
 
 .features-header p {
     font-size: 1.3rem;
     text-align: center;
     font-weight: 500;
-    color: #333; /* Cinza médio */
+    color: #333;
 
-    line-height: 1.2; /* Melhora a legibilidade */
+    line-height: 1.2;
 }
 
 .features-grid {
@@ -42,12 +42,12 @@ margin-bottom: 150px;
 }
 
 .feature-card {
-    background: linear-gradient(135deg, #ffffff, #f9fafb); /* Gradiente suave */
+    background: linear-gradient(135deg, #ffffff, #f9fafb);
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
-    border: 1px solid #e2e8f0; /* Borda leve */
+    border: 1px solid #e2e8f0;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: #000000 solid 2px;
 }
@@ -55,12 +55,12 @@ margin-bottom: 150px;
 .feature-card:hover {
   
   
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2); /* Elevação no hover */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
 }
 
 .feature-icon {
-    font-size: 3rem; /* Tamanho maior para destacar os ícones */
-    color: #000000; /* Ícones em cinza escuro */
+    font-size: 3rem;
+    color: #000000;
     margin-bottom: 1rem;
 }
 

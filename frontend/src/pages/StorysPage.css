@@ -1,4 +1,4 @@
-/* src/pages/StorysPage.css */
+
 
 .home-page {
     padding: 20px;
@@ -56,7 +56,7 @@
     border-radius: 2px;
 }
 
-/* Search Bar Aligned to the Right */
+
 .search-bar-container-storys-page {
     display: flex;
     width: 85vw;
@@ -97,17 +97,17 @@
 .search-bar input {
     width: 100%;  
     border: none; 
-    padding: 12px 0px 12px 40px; /* Added left padding for SVG icon */
+    padding: 12px 0px 12px 40px;
     font-size: 0.9em;
     transition: border-color 0.3s;
 }
 
 .search-bar input:focus {
     outline: none;
-    /* Removed border-bottom as per instruction */
+   
 }
 
-/* Container for Filters, Sorting, and Search */
+
 .main-container-storys-page {
     display: flex;
     flex-direction: row;
@@ -166,7 +166,7 @@
     color: #ffffff;
 }
 
-/* Section for Stories */
+
 .stories-section {
     flex-grow: 1;
     display: flex;
@@ -190,8 +190,8 @@
 }
 
 .spinner {
-    border: 8px solid #f3f3f3; /* Light grey */
-    border-top: 8px solid #3498db; /* Blue */
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
     border-radius: 50%;
     width: 60px;
     height: 60px;
@@ -253,7 +253,7 @@
     background-color: #555;
 }
 
-/* Responsiveness for Larger Screens */
+
 @media (min-width: 1200px) {
     .home-page {
         padding: 40px;
@@ -264,7 +264,7 @@
     }
 }
 
-/* Responsiveness for Smaller Screens */
+
 @media (max-width: 1024px) {
     .main-container-storys-page {
         flex-direction: column;
@@ -322,7 +322,7 @@
         font-size: 0.8em;
     }
 
-    /* Adjustment for the search bar */
+   
     .search-bar-container-storys-page {
         width: 85vw;
         padding: 0 10px;

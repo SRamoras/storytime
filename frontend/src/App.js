@@ -40,7 +40,7 @@ function App() {
                   <Route path="/story/:id" element={<Story />} /> 
               </Route>
 
-              {/* Rota para páginas não encontradas */}
+         
               <Route path="*" element={<NotFound />} />
           </Routes>
           <ToastContainer />
