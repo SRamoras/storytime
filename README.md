@@ -26,7 +26,6 @@
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Render](https://img.shields.io/badge/Render-000000?style=for-the-badge&logo=render&logoColor=white)
 ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-181717?style=for-the-badge&logo=githubpages&logoColor=white)
 
@@ -168,64 +167,14 @@ const authenticateToken = (req, res, next) => {
         res.status(403).json({ error: 'Invalid token.' });
     }
 };
-
-module.exports = authenticateToken;
 ```
+module.exports = authenticateToken;
+📄 License
+This project is licensed under the MIT License.
 
-
-5. **Access the Application**
-
-    Open your browser and go to [http://localhost:3000](http://localhost:3000) to see Storytime in action!
-
-## 📄 License
-
-This project is licensed under the [MIT License](./LICENSE).
-
-## 📫 Contact
-
+📫 Contact
 For more information, feel free to reach out:
 
-- **Email:** your-email@example.com
-- **LinkedIn:** [Your LinkedIn Profile](https://www.linkedin.com/in/your-profile)
-- **GitHub:** [your-username](https://github.com/your-username)
-
----
----
-
-### 📌 **Final Checklist**
-
-1. **Replace Placeholder Text:**
-   - **Banner Image:** Ensure you have a banner image at `./assets/banner.png` or update the path accordingly.
-   - **Live Demo Link:** Update `[Storytime Live](https://your-live-site.com)` with the actual URL.
-   - **Figma Prototype Link:** Update `[View the Figma Prototype](https://www.figma.com/file/your-prototype-link)` with your actual Figma link.
-   - **Repository URL:** Replace `https://github.com/your-username/storytime.git` with your actual GitHub repository URL.
-   - **Environment Variables:**
-     - Replace `your_supabase_postgresql_url` with your actual Supabase PostgreSQL connection string.
-     - Replace `your_secret_key` with a strong secret key for JWT.
-   - **Contact Information:** Replace `your-email@example.com`, `your-profile`, and `your-username` with your actual contact details.
-
-2. **Verify Code Snippets:**
-   - Ensure that the backend authentication code accurately reflects your implementation.
-   - Remove any unnecessary comments or console logs if they are not relevant.
-
-3. **Test Installation Steps:**
-   - Follow the installation steps yourself to ensure they work as intended.
-   - Make any necessary adjustments based on your testing.
-
-4. **Enhance Visual Appeal:**
-   - Consider adding more screenshots to showcase different parts of your application.
-   - Use consistent formatting and ensure all badges render correctly.
-
-5. **Final Review:**
-   - Proofread the README for any grammatical errors or inconsistencies.
-   - Ensure all links are functional and direct to the correct resources.
-
-### 🎉 **Congratulations!**
-
-You now have a polished and professional `README.md` for your **Storytime** project. This README effectively showcases your project, provides necessary installation instructions for those interested, and presents your work in a clear and organized manner.
-
-Feel free to further customize and enhance the README as your project evolves. Good luck with your first website, and congratulations on your achievement!
-
-If you need any more assistance, feel free to ask!
-
-
+Email: your-email@example.com
+LinkedIn: Your LinkedIn Profile
+GitHub: your-username
