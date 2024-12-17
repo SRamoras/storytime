@@ -130,7 +130,7 @@ Automated tests ensure the reliability and stability of the platform. [Learn mor
     - **Start the Frontend Server**
 
         ```bash
-        npm run dev
+        npm run
         ```
 
 5. **Access the Application**
