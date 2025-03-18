@@ -37,10 +37,6 @@ The **Storytime** project was developed over a period of **2 weeks**, from desig
 
 - **Website:** [Storytime Live](https://sramoras.github.io/storytime/)
 
-## 🎨 Design
-
-The application’s design was created using **Figma**, enabling an intuitive and attractive interface for users.
-
 ## 🧪 Testing
 
 Automated tests ensure the reliability and stability of the platform. [Learn more about the testing process](#).
