@@ -4,7 +4,7 @@
 
 ## 📖 About Storytime
 
-**Storytime** is an interactive web platform that allows users to create, share, and explore stories collaboratively. With a user-friendly interface and robust features, Storytime is the perfect place for aspiring writers and story enthusiasts to share their creations with a vibrant community.
+**Storytime** is an interactive web platform that allows users to create, share, and explore stories collaboratively. With a user-friendly interface and robust features, Storytime is the perfect place for aspiring writers and story enthusiasts to share their creations with a vibrant community. (this was my first full-stack project ever made)
 
 ## 🚀 Features
 
